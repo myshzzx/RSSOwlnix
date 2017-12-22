@@ -2,7 +2,7 @@
 <feature
       id="org.rssowl"
       label="RSSOwl"
-      version="2.4.0.qualifier"
+      version="2.4.1.qualifier"
       provider-name="RSSOwl.org"
       plugin="org.rssowl.ui">
 
@@ -245,9 +245,10 @@ litigation.
       <import plugin="org.eclipse.emf.ecore.xmi" version="2.8.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.e4.core.di" version="1.6.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.net"/>
-      <import feature="org.rssowl.dependencies" version="2.0.0"/>
+      <import feature="org.rssowl.dependencies" version="2.0.0" match="greaterOrEqual"/>
       <import feature="org.eclipse.e4.rcp" version="1.6.1.v20170928-1359"/>
       <import feature="org.eclipse.rcp" version="4.7.1.v20171009-0410"/>
+      <import plugin="org.rssowl.core" version="2.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

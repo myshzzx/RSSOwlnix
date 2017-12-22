@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="RSSOwl" uid="org.rssowl.ui.product" id="org.rssowl.ui.product" application="org.rssowl.ui.rssowl" version="2.4.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="RSSOwl" uid="org.rssowl.ui.product" id="org.rssowl.ui.product" application="org.rssowl.ui.rssowl" version="2.4.1.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/org.rssowl.ui/icons/product/about.gif"/>
@@ -71,8 +71,8 @@ RSSOwl Development Team - initial API and implementation
       <feature id="org.eclipse.rcp"/>
       <feature id="org.eclipse.e4.rcp"/>
       <feature id="org.eclipse.equinox.p2.user.ui" version="2.3.1.v20170928-1405"/>
-      <feature id="org.rssowl.dependencies"/>
-      <feature id="org.rssowl"/>
+      <feature id="org.rssowl.dependencies" version="2.4.1.qualifier"/>
+      <feature id="org.rssowl" version="2.4.1.qualifier"/>
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.emf.common"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>

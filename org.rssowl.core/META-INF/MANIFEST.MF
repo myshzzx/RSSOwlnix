@@ -2,12 +2,12 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.rssowl.core;singleton:=true
-Bundle-Version: 2.4.0.qualifier
+Bundle-Version: 2.4.1.qualifier
 Bundle-Activator: org.rssowl.core.internal.Activator
 Eclipse-RegisterBuddy: org.rssowl.lib.db4o, org.rssowl.lib.httpclient
 Require-Bundle: org.rssowl.lib.db4o,
- org.rssowl.lib.jdom,
  org.rssowl.lib.httpclient,
+ org.rssowl.lib.jdom,
  org.rssowl.lib.lucene,
  org.eclipse.core.runtime,
  org.eclipse.core.net,
