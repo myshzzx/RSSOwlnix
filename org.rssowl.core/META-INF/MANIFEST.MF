@@ -5,10 +5,10 @@ Bundle-SymbolicName: org.rssowl.core;singleton:=true
 Bundle-Version: 2.4.1.qualifier
 Bundle-Activator: org.rssowl.core.internal.Activator
 Eclipse-RegisterBuddy: org.rssowl.lib.db4o, org.rssowl.lib.httpclient
-Require-Bundle: org.rssowl.lib.db4o,
- org.rssowl.lib.httpclient,
- org.rssowl.lib.jdom,
- org.rssowl.lib.lucene,
+Require-Bundle: org.rssowl.lib.db4o;bundle-version="[2.4.0,2.5.0)",
+ org.rssowl.lib.httpclient;bundle-version="[2.4.0,2.5.0)",
+ org.rssowl.lib.jdom;bundle-version="[2.4.0,2.5.0)",
+ org.rssowl.lib.lucene;bundle-version="[2.4.0,2.5.0)",
  org.eclipse.core.runtime,
  org.eclipse.core.net,
  org.eclipse.equinox.security
@@ -16,8 +16,20 @@ Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: .
-Export-Package: org.rssowl.core,
- org.rssowl.core.connection,
+Export-Package: org.rssowl.core;
+  uses:="org.eclipse.core.runtime,
+   org.rssowl.core.persist,
+   org.rssowl.core.connection,
+   org.rssowl.core.persist.service,
+   org.rssowl.core.util,
+   org.rssowl.core.interpreter",
+ org.rssowl.core.connection;
+  uses:="org.eclipse.core.runtime,
+   org.eclipse.osgi.util,
+   org.apache.http.conn.socket,
+   org.apache.http.client.methods,
+   org.rssowl.core.util,
+   org.osgi.service.url",
  org.rssowl.core.internal;x-internal:=true,
  org.rssowl.core.internal.connection;x-internal:=true,
  org.rssowl.core.internal.interpreter;x-internal:=true,
@@ -29,13 +41,35 @@ Export-Package: org.rssowl.core,
  org.rssowl.core.internal.persist.pref;x-internal:=true,
  org.rssowl.core.internal.persist.search;x-internal:=true,
  org.rssowl.core.internal.persist.service;x-internal:=true,
- org.rssowl.core.interpreter,
- org.rssowl.core.persist,
- org.rssowl.core.persist.dao,
- org.rssowl.core.persist.event,
- org.rssowl.core.persist.event.runnable,
+ org.rssowl.core.interpreter;
+  uses:="org.eclipse.core.runtime,
+   org.rssowl.core.persist,
+   org.w3c.dom,
+   org.rssowl.core.internal.interpreter.json,
+   org.jdom",
+ org.rssowl.core.persist;
+  uses:="org.eclipse.osgi.util,
+   org.eclipse.core.runtime,
+   org.rssowl.core.internal.persist,
+   org.rssowl.core.persist.reference,
+   org.rssowl.core.util",
+ org.rssowl.core.persist.dao;uses:="org.rssowl.core.persist,org.rssowl.core.persist.reference,org.rssowl.core.persist.event.runnable",
+ org.rssowl.core.persist.event;uses:="org.rssowl.core.persist,org.rssowl.core.persist.event.runnable",
+ org.rssowl.core.persist.event.runnable;uses:="org.rssowl.core.persist.dao,org.rssowl.core.persist.event",
  org.rssowl.core.persist.pref,
- org.rssowl.core.persist.reference,
- org.rssowl.core.persist.service,
- org.rssowl.core.util
+ org.rssowl.core.persist.reference;uses:="org.rssowl.core.persist",
+ org.rssowl.core.persist.service;
+  uses:="org.rssowl.core.persist.pref,
+   org.eclipse.core.runtime,
+   org.rssowl.core.persist,
+   org.rssowl.core.persist.dao,
+   org.rssowl.core.util",
+ org.rssowl.core.util;
+  uses:="org.eclipse.core.runtime.jobs,
+   org.eclipse.core.runtime,
+   org.eclipse.osgi.util,
+   org.rssowl.core.persist,
+   org.rssowl.core.internal.persist,
+   org.rssowl.core.persist.reference,
+   org.rssowl.core.persist.event"
 Bundle-Localization: plugin
