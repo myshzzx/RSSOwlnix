@@ -24,7 +24,7 @@
 
 package org.rssowl.core.tests.ui;
 
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -24,7 +24,7 @@
 
 package org.rssowl.core.tests.ui;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.Before;

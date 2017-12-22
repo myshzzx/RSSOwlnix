@@ -24,7 +24,7 @@
 
 package org.rssowl.core.tests.model;
 
-import static junit.framework.Assert.fail;
+import static org.junit.Assert.fail;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
