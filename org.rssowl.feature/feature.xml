@@ -244,53 +244,59 @@ litigation.
       <import plugin="org.eclipse.emf.ecore.change" version="2.8.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.ecore.xmi" version="2.8.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.e4.core.di" version="1.6.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.net"/>
-      <import feature="org.rssowl.dependencies" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.rssowl.core" version="2.4.0" match="greaterOrEqual"/>
+      <import plugin="org.rssowl.lib.db4o" version="2.4.0" match="greaterOrEqual"/>
+      <import plugin="org.rssowl.lib.httpclient" version="2.4.0" match="greaterOrEqual"/>
+      <import plugin="org.rssowl.lib.jdom" version="2.4.0" match="greaterOrEqual"/>
+      <import plugin="org.rssowl.lib.lucene" version="2.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.runtime" version="3.13.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.net" version="1.3.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.equinox.security" version="1.2.300" match="greaterOrEqual"/>
+      <import feature="org.rssowl.dependencies" version="2.4.0" match="greaterOrEqual"/>
       <import feature="org.eclipse.e4.rcp" version="1.6.1.v20170928-1359"/>
       <import feature="org.eclipse.rcp" version="4.7.1.v20171009-0410"/>
-      <import plugin="org.rssowl.core" version="2.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
          id="org.rssowl.lib.jdom"
          download-size="52"
          install-size="0"
-         version="0.0.0"
+         version="2.4.0"
          unpack="false"/>
 
    <plugin
          id="org.rssowl.ui"
          download-size="771"
          install-size="0"
-         version="0.0.0"
+         version="2.4.0"
          unpack="false"/>
 
    <plugin
          id="org.rssowl.lib.db4o"
          download-size="165"
          install-size="0"
-         version="0.0.0"
+         version="2.4.0"
          unpack="false"/>
 
    <plugin
          id="org.rssowl.core"
          download-size="171"
          install-size="0"
-         version="0.0.0"
+         version="2.4.0"
          unpack="false"/>
 
    <plugin
          id="org.rssowl.lib.httpclient"
          download-size="118"
          install-size="0"
-         version="0.0.0"
+         version="2.4.0"
          unpack="false"/>
 
    <plugin
          id="org.rssowl.lib.lucene"
          download-size="195"
          install-size="0"
-         version="0.0.0"
+         version="2.4.0"
          unpack="false"/>
 
 </feature>
