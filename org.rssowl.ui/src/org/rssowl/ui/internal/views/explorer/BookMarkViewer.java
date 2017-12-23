@@ -52,7 +52,7 @@ import java.util.List;
  */
 public class BookMarkViewer extends TreeViewer {
   private final BookMarkExplorer fExplorer;
-  private ListenerList fOpenListeners = new ListenerList();
+  private ListenerList<IOpenListener> fOpenListeners = new ListenerList<IOpenListener>();
   private ViewerOpenStrategy fViewerOpenStrategy;
 
   /**

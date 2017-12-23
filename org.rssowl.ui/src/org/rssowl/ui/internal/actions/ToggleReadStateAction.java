@@ -100,7 +100,7 @@ public class ToggleReadStateAction extends Action implements IWorkbenchWindowAct
    */
   @Override
   public String getText() {
-    IBindingService bs = (IBindingService) PlatformUI.getWorkbench().getService(IBindingService.class);
+    IBindingService bs = PlatformUI.getWorkbench().getService(IBindingService.class);
     TriggerSequence binding = bs.getBestActiveBindingFor(ID);
 
     return binding != null ? NLS.bind(Messages.ToggleReadStateAction_NEWS_READ_BINDING, binding.format()) : Messages.ToggleReadStateAction_NEWS_READ;

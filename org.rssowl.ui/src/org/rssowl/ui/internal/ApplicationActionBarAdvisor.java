@@ -1475,7 +1475,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
       @Override
       public void run() {
         IWorkbench workbench = PlatformUI.getWorkbench();
-        IBindingService bindingService = (IBindingService) workbench.getService(IBindingService.class);
+        IBindingService bindingService = workbench.getService(IBindingService.class);
         bindingService.openKeyAssistDialog();
       }
     });
@@ -1936,7 +1936,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
           @Override
           public String getText() {
-            IBindingService bs = (IBindingService) PlatformUI.getWorkbench().getService(IBindingService.class);
+            IBindingService bs = PlatformUI.getWorkbench().getService(IBindingService.class);
             TriggerSequence binding = bs.getBestActiveBindingFor(provider.getId());
 
             return binding != null ? NLS.bind(Messages.ApplicationActionBarAdvisor_SHARE_BINDING, provider.getName(), binding.format()) : provider.getName();

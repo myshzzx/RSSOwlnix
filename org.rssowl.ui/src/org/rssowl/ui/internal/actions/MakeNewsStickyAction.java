@@ -77,7 +77,7 @@ public class MakeNewsStickyAction extends Action implements IWorkbenchWindowActi
    */
   @Override
   public String getText() {
-    IBindingService bs = (IBindingService) PlatformUI.getWorkbench().getService(IBindingService.class);
+    IBindingService bs = PlatformUI.getWorkbench().getService(IBindingService.class);
     TriggerSequence binding = bs.getBestActiveBindingFor(ID);
 
     return binding != null ? NLS.bind(Messages.MakeNewsStickyAction_NEWS_STICKY_BINDING, binding.format()) : Messages.MakeNewsStickyAction_NEWS_STICKY;

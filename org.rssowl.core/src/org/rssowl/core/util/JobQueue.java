@@ -70,7 +70,7 @@ public class JobQueue {
   private String fTaskPrefix;
   private final boolean fShowProgress;
   private boolean fIsUnknownProgress;
-  private final ListenerList fListeners = new ListenerList();
+  private final ListenerList<JobQueueListener> fListeners = new ListenerList<JobQueueListener>();
 
   /* These fields are accessed from N Jobs concurrently */
   private volatile boolean fProgressJobScheduled;

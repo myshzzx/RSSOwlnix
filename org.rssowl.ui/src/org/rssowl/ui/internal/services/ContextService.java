@@ -49,7 +49,7 @@ public class ContextService implements FocusListener {
 
   /** Creates a new Instance of this Service */
   public ContextService() {
-    fContextService = (IContextService) PlatformUI.getWorkbench().getService(IContextService.class);
+    fContextService = PlatformUI.getWorkbench().getService(IContextService.class);
 
     /* Activate the managed Context */
     activateNavigationContext();

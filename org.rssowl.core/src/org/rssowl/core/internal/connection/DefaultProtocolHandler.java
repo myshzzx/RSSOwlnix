@@ -165,8 +165,8 @@ public class DefaultProtocolHandler implements IProtocolHandler {
   private static final int MAX_DETECTED_TITLE_LENGTH = 1024;
 
   private static final String USER_AGENT = CoreUtils.getUserAgent();
-  private static boolean fgSSLInitialized;
-  private static boolean fgFeedProtocolInitialized;
+//  private static boolean fgSSLInitialized;
+//  private static boolean fgFeedProtocolInitialized;
 
   /*
    * @see org.rssowl.core.connection.IProtocolHandler#reload(java.net.URI,

@@ -57,7 +57,7 @@ public class NewTypeDropdownAction implements IWorkbenchWindowPulldownDelegate, 
   private IFolder fParent;
   private IMark fPosition;
   private LocalResourceManager fResources = new LocalResourceManager(JFaceResources.getResources());
-  private IBindingService fBindingService = (IBindingService) PlatformUI.getWorkbench().getService(IBindingService.class);
+  private IBindingService fBindingService = PlatformUI.getWorkbench().getService(IBindingService.class);
 
   /*
    * @see org.eclipse.ui.IWorkbenchWindowPulldownDelegate#getMenu(org.eclipse.swt.widgets.Control)

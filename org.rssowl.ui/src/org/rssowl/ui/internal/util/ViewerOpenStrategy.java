@@ -69,7 +69,7 @@ public class ViewerOpenStrategy implements Listener {
   private static final int TIME = 500;
 
   /* Listeners */
-  private ListenerList fOpenEventListeners = new ListenerList();
+  private ListenerList<IOpenEventListener> fOpenEventListeners = new ListenerList<IOpenEventListener>();
 
   /* Event Fields */
   private boolean fTimerStarted;

@@ -287,7 +287,7 @@ public class BookMarkExplorer extends ViewPart {
     createSearchBar(parent);
 
     /* Show Busy when reload occurs */
-    IWorkbenchSiteProgressService service = (IWorkbenchSiteProgressService) fViewSite.getAdapter(IWorkbenchSiteProgressService.class);
+    IWorkbenchSiteProgressService service = fViewSite.getAdapter(IWorkbenchSiteProgressService.class);
     service.showBusyForFamily(Controller.getDefault().getReloadFamily());
   }
 

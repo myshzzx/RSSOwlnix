@@ -102,7 +102,7 @@ public class ArchiveNewsAction extends Action implements IWorkbenchWindowActionD
    */
   @Override
   public String getText() {
-    IBindingService bs = (IBindingService) PlatformUI.getWorkbench().getService(IBindingService.class);
+    IBindingService bs = PlatformUI.getWorkbench().getService(IBindingService.class);
     TriggerSequence binding = bs.getBestActiveBindingFor(ID);
 
     return binding != null ? NLS.bind(Messages.ArchiveNewsAction_ARCHIVE_NEWS_BINDING, binding.format()) : Messages.ArchiveNewsAction_ARCHIVE_NEWS;

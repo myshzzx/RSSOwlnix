@@ -76,7 +76,7 @@ public class LabelAction extends Action {
     if (fLabel == null)
       return Messages.LabelAction_REMOVE_ALL_LABELS;
 
-    IBindingService bs = (IBindingService) PlatformUI.getWorkbench().getService(IBindingService.class);
+    IBindingService bs = PlatformUI.getWorkbench().getService(IBindingService.class);
     TriggerSequence binding = bs.getBestActiveBindingFor(Controller.LABEL_ACTION_PREFIX + fLabel.getId());
 
     return binding != null ? NLS.bind(Messages.LabelAction_LABEL_BINDING, fLabel.getName(), binding.format()) : fLabel.getName();
