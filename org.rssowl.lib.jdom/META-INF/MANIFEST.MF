@@ -15,5 +15,4 @@ Export-Package: .,
  org.jdom.xpath
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Localization: plugin
-Bundle-ClassPath: jdom-1.1.jar,
- .
+Bundle-ClassPath: jdom-1.1.jar

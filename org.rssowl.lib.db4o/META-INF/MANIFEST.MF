@@ -56,5 +56,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Localization: plugin
 Bundle-ClassPath: bloat-1.0.jar,
  db4o-6.1-java5.jar,
- db4o-6.1-nqopt.jar,
- .
+ db4o-6.1-nqopt.jar

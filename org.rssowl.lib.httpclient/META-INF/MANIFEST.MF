@@ -11,8 +11,7 @@ Bundle-ClassPath: commons-codec-1.11.jar,
  commons-logging-1.2-api.jar,
  commons-logging-1.2.jar,
  httpcore-4.4.8.jar,
- httpclient-4.5.4.jar,
- .
+ httpclient-4.5.4.jar
 Export-Package: org.apache.commons.codec,
  org.apache.commons.codec.binary;uses:="org.apache.commons.codec",
  org.apache.commons.codec.cli,

@@ -19,5 +19,4 @@ Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: lucene-core-2.3.2.jar,
- .
+Bundle-ClassPath: lucene-core-2.3.2.jar
