@@ -8,12 +8,9 @@
 - updated httpclient to 4.5.3
 - fixed 2 (maybe) memory leaks
 
-based on 2.2.1
+based on RSSOwl 2.2.1
 
-RSSOwl is unmaintained and has several known vulnerabilities. Please do not use it any more.
-====
-See [#7](https://github.com/rssowl/RSSOwl/issues/7) and [#8](https://github.com/rssowl/RSSOwl/issues/8) for details about maintenance. Furthermore, RSSOwl does not work with Java 9, but it may still work with Java 8.
-&nbsp;
+---
 
 RSSOwl
 ======
