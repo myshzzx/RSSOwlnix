@@ -86,6 +86,10 @@ RSSOwl Development Team - initial API and implementation
       <feature id="org.eclipse.ecf.filetransfer.ssl.feature"/>
    </features>
 
+   <configurations>
+      <plugin id="org.eclipse.equinox.ds" autoStart="false" startLevel="3" />
+      <plugin id="org.eclipse.equinox.event" autoStart="false" startLevel="3" />
+   </configurations>
 
    <preferencesInfo>
       <targetfile overwrite="false"/>

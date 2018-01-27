@@ -7,25 +7,12 @@ Eclipse-BuddyPolicy: registered
 Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Localization: plugin
-Bundle-ClassPath: commons-codec-1.11.jar,
- commons-logging-1.2-api.jar,
- commons-logging-1.2.jar,
- httpcore-4.4.8.jar,
- httpclient-4.5.4.jar
-Export-Package: org.apache.commons.codec,
- org.apache.commons.codec.binary;uses:="org.apache.commons.codec",
- org.apache.commons.codec.cli,
- org.apache.commons.codec.digest;uses:="javax.crypto",
- org.apache.commons.codec.language;uses:="org.apache.commons.codec",
- org.apache.commons.codec.language.bm;uses:="new org.apache.commons.codec.language.bm,org.apache.commons.codec",
- org.apache.commons.codec.net;uses:="org.apache.commons.codec",
- org.apache.commons.logging,
- org.apache.commons.logging.impl;
-  uses:="org.apache.avalon.framework.logger,
-   javax.servlet,
-   org.apache.commons.logging,
-   org.apache.log4j,
-   org.apache.log",
+Bundle-ClassPath: org.apache.commons.codec_1.10.0.jar,
+ org.apache.commons.logging_1.2.0.jar,
+ org.apache.httpcomponents.httpclient_4.5.4.jar,
+ org.apache.httpcomponents.httpcore_4.4.7.jar
+Export-Package: org.apache.commons.logging,
+ org.apache.commons.logging.impl,
  org.apache.http;uses:="org.apache.http.params,org.apache.http.util,org.apache.http.protocol",
  org.apache.http.annotation,
  org.apache.http.auth;
