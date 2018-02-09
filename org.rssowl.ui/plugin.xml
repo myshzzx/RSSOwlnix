@@ -237,56 +237,6 @@
             </separator>
          </menu>
       </actionSet>
-      <!--<actionSet
-            id="org.rssowl.ui.ManageExtensions"
-            label="%actionSet.label.2"
-            visible="true">
-         <action
-               class="org.rssowl.ui.internal.actions.FindUpdatesAction"
-               definitionId="org.rssowl.ui.actions.FindUpdates"
-               icon="icons/elcl16/updates.gif"
-               id="org.rssowl.ui.actions.FindUpdates"
-               label="%action.label.17"
-               menubarPath="help/helpEnd"
-               style="push"
-               tooltip="%action.tooltip.2">
-            <enablement>
-               <not>
-                  <systemProperty
-                        name="disableUpdate"
-                        value="true">
-                  </systemProperty>
-               </not>
-            </enablement>
-         </action>
-         <action
-               class="org.rssowl.ui.internal.actions.FindExtensionsAction"
-               definitionId="org.rssowl.ui.actions.FindExtensions"
-               icon="icons/elcl16/usearch_obj.gif"
-               id="org.rssowl.ui.actions.FindExtensions"
-               label="%action.label.18"
-               menubarPath="tools/extensions/findExtensions"
-               style="push"
-               tooltip="%action.tooltip.3"/>
-         <action
-               class="org.rssowl.ui.internal.actions.ManageConfigurationAction"
-               definitionId="org.rssowl.ui.actions.ManageConfiguration"
-               icon="icons/elcl16/configs.gif"
-               id="org.rssowl.ui.actions.ManageConfiguration"
-               label="%action.label.19"
-               menubarPath="tools/extensions/manageConfiguration"
-               style="push"
-               tooltip="%action.tooltip.4"/>
-         <menu
-               id="extensions"
-               label="%menu.label.2"
-               path="tools/addons">
-            <separator name="extensionsBegin"/>
-            <groupMarker name="findExtensions"/>
-            <separator name="extensionsEnd"/>
-            <groupMarker name="manageConfiguration"/>
-         </menu>
-      </actionSet>-->
       <actionSet
             id="org.rssowl.ui.NewsSet"
             label="%actionSet.label.3"
@@ -414,43 +364,6 @@
                style="push">
          </action>
       </actionSet>
-      <!--<actionSet
-            id="org.rssowl.ui.LanguageActionSet"
-            label="%actionSet.label.8"
-            visible="true">
-         <action
-               class="org.rssowl.ui.internal.actions.DownloadLanguagesAction"
-               icon="icons/elcl16/languages.gif"
-               id="org.rssowl.ui.DownloadLanguagesAction"
-               label="%action.label.38"
-               menubarPath="tools/languages/downloadLanguages"
-               style="push">
-         </action>
-         <action
-               class="org.rssowl.ui.internal.actions.TranslateRSSOwlAction"
-               id="org.rssowl.ui.ProvideTranslationAction"
-               label="%action.label.39"
-               menubarPath="tools/languages/translateRSSOwl"
-               style="push">
-         </action>
-         <menu
-               id="languages"
-               label="%menu.label.4"
-               path="tools/addons">
-            <groupMarker
-                  name="languagesBegin">
-            </groupMarker>
-            <groupMarker
-                  name="downloadLanguages">
-            </groupMarker>
-            <separator
-                  name="translateRSSOwl">
-            </separator>
-            <groupMarker
-                  name="languagesEnd">
-            </groupMarker>
-         </menu>
-      </actionSet>-->
    </extension>
    <extension
          point="org.eclipse.ui.views">
