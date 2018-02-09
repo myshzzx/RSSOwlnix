@@ -13,6 +13,6 @@ based on RSSOwl 2.2.1
 
 ---
 
-wiki: https://github.com/Xyrio/RSSOwl/wiki
+wiki: https://github.com/Xyrio/RSSOwlnix/wiki
 
 bug reports: https://github.com/Xyrio/RSSOwlnix/issues
