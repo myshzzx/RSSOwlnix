@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.ContentViewer;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.rssowl.core.Owl;
 import org.rssowl.core.persist.IBookMark;
 import org.rssowl.core.persist.IEntity;
 import org.rssowl.core.persist.INews;
@@ -685,7 +686,7 @@ public class ApplicationServer {
         writer.append("Date: ").append(RFC_1123_DATE.format(new Date())).append(CRLF); //$NON-NLS-1$
       }
 
-      writer.append("Server: RSSOwl Local Server").append(CRLF); //$NON-NLS-1$
+      writer.append("Server: " + Owl.APPLICATION_NAME + " Local Server").append(CRLF); //$NON-NLS-1$ //$NON-NLS-2$
       writer.append("Content-Type: text/html; charset=UTF-8").append(CRLF); //$NON-NLS-1$
       writer.append("Connection: close").append(CRLF); //$NON-NLS-1$
       writer.append("Expires: 0").append(CRLF); //$NON-NLS-1$

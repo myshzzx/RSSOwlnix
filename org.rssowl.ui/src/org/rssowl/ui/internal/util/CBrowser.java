@@ -77,6 +77,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author bpasero
  */
+@MBrowserEmbedded
 public class CBrowser {
 
   /* Delay before a URL is set in a IE Browser (guess) */
@@ -161,7 +162,7 @@ public class CBrowser {
       box.setText(Messages.CBrowser_ERROR_CREATE_BROWSER);
       box.setMessage(Messages.CBrowser_ERROR_CREATE_BROWSER_MSG);
       if (box.open() == SWT.OK)
-        BrowserUtils.openLinkExternal("http://www.rssowl.org/help#item_6j"); //$NON-NLS-1$
+        BrowserUtils.openLinkExternal("https://github.com/Xyrio/RSSOwlnix/wiki/FAQ#item_6j"); //$NON-NLS-1$
 
       throw e;
     }

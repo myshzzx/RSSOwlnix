@@ -29,6 +29,7 @@ import org.rssowl.core.persist.dao.DynamicDAO;
 import org.rssowl.core.util.Pair;
 import org.rssowl.core.util.Triple;
 import org.rssowl.ui.internal.EntityGroup;
+import org.rssowl.ui.internal.util.MBrowserEmbedded;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,6 +49,7 @@ import java.util.Set;
  *
  * @author bpasero
  */
+@MBrowserEmbedded
 public class NewsBrowserViewModel {
   private final List<Item> fItemList = new ArrayList<NewsBrowserViewModel.Item>();
   private final Map<Long, Item> fNewsMap = new HashMap<Long, NewsBrowserViewModel.Item>();

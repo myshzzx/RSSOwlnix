@@ -67,7 +67,6 @@ public class GrowlNotifyAction implements INewsAction {
   /* Max number of items to show per Notification */
   private static final int MAX_ITEMS_TO_SHOW = 5;
 
-  private static final String APPLICATION_NAME = "RSSOwl"; //$NON-NLS-1$
   private static final String SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
 
   private BatchedBuffer<INews> fBatchedBuffer;
@@ -120,9 +119,9 @@ public class GrowlNotifyAction implements INewsAction {
       List<String> commands = new ArrayList<String>();
       commands.add(pathToGrowlnotify);
       commands.add("--name"); //$NON-NLS-1$
-      commands.add(APPLICATION_NAME);
+      commands.add(Owl.APPLICATION_NAME);
       commands.add("-a"); //$NON-NLS-1$
-      commands.add(APPLICATION_NAME);
+      commands.add(Owl.APPLICATION_NAME);
       commands.add("-t"); //$NON-NLS-1$
       commands.add(NLS.bind(Messages.GrowlNotifyAction_N_INCOMING_NEWS, news.size()));
       commands.add("-m"); //$NON-NLS-1$

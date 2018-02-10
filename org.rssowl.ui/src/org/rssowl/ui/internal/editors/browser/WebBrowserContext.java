@@ -43,12 +43,14 @@ import org.rssowl.core.util.StringUtils;
 import org.rssowl.ui.internal.FolderNewsMark;
 import org.rssowl.ui.internal.editors.feed.FeedView;
 import org.rssowl.ui.internal.editors.feed.FeedViewInput;
+import org.rssowl.ui.internal.util.MBrowserEmbedded;
 
 /**
  * The context from which the webbrowser was created.
  *
  * @author bpasero
  */
+@MBrowserEmbedded
 public class WebBrowserContext {
   private NewsReference fNewsReference;
   private ModelReference fNewsMarkReference;

@@ -21,46 +21,18 @@
  **     RSSOwl Development Team - initial API and implementation             **
  **                                                                          **
  **  **********************************************************************  */
+package org.rssowl.ui.internal.util;
 
-package org.rssowl.ui.internal.actions;
-
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.rssowl.ui.internal.util.BrowserUtils;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
- * An action showing instructions how to help translate RSSOwl.
- *
- * @author bpasero
+ * source code marker for internal embedded browser related code
  */
-public class TranslateRSSOwlAction implements IWorkbenchWindowActionDelegate {
+//any target: @Target({ElementType.})
+@Retention(RetentionPolicy.SOURCE)
+@Documented
+public @interface MBrowserEmbedded {
 
-  /*
-   * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
-   */
-  @Override
-  public void init(IWorkbenchWindow window) {}
-
-  /*
-   * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
-   */
-  @Override
-  public void run(IAction action) {
-    //TODO change tranlation wiki link here and also in FAQ at https://github.com/Xyrio/RSSOwlnix/wiki/FAQ#item_langtrans
-    BrowserUtils.openLinkExternal("http://wiki.rssowl.org/index.php/Translation"); //$NON-NLS-1$
-  }
-
-  /*
-   * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
-   */
-  @Override
-  public void selectionChanged(IAction action, ISelection selection) {}
-
-  /*
-   * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
-   */
-  @Override
-  public void dispose() {}
 }

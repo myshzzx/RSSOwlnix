@@ -1830,12 +1830,12 @@ public class CoreUtils {
     String version = Activator.getDefault().getVersion();
     String os = Platform.getOS();
     if (Platform.OS_WIN32.equals(os))
-      return "RSSOwl/" + version + " (Windows; U; en)"; //$NON-NLS-1$ //$NON-NLS-2$
+      return Owl.APPLICATION_NAME+"/" + version + " (Windows; U; en)"; //$NON-NLS-1$ //$NON-NLS-2$
     else if (Platform.OS_LINUX.equals(os))
-      return "RSSOwl/" + version + " (X11; U; en)"; //$NON-NLS-1$//$NON-NLS-2$
+      return Owl.APPLICATION_NAME+"/" + version + " (X11; U; en)"; //$NON-NLS-1$//$NON-NLS-2$
     else if (Platform.OS_MACOSX.equals(os))
-      return "RSSOwl/" + version + " (Macintosh; U; en)"; //$NON-NLS-1$ //$NON-NLS-2$
-    return "RSSOwl/" + version; //$NON-NLS-1$
+      return Owl.APPLICATION_NAME+"/" + version + " (Macintosh; U; en)"; //$NON-NLS-1$ //$NON-NLS-2$
+    return Owl.APPLICATION_NAME+"/" + version; //$NON-NLS-1$
   }
 
   /**

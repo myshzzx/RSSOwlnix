@@ -46,7 +46,6 @@ public class Messages extends NLS {
   public static String ApplicationActionBarAdvisor_CUSTOMIZE_TOOLBAR;
   public static String ApplicationActionBarAdvisor_DESCENDING;
   public static String ApplicationActionBarAdvisor_DISABLE_TABBED_BROWSING;
-  public static String ApplicationActionBarAdvisor_DONATE;
   public static String ApplicationActionBarAdvisor_DOWNLOAD_ALL;
   public static String ApplicationActionBarAdvisor_DOWNLOAD_ALL_WITH_SIZE;
   public static String ApplicationActionBarAdvisor_EDIT;

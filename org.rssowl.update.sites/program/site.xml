@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
    <description url="http://boreal.rssowl.org">
-      The main update site of RSSOwl.
+      The main update site of RSSOwlnix.
    </description>
    <feature url="features/org.rssowl_2.4.2.qualifier.jar" id="org.rssowl" version="2.4.2.qualifier">
       <category name="rssowl.program"/>
    </feature>
-   <category-def name="rssowl.program" label="RSSOwl Program Update">
+   <category-def name="rssowl.program" label="RSSOwlnix Program Update">
       <description>
          Text goes here.
       </description>

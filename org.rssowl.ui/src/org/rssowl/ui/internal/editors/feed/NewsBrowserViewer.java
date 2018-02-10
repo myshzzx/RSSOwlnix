@@ -117,6 +117,7 @@ import org.rssowl.ui.internal.undo.UndoStack;
 import org.rssowl.ui.internal.util.CBrowser;
 import org.rssowl.ui.internal.util.JobRunner;
 import org.rssowl.ui.internal.util.JobTracker;
+import org.rssowl.ui.internal.util.MBrowserEmbedded;
 import org.rssowl.ui.internal.util.ModelUtils;
 import org.rssowl.ui.internal.util.UIBackgroundJob;
 
@@ -143,6 +144,7 @@ import java.util.StringTokenizer;
 /**
  * @author bpasero
  */
+@MBrowserEmbedded
 public class NewsBrowserViewer extends ContentViewer implements ILinkHandler {
 
   /* ID for Link Handlers */

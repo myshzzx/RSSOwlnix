@@ -1452,7 +1452,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
     helpMenu.add(new Action(Messages.ApplicationActionBarAdvisor_FAQ) {
       @Override
       public void run() {
-        BrowserUtils.openLinkExternal("http://www.rssowl.org/help"); //$NON-NLS-1$
+        BrowserUtils.openLinkExternal("https://github.com/Xyrio/RSSOwlnix/wiki/FAQ"); //$NON-NLS-1$
       }
     });
 
@@ -1460,7 +1460,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
     helpMenu.add(new Action(Messages.ApplicationActionBarAdvisor_VISIT_FORUM) {
       @Override
       public void run() {
-        BrowserUtils.openLinkExternal("http://sourceforge.net/projects/rssowl/forums/forum/296910"); //$NON-NLS-1$
+        BrowserUtils.openLinkExternal("https://github.com/Xyrio/RSSOwlnix/issues"); //$NON-NLS-1$
       }
 
       @Override
@@ -1486,7 +1486,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
     helpMenu.add(new Action(Messages.ApplicationActionBarAdvisor_REPORT_PROBLEMS) {
       @Override
       public void run() {
-        BrowserUtils.openLinkExternal("http://dev.rssowl.org"); //$NON-NLS-1$
+        BrowserUtils.openLinkExternal("https://github.com/Xyrio/RSSOwlnix/issues"); //$NON-NLS-1$
       }
 
       @Override
@@ -1571,7 +1571,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
     helpMenu.add(new Action(Messages.ApplicationActionBarAdvisor_HOMEPAGE) {
       @Override
       public void run() {
-        BrowserUtils.openLinkExternal("http://www.rssowl.org"); //$NON-NLS-1$
+        BrowserUtils.openLinkExternal("https://github.com/Xyrio/RSSOwlnix"); //$NON-NLS-1$
       }
     });
 
@@ -1580,15 +1580,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
       @Override
       public void run() {
         BrowserUtils.openLinkExternal("http://www.rssowl.org/legal/epl-v10.html"); //$NON-NLS-1$
-      }
-    });
 
-    /* Donate */
-    helpMenu.add(new Separator());
-    helpMenu.add(new Action(Messages.ApplicationActionBarAdvisor_DONATE) {
-      @Override
-      public void run() {
-        BrowserUtils.openLinkExternal("http://sourceforge.net/donate/index.php?group_id=86683"); //$NON-NLS-1$
       }
     });
 

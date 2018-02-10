@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.rssowl.eclipse"
-      label="RSSOwl in Eclipse"
-      version="2.4.1.qualifier"
-      provider-name="RSSOwl.org"
+      label="RSSOwlnix in Eclipse"
+      version="2.4.3.qualifier"
+      provider-name="https://github.com/Xyrio/RSSOwlnix"
       plugin="org.rssowl.ui">
 
    <description url="http://www.rssowl.org/overview">
@@ -230,7 +230,7 @@ litigation.
    </license>
 
    <url>
-      <update label="RSSOwl.org" url="http://boreal.rssowl.org/update/eclipse/"/>
+      <update label="https://github.com/Xyrio/RSSOwlnix" url="https://xyrio.github.io/RSSOwlnix/update/eclipse/"/>
    </url>
 
    <requires>

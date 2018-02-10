@@ -55,6 +55,8 @@ import org.rssowl.core.util.LongOperationMonitor;
  */
 public final class Owl {
 
+  public static final String APPLICATION_NAME = "RSSOwlnix"; //$NON-NLS-1$
+
   /**
    * Gives extra information on the state to the
    * {@link Owl#startup(LongOperationMonitor)} call

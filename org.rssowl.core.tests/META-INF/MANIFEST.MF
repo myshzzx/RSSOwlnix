@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tests Plug-in
 Bundle-SymbolicName: org.rssowl.core.tests;singleton:=true
-Bundle-Version: 2.4.1.qualifier
-Bundle-Vendor: RSSOwl.org
+Bundle-Version: 2.4.3.qualifier
+Bundle-Vendor: https://github.com/Xyrio/RSSOwlnix
 Require-Bundle: org.rssowl.lib.jdom,
  org.rssowl.lib.db4o,
  org.rssowl.lib.lucene,

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="RSSOwl" uid="org.rssowl.ui.product" id="org.rssowl.ui.product" application="org.rssowl.ui.rssowl" version="2.4.2.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="RSSOwlnix" uid="org.rssowl.ui.product" id="org.rssowl.ui.product" application="org.rssowl.ui.rssowl" version="2.4.3.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/org.rssowl.ui/icons/product/about.gif"/>
       <text>
-         RSSOwl
+         RSSOwlnix fork of RSSOwl
 
-RSSOwl is licensed under the terms of the Eclipse Public License version 1.0.
+RSSOwlnix and RSSOwl is licensed under the terms of the Eclipse Public License version 1.0.
 http://www.rssowl.org/legal/epl-v10.html
 
-(c) Copyright RSSOwl contributors and others 2005, 2011.  All rights reserved.
+(c) Copyright RSSOwl contributors and others 2005-2011.  All rights reserved.
       </text>
    </aboutInfo>
 
@@ -29,7 +29,8 @@ http://www.rssowl.org/legal/epl-v10.html
 
    <windowImages i16="/org.rssowl.ui/icons/product/16x16.png" i32="/org.rssowl.ui/icons/product/32x32.png" i48="/org.rssowl.ui/icons/product/48x48.png" i64="/org.rssowl.ui/icons/product/64x64.png" i128="/org.rssowl.ui/icons/product/128x128.png"/>
 
-   <launcher name="RSSOwl">
+
+   <launcher name="RSSOwlnix">
       <linux icon="/org.rssowl.ui/icons/product/rssowl.xpm"/>
       <macosx icon="/org.rssowl.ui/icons/product/rssowl.icns"/>
       <win useIco="true">
@@ -37,6 +38,7 @@ http://www.rssowl.org/legal/epl-v10.html
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>
@@ -70,9 +72,9 @@ RSSOwl Development Team - initial API and implementation
    <features>
       <feature id="org.eclipse.rcp"/>
       <feature id="org.eclipse.e4.rcp"/>
-      <feature id="org.eclipse.equinox.p2.user.ui" version="2.3.2.v20171108-1343"/>
-      <feature id="org.rssowl.dependencies" version="2.4.1.qualifier"/>
-      <feature id="org.rssowl" version="2.4.1.qualifier"/>
+      <feature id="org.eclipse.equinox.p2.user.ui"/>
+      <feature id="org.rssowl.dependencies"/>
+      <feature id="org.rssowl"/>
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.emf.common"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
@@ -87,8 +89,8 @@ RSSOwl Development Team - initial API and implementation
    </features>
 
    <configurations>
-      <plugin id="org.eclipse.equinox.ds" autoStart="false" startLevel="3" />
-      <plugin id="org.eclipse.equinox.event" autoStart="false" startLevel="3" />
+      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="3" />
+      <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="3" />
    </configurations>
 
    <preferencesInfo>

@@ -324,11 +324,11 @@ public class TutorialPage extends WizardPage {
     linkContainer.setBackground(container.getBackground());
 
     /* Further Links */
-    createHyperLink(linkContainer, Messages.TutorialPage_FAQ, "http://www.rssowl.org/help"); //$NON-NLS-1$
-    createHyperLink(linkContainer, Messages.TutorialPage_FORUMS, "http://sourceforge.net/projects/rssowl/forums"); //$NON-NLS-1$
-    createHyperLink(linkContainer, Messages.TutorialPage_REPORT_BUGS, "http://dev.rssowl.org"); //$NON-NLS-1$
-    createHyperLink(linkContainer, Messages.TutorialPage_CONTACT, "http://www.rssowl.org/contact"); //$NON-NLS-1$
-    createHyperLink(linkContainer, Messages.TutorialPage_WEBSITE, "http://www.rssowl.org"); //$NON-NLS-1$
+    createHyperLink(linkContainer, Messages.TutorialPage_FAQ, "https://github.com/Xyrio/RSSOwlnix/wiki/FAQ"); //$NON-NLS-1$
+    createHyperLink(linkContainer, Messages.TutorialPage_FORUMS, "https://github.com/Xyrio/RSSOwlnix/issues"); //$NON-NLS-1$
+    createHyperLink(linkContainer, Messages.TutorialPage_REPORT_BUGS, "https://github.com/Xyrio/RSSOwlnix/issues"); //$NON-NLS-1$
+    createHyperLink(linkContainer, Messages.TutorialPage_CONTACT, "https://github.com/Xyrio/RSSOwlnix/issues"); //$NON-NLS-1$
+    createHyperLink(linkContainer, Messages.TutorialPage_WEBSITE, "https://github.com/Xyrio/RSSOwlnix"); //$NON-NLS-1$
   }
 
   private StyledText createStyledText(Composite container) {

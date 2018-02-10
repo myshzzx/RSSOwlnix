@@ -96,7 +96,7 @@ public class Activator extends AbstractUIPlugin {
 
     /* Log Version Information */
     try {
-      safeLogInfo("RSSOwl Starting Up (" + getUserAgent() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+      safeLogInfo(Owl.APPLICATION_NAME + " Starting Up (" + getUserAgent() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
     } catch (Exception e) {
       /* Something seriously went wrong using the Platform Log */
     }
@@ -147,7 +147,7 @@ public class Activator extends AbstractUIPlugin {
           safeLogError(logMessages, null);
 
         /* Log Shutdown Info */
-        safeLogInfo("RSSOwl Shutting Down (emergency)" + fNl); //$NON-NLS-1$
+        safeLogInfo(Owl.APPLICATION_NAME + " Shutting Down (emergency)" + fNl); //$NON-NLS-1$
       }
     };
     fShutdownHook.setPriority(Thread.MAX_PRIORITY);
@@ -192,7 +192,7 @@ public class Activator extends AbstractUIPlugin {
   private void startCore() {
 
     /* Dialog to show progress */
-    Display.setAppName("RSSOwl"); //$NON-NLS-1$
+    Display.setAppName(Owl.APPLICATION_NAME);
     Display.getDefault(); //Create the Display
     final StartupProgressDialog dialog = new StartupProgressDialog();
     dialog.setOpenOnRun(false);
@@ -355,7 +355,7 @@ public class Activator extends AbstractUIPlugin {
       } catch (InterruptedException e) {
         System.exit(0);
       } finally {
-        safeLogInfo("RSSOwl Shutting Down (already running)" + fNl); //$NON-NLS-1$
+        safeLogInfo(Owl.APPLICATION_NAME + " Shutting Down (already running)" + fNl); //$NON-NLS-1$
         System.exit(0);
       }
     } catch (UnknownHostException e) {
@@ -503,11 +503,11 @@ public class Activator extends AbstractUIPlugin {
   private String getUserAgent() {
     String os = Platform.getOS();
     if (Platform.OS_WIN32.equals(os))
-      return "RSSOwl/" + fVersion + " (Windows; U; en)"; //$NON-NLS-1$ //$NON-NLS-2$
+      return Owl.APPLICATION_NAME + "/" + fVersion + " (Windows; U; en)"; //$NON-NLS-1$ //$NON-NLS-2$
     else if (Platform.OS_LINUX.equals(os))
-      return "RSSOwl/" + fVersion + " (X11; U; en)"; //$NON-NLS-1$//$NON-NLS-2$
+      return Owl.APPLICATION_NAME + "/" + fVersion + " (X11; U; en)"; //$NON-NLS-1$//$NON-NLS-2$
     else if (Platform.OS_MACOSX.equals(os))
-      return "RSSOwl/" + fVersion + " (Macintosh; U; en)"; //$NON-NLS-1$ //$NON-NLS-2$
-    return "RSSOwl/" + fVersion; //$NON-NLS-1$
+      return Owl.APPLICATION_NAME + "/" + fVersion + " (Macintosh; U; en)"; //$NON-NLS-1$ //$NON-NLS-2$
+    return Owl.APPLICATION_NAME + "/" + fVersion; //$NON-NLS-1$
   }
 }

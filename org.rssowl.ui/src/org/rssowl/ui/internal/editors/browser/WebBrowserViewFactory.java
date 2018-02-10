@@ -28,10 +28,12 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.IElementFactory;
 import org.eclipse.ui.IMemento;
 import org.rssowl.core.util.StringUtils;
+import org.rssowl.ui.internal.util.MBrowserEmbedded;
 
 /**
  * @author bpasero
  */
+@MBrowserEmbedded
 public class WebBrowserViewFactory implements IElementFactory {
 
   /*

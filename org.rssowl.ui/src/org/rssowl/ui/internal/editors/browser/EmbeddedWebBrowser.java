@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.rssowl.ui.internal.OwlUI;
 import org.rssowl.ui.internal.util.BrowserUtils;
+import org.rssowl.ui.internal.util.MBrowserEmbedded;
 
 import java.net.URI;
 import java.net.URL;
@@ -37,6 +38,7 @@ import java.net.URL;
  *
  * @author bpasero
  */
+@MBrowserEmbedded
 public class EmbeddedWebBrowser implements IWebBrowser {
   private final String fBrowserId;
   private WebBrowserContext fContext;

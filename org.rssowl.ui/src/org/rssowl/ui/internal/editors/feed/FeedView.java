@@ -130,6 +130,7 @@ import org.rssowl.ui.internal.util.CBrowser;
 import org.rssowl.ui.internal.util.EditorUtils;
 import org.rssowl.ui.internal.util.JobRunner;
 import org.rssowl.ui.internal.util.LayoutUtils;
+import org.rssowl.ui.internal.util.MBrowserEmbedded;
 import org.rssowl.ui.internal.util.UIBackgroundJob;
 import org.rssowl.ui.internal.util.WidgetTreeNode;
 
@@ -1729,6 +1730,7 @@ public class FeedView extends EditorPart implements IReusableEditor {
   /*
    * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
    */
+  @MBrowserEmbedded
   @Override
   public void setFocus() {
 

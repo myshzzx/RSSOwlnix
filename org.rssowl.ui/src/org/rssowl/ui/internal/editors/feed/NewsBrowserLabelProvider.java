@@ -77,6 +77,7 @@ import org.rssowl.ui.internal.FolderNewsMark.FolderNewsMarkReference;
 import org.rssowl.ui.internal.OwlUI;
 import org.rssowl.ui.internal.editors.feed.NewsBrowserViewer.PageLatch;
 import org.rssowl.ui.internal.util.CBrowser;
+import org.rssowl.ui.internal.util.MBrowserEmbedded;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -96,6 +97,7 @@ import java.util.Set;
 /**
  * @author bpasero
  */
+@MBrowserEmbedded
 public class NewsBrowserLabelProvider extends LabelProvider {
 
   /* Date Formatter for News */

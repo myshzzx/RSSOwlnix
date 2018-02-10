@@ -204,7 +204,7 @@ public class SyncUtils {
       parameters.put("Email", email); //$NON-NLS-1$
       parameters.put("Passwd", pw); //$NON-NLS-1$
       parameters.put("service", "reader"); //$NON-NLS-1$ //$NON-NLS-2$
-      parameters.put("source", "RSSOwl.org-RSSOwl-" + Activator.getDefault().getVersion()); //$NON-NLS-1$ //$NON-NLS-2$
+      parameters.put("source", Owl.APPLICATION_NAME+"-" + Activator.getDefault().getVersion()); //$NON-NLS-1$ //$NON-NLS-2$
 
       Map<Object, Object> properties = new HashMap<Object, Object>();
       properties.put(IConnectionPropertyConstants.PARAMETERS, parameters);

@@ -75,6 +75,7 @@ public class BrowserUtils {
    * @return the {@link WebBrowserInput} created to show the link or
    * <code>null</code> if it could not be created.
    */
+  @MBrowserEmbedded
   public static WebBrowserView openLinkInternal(String href, WebBrowserContext context) {
     return openLinkInternal(href, context, false);
   }
@@ -89,6 +90,7 @@ public class BrowserUtils {
    * @return the {@link WebBrowserInput} created to show the link or
    * <code>null</code> if it could not be created.
    */
+  @MBrowserEmbedded
   public static WebBrowserView openLinkInternal(String href, WebBrowserContext context, boolean forceOpenInBackground) {
     WebBrowserView view = null;
 
@@ -410,8 +412,8 @@ public class BrowserUtils {
    * occured.
    */
   public static void sendErrorLog() {
-    String address = "crash-report@rssowl.org"; //$NON-NLS-1$
-    String subject = NLS.bind("RSSOwl Crash Report ({0})", CoreUtils.getUserAgent()); //$NON-NLS-1$
+    String address = "rssowlnix@ich-habe-fertig.com"; //$NON-NLS-1$
+    String subject = NLS.bind(Owl.APPLICATION_NAME + " Crash Report ({0})", CoreUtils.getUserAgent()); //$NON-NLS-1$
     String body = Messages.BrowserUtils_ATTACH_REPORT_ADVISE;
 
     sendMail(address, subject, body);
@@ -425,9 +427,9 @@ public class BrowserUtils {
    */
   public static void openHelpForum(IStatus errorStatus) {
     if (errorStatus != null && errorStatus.getException() instanceof OutOfMemoryError)
-      Program.launch("http://sourceforge.net/projects/rssowl/forums/forum/296910"); //$NON-NLS-1$
+      Program.launch("https://github.com/Xyrio/RSSOwlnix/issues"); //$NON-NLS-1$
     else
-      openLinkExternal("http://sourceforge.net/projects/rssowl/forums/forum/296910"); //$NON-NLS-1$
+      openLinkExternal("https://github.com/Xyrio/RSSOwlnix/issues"); //$NON-NLS-1$
   }
 
   /**
@@ -438,8 +440,9 @@ public class BrowserUtils {
    */
   public static void openFAQ(IStatus errorStatus) {
     if (errorStatus != null && errorStatus.getException() instanceof OutOfMemoryError)
-      Program.launch("http://www.rssowl.org/help#item_6g"); //$NON-NLS-1$
+      Program.launch("https://github.com/Xyrio/RSSOwlnix/wiki/FAQ#item_6g"); //$NON-NLS-1$
     else
-      openLinkExternal("http://www.rssowl.org/help#item_6"); //$NON-NLS-1$
+      openLinkExternal("https://github.com/Xyrio/RSSOwlnix/wiki/FAQ#item_6"); //$NON-NLS-1$
   }
+
 }

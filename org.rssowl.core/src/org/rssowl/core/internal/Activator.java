@@ -125,7 +125,7 @@ public class Activator extends Plugin {
       safeLogError(logMessages, null);
 
     /* Log Shutdown Info */
-    logInfo("RSSOwl Shutting Down (normal)" + fNl); //$NON-NLS-1$
+    logInfo(Owl.APPLICATION_NAME + " Shutting Down (normal)" + fNl); //$NON-NLS-1$
 
     /* Proceed */
     super.stop(context);

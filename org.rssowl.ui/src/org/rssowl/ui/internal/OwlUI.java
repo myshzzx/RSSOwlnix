@@ -1662,11 +1662,10 @@ public class OwlUI {
   public static void updateWindowTitle(String title) {
     IWorkbenchWindow window = getWindow();
     if (window != null) {
-      String appTitle = "RSSOwl"; //$NON-NLS-1$
       if (StringUtils.isSet(title))
-        title = NLS.bind(Messages.OwlUI_TITLE, title, appTitle);
+        title = NLS.bind(Messages.OwlUI_TITLE, title, Owl.APPLICATION_NAME);
       else
-        title = appTitle;
+        title = Owl.APPLICATION_NAME;
 
       String shellText = window.getShell().getText();
       if (shellText == null || !shellText.equals(title))

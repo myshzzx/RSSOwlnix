@@ -30,5 +30,5 @@
    <feature url="features/org.rssowl.feature.nls.fr_1.0.0.jar" id="org.rssowl.feature.nls.fr" version="1.0.0">
       <category name="rssowl.nls"/>
    </feature>
-   <category-def name="rssowl.nls" label="RSSOwl Languages"/>
+   <category-def name="rssowl.nls" label="RSSOwlnix Languages"/>
 </site>

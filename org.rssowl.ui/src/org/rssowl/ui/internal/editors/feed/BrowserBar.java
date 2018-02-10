@@ -76,6 +76,7 @@ import org.rssowl.ui.internal.dialogs.preferences.SharingPreferencesPage;
 import org.rssowl.ui.internal.util.BrowserUtils;
 import org.rssowl.ui.internal.util.CBrowser;
 import org.rssowl.ui.internal.util.LayoutUtils;
+import org.rssowl.ui.internal.util.MBrowserEmbedded;
 
 import java.util.List;
 
@@ -86,6 +87,7 @@ import java.util.List;
  *
  * @author bpasero
  */
+@MBrowserEmbedded
 public class BrowserBar {
 
   /* Navigate Back */

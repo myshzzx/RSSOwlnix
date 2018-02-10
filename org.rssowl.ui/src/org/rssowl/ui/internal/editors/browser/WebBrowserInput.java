@@ -33,6 +33,7 @@ import org.rssowl.core.Owl;
 import org.rssowl.core.internal.persist.pref.DefaultPreferences;
 import org.rssowl.core.persist.pref.IPreferenceScope;
 import org.rssowl.ui.internal.OwlUI;
+import org.rssowl.ui.internal.util.MBrowserEmbedded;
 
 /**
  * The <code>WebBrowserInput</code> is used as Input to the
@@ -40,6 +41,7 @@ import org.rssowl.ui.internal.OwlUI;
  *
  * @author bpasero
  */
+@MBrowserEmbedded
 public class WebBrowserInput implements IEditorInput {
   private static final String FACTORY_ID = "org.rssowl.ui.WebBrowserViewFactory"; //$NON-NLS-1$
   static final String URL = "org.rssowl.ui.internal.editors.browser.Url"; //$NON-NLS-1$

@@ -97,6 +97,7 @@ import org.rssowl.ui.internal.editors.feed.PerformAfterInputSet;
 import org.rssowl.ui.internal.util.BrowserUtils;
 import org.rssowl.ui.internal.util.CBrowser;
 import org.rssowl.ui.internal.util.LayoutUtils;
+import org.rssowl.ui.internal.util.MBrowserEmbedded;
 
 import java.util.List;
 
@@ -106,6 +107,7 @@ import java.util.List;
  *
  * @author bpasero
  */
+@MBrowserEmbedded
 public class WebBrowserView extends EditorPart implements IReusableEditor {
 
   /** ID of this Editor */

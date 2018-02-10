@@ -154,7 +154,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
     configurer.setShowMenuBar(true);
     configurer.setShowFastViewBars(false);
     configurer.setShowProgressIndicator(true);
-    configurer.setTitle("RSSOwl"); //$NON-NLS-1$
+    configurer.setTitle(Owl.APPLICATION_NAME);
 
     /* Set Window Size to match monitor size (only on single monitor) */
     Point size = OwlUI.getFirstMonitorSize();
@@ -480,7 +480,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
     /* Create Item in Tray */
     fTrayItem = new TrayItem(tray, SWT.NONE);
-    fTrayItem.setToolTipText("RSSOwl"); //$NON-NLS-1$
+    fTrayItem.setToolTipText(Owl.APPLICATION_NAME);
     fTrayEnabled = true;
 
     if (Application.IS_WINDOWS)
@@ -672,7 +672,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         fTeasingNewsCache.clear();
       }
 
-      fTrayItem.setToolTipText(clearTray ? "" : "RSSOwl"); //$NON-NLS-1$ //$NON-NLS-2$
+      fTrayItem.setToolTipText(clearTray ? "" :  Owl.APPLICATION_NAME); //$NON-NLS-1$
     }
   }
 

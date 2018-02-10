@@ -706,7 +706,7 @@ public class NotificationPopup extends PopupDialog {
     /* Title Label displaying RSSOwl */
     fTitleCircleLabel = new CLabel(titleCircle, SWT.NO_FOCUS);
     fTitleCircleLabel.setImage(OwlUI.getImage(fResources, "icons/product/24x24.png")); //$NON-NLS-1$
-    fTitleCircleLabel.setText("RSSOwl"); //$NON-NLS-1$
+    fTitleCircleLabel.setText(Owl.APPLICATION_NAME);
     fTitleCircleLabel.setFont(fBoldTextFont);
     fTitleCircleLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true));
     fTitleCircleLabel.addMouseTrackListener(fMouseTrackListner);

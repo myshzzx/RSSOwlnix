@@ -68,12 +68,14 @@ import org.rssowl.ui.internal.LinkTransformer;
 import org.rssowl.ui.internal.OwlUI;
 import org.rssowl.ui.internal.OwlUI.Layout;
 import org.rssowl.ui.internal.util.LayoutUtils;
+import org.rssowl.ui.internal.util.MBrowserEmbedded;
 
 /**
  * Part of the FeedView to display News in a BrowserViewer.
  *
  * @author bpasero
  */
+@MBrowserEmbedded
 public class NewsBrowserControl implements IFeedViewPart {
   private IFeedViewSite fFeedViewSite;
   private NewsBrowserViewer fViewer;

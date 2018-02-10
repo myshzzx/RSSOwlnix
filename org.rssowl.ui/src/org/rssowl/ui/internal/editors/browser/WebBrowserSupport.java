@@ -27,6 +27,7 @@ package org.rssowl.ui.internal.editors.browser;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.ui.browser.AbstractWorkbenchBrowserSupport;
 import org.eclipse.ui.browser.IWebBrowser;
+import org.rssowl.ui.internal.util.MBrowserEmbedded;
 
 /**
  * RSSOwl's own support for an embedded Browser. Will respect the "Use external
@@ -34,6 +35,7 @@ import org.eclipse.ui.browser.IWebBrowser;
  *
  * @author bpasero
  */
+@MBrowserEmbedded
 public class WebBrowserSupport extends AbstractWorkbenchBrowserSupport {
 
   /** Leave Default Constructor for Reflection */
