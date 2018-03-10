@@ -1,6 +1,6 @@
 
 2.4.0-beta
-- removed old update site and added new p2 one (addons work so far)
+- removed old update manager and added new p2 one (addons work so far)
 
 2.3.0-beta
 - runs with java 9
