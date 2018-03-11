@@ -2,27 +2,33 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.rssowl.lib.httpclient;singleton:=true
-Bundle-Version: 2.4.1
+Bundle-Version: 2.5.0
 Eclipse-BuddyPolicy: registered
 Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Localization: plugin
 Bundle-ClassPath: org.apache.commons.codec_1.10.0.jar,
  org.apache.commons.logging_1.2.0.jar,
- org.apache.httpcomponents.httpclient_4.5.4.jar,
- org.apache.httpcomponents.httpcore_4.4.7.jar
-Export-Package: org.apache.commons.logging,
- org.apache.commons.logging.impl,
- org.apache.http;uses:="org.apache.http.params,org.apache.http.util,org.apache.http.protocol",
- org.apache.http.annotation,
- org.apache.http.auth;
+ org.apache.httpcomponents.httpclient_4.5.5.jar,
+ org.apache.httpcomponents.httpcore_4.4.9.jar
+Export-Package: org.apache.commons.codec;version="1.10.0",
+ org.apache.commons.codec.binary;version="1.10.0",
+ org.apache.commons.codec.digest;version="1.10.0",
+ org.apache.commons.codec.language;version="1.10.0",
+ org.apache.commons.codec.language.bm;version="1.10.0",
+ org.apache.commons.codec.net;version="1.10.0",
+ org.apache.commons.logging;version="1.2.0",
+ org.apache.commons.logging.impl;version="1.2.0",
+ org.apache.http;version="4.4.9";uses:="org.apache.http.params,org.apache.http.util,org.apache.http.protocol",
+ org.apache.http.annotation;version="4.4.9",
+ org.apache.http.auth;version="4.5.5";
   uses:="org.apache.http.config,
    org.ietf.jgss,
    org.apache.http.params,
    org.apache.http.protocol,
    org.apache.http",
- org.apache.http.auth.params;uses:="org.apache.http.params",
- org.apache.http.client;
+ org.apache.http.auth.params;version="4.5.5";uses:="org.apache.http.params",
+ org.apache.http.client;version="4.5.5";
   uses:="org.apache.http.cookie,
    org.apache.http.auth,
    org.apache.http.protocol,
@@ -31,9 +37,9 @@ Export-Package: org.apache.commons.logging,
    org.apache.http,
    org.apache.http.params,
    org.apache.http.client.methods",
- org.apache.http.client.config;uses:="org.apache.http",
- org.apache.http.client.entity;uses:="org.apache.http.entity,org.apache.http",
- org.apache.http.client.methods;
+ org.apache.http.client.config;version="4.5.5";uses:="org.apache.http",
+ org.apache.http.client.entity;version="4.5.5";uses:="org.apache.http.entity,org.apache.http",
+ org.apache.http.client.methods;version="4.5.5";
   uses:="org.apache.http.concurrent,
    org.apache.http.client.config,
    org.apache.http.conn,
@@ -41,14 +47,14 @@ Export-Package: org.apache.commons.logging,
    new org.apache.http.client.methods,
    org.apache.http.params,
    org.apache.http.message",
- org.apache.http.client.params;
+ org.apache.http.client.params;version="4.5.5";
   uses:="org.apache.http.params,
    org.apache.http.conn.params,
    org.apache.http.client.config,
    org.apache.http.cookie.params,
    org.apache.http.auth.params,
    org.apache.http",
- org.apache.http.client.protocol;
+ org.apache.http.client.protocol;version="4.5.5";
   uses:="org.apache.http.client,
    org.apache.http.cookie,
    org.apache.http.config,
@@ -58,15 +64,15 @@ Export-Package: org.apache.commons.logging,
    org.apache.http.client.config,
    org.apache.http.conn.routing,
    org.apache.http",
- org.apache.http.client.utils;
+ org.apache.http.client.utils;version="4.5.5";
   uses:="org.apache.http.client,
    org.apache.http.util,
    org.apache.http.client.methods,
    org.apache.http.conn.routing,
    org.apache.http",
- org.apache.http.concurrent,
- org.apache.http.config,
- org.apache.http.conn;
+ org.apache.http.concurrent;version="4.4.9",
+ org.apache.http.config;version="4.4.9",
+ org.apache.http.conn;version="4.5.5";
   uses:="org.apache.http.concurrent,
    org.apache.http.config,
    org.apache.http.entity,
@@ -76,11 +82,11 @@ Export-Package: org.apache.commons.logging,
    org.apache.http.conn.scheme,
    org.apache.http.params,
    javax.net.ssl",
- org.apache.http.conn.params;uses:="org.apache.http.params,org.apache.http.conn.routing,org.apache.http",
- org.apache.http.conn.routing;uses:="org.apache.http.protocol,org.apache.http",
- org.apache.http.conn.scheme;uses:="org.apache.http.params,org.apache.http",
- org.apache.http.conn.socket;uses:="org.apache.http.protocol,org.apache.http",
- org.apache.http.conn.ssl;
+ org.apache.http.conn.params;version="4.5.5";uses:="org.apache.http.params,org.apache.http.conn.routing,org.apache.http",
+ org.apache.http.conn.routing;version="4.5.5";uses:="org.apache.http.protocol,org.apache.http",
+ org.apache.http.conn.scheme;version="4.5.5";uses:="org.apache.http.params,org.apache.http",
+ org.apache.http.conn.socket;version="4.5.5";uses:="org.apache.http.protocol,org.apache.http",
+ org.apache.http.conn.ssl;version="4.5.5";
   uses:="org.apache.http.protocol,
    org.apache.http.conn.socket,
    org.apache.http.ssl,
@@ -89,15 +95,15 @@ Export-Package: org.apache.commons.logging,
    org.apache.http.params,
    javax.net.ssl,
    org.apache.http.conn.util",
- org.apache.http.conn.util,
- org.apache.http.cookie;
+ org.apache.http.conn.util;version="4.5.5",
+ org.apache.http.cookie;version="4.5.5";
   uses:="org.apache.http.config,
    org.apache.http.params,
    org.apache.http.protocol,
    org.apache.http",
- org.apache.http.cookie.params;uses:="org.apache.http.params",
- org.apache.http.entity;uses:="org.apache.http",
- org.apache.http.impl;
+ org.apache.http.cookie.params;version="4.5.5";uses:="org.apache.http.params",
+ org.apache.http.entity;version="4.4.9";uses:="org.apache.http",
+ org.apache.http.impl;version="4.4.9";
   uses:="org.apache.http.config,
    org.apache.http.entity,
    org.apache.http.protocol,
@@ -105,7 +111,7 @@ Export-Package: org.apache.commons.logging,
    org.apache.http,
    org.apache.http.impl.entity,
    org.apache.http.params",
- org.apache.http.impl.auth;
+ org.apache.http.impl.auth;version="4.5.5";
   uses:="org.apache.http.auth,
    org.apache.http.util,
    org.apache.http.protocol,
@@ -115,13 +121,13 @@ Export-Package: org.apache.commons.logging,
    org.ietf.jgss,
    org.apache.http.params,
    javax.net.ssl",
- org.apache.http.impl.bootstrap;
+ org.apache.http.impl.bootstrap;version="4.4.9";
   uses:="org.apache.http.config,
    org.apache.http.protocol,
    javax.net,
    javax.net.ssl,
    org.apache.http",
- org.apache.http.impl.client;
+ org.apache.http.impl.client;version="4.5.5";
   uses:="org.apache.http.conn.ssl,
    org.apache.http.config,
    org.apache.http.entity,
@@ -146,7 +152,7 @@ Export-Package: org.apache.commons.logging,
    org.apache.http.pool,
    javax.net.ssl,
    org.apache.http.conn.util",
- org.apache.http.impl.conn;
+ org.apache.http.impl.conn;version="4.5.5";
   uses:="org.apache.http.config,
    org.apache.http.impl,
    org.apache.http.entity,
@@ -163,7 +169,7 @@ Export-Package: org.apache.commons.logging,
    org.apache.http.pool,
    javax.net.ssl,
    org.apache.http.message",
- org.apache.http.impl.conn.tsccm;
+ org.apache.http.impl.conn.tsccm;version="4.5.5";
   uses:="org.apache.http.conn.routing,
    org.apache.http.conn,
    org.apache.http.conn.scheme,
@@ -171,7 +177,7 @@ Export-Package: org.apache.commons.logging,
    org.apache.http.conn.params,
    org.apache.http.impl.conn,
    org.apache.http.params",
- org.apache.http.impl.cookie;
+ org.apache.http.impl.cookie;version="4.5.5";
   uses:="org.apache.http.cookie,
    org.apache.http.params,
    org.apache.http.util,
@@ -179,8 +185,8 @@ Export-Package: org.apache.commons.logging,
    org.apache.http,
    org.apache.http.message,
    org.apache.http.conn.util",
- org.apache.http.impl.entity;uses:="org.apache.http.entity,org.apache.http.io,org.apache.http",
- org.apache.http.impl.execchain;
+ org.apache.http.impl.entity;version="4.4.9";uses:="org.apache.http.entity,org.apache.http.io,org.apache.http",
+ org.apache.http.impl.execchain;version="4.5.5";
   uses:="org.apache.http.concurrent,
    org.apache.http.entity,
    org.apache.http.auth,
@@ -193,24 +199,24 @@ Export-Package: org.apache.commons.logging,
    org.apache.http.params,
    org.apache.http.client.methods,
    org.apache.http.client.protocol",
- org.apache.http.impl.io;
+ org.apache.http.impl.io;version="4.4.9";
   uses:="org.apache.http.config,
    org.apache.http.params,
    org.apache.http.util,
    org.apache.http.io,
    org.apache.http.message,
    org.apache.http",
- org.apache.http.impl.pool;
+ org.apache.http.impl.pool;version="4.4.9";
   uses:="org.apache.http.config,
    org.apache.http.params,
    org.apache.http.pool,
    javax.net.ssl,
    javax.net,
    org.apache.http",
- org.apache.http.io;uses:="org.apache.http.config,org.apache.http.util,org.apache.http",
- org.apache.http.message;uses:="org.apache.http.params,org.apache.http.util,org.apache.http",
- org.apache.http.params;uses:="org.apache.http.config,org.apache.http",
- org.apache.http.pool;uses:="org.apache.http.concurrent",
- org.apache.http.protocol;uses:="org.apache.http.params,org.apache.http",
- org.apache.http.ssl;uses:="javax.net.ssl",
- org.apache.http.util;uses:="org.apache.http"
+ org.apache.http.io;version="4.4.9";uses:="org.apache.http.config,org.apache.http.util,org.apache.http",
+ org.apache.http.message;version="4.4.9";uses:="org.apache.http.params,org.apache.http.util,org.apache.http",
+ org.apache.http.params;version="4.4.9";uses:="org.apache.http.config,org.apache.http",
+ org.apache.http.pool;version="4.4.9";uses:="org.apache.http.concurrent",
+ org.apache.http.protocol;version="4.4.9";uses:="org.apache.http.params,org.apache.http",
+ org.apache.http.ssl;version="4.4.9";uses:="javax.net.ssl",
+ org.apache.http.util;version="4.4.9";uses:="org.apache.http"

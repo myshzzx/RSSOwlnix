@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<site pack200="true">
+<site>
    <feature url="features/org.rssowl.eclipse_2.4.2.qualifier.jar" id="org.rssowl.eclipse" version="2.4.2.qualifier">
-      <category name="rssowl.eclipse"/>
+      <category name="rssowlnix.eclipse"/>
    </feature>
-   <category-def name="rssowl.eclipse" label="RSSOwlnix for Eclipse"/>
+   <category-def name="rssowlnix.eclipse" label="RSSOwlnix for Eclipse"/>
 </site>

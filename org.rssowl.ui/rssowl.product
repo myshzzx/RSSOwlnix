@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="RSSOwlnix" uid="org.rssowl.ui.product" id="org.rssowl.ui.product" application="org.rssowl.ui.rssowl" version="2.4.3.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="RSSOwlnix" uid="org.rssowl.ui.product" id="org.rssowl.ui.product" application="org.rssowl.ui.rssowl" version="2.5.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/org.rssowl.ui/icons/product/about.gif"/>
       <text>
          RSSOwlnix fork of RSSOwl
+
+Version: 2.5.0-beta
+Build Id: 2018-03-08
 
 RSSOwlnix and RSSOwl is licensed under the terms of the Eclipse Public License version 1.0.
 http://www.rssowl.org/legal/epl-v10.html
@@ -29,7 +32,6 @@ http://www.rssowl.org/legal/epl-v10.html
 
    <windowImages i16="/org.rssowl.ui/icons/product/16x16.png" i32="/org.rssowl.ui/icons/product/32x32.png" i48="/org.rssowl.ui/icons/product/48x48.png" i64="/org.rssowl.ui/icons/product/64x64.png" i128="/org.rssowl.ui/icons/product/128x128.png"/>
 
-
    <launcher name="RSSOwlnix">
       <linux icon="/org.rssowl.ui/icons/product/rssowl.xpm"/>
       <macosx icon="/org.rssowl.ui/icons/product/rssowl.icns"/>
@@ -38,7 +40,6 @@ http://www.rssowl.org/legal/epl-v10.html
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>
@@ -70,28 +71,13 @@ RSSOwl Development Team - initial API and implementation
    </plugins>
 
    <features>
-      <feature id="org.eclipse.rcp"/>
-      <feature id="org.eclipse.e4.rcp"/>
-      <feature id="org.eclipse.equinox.p2.user.ui"/>
-      <feature id="org.rssowl.dependencies"/>
       <feature id="org.rssowl"/>
-      <feature id="org.eclipse.emf.ecore"/>
-      <feature id="org.eclipse.emf.common"/>
-      <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
-      <feature id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature"/>
-      <feature id="org.eclipse.equinox.p2.extras.feature"/>
-      <feature id="org.eclipse.equinox.p2.core.feature"/>
-      <feature id="org.eclipse.ecf.core.feature"/>
-      <feature id="org.eclipse.equinox.p2.rcp.feature"/>
-      <feature id="org.eclipse.ecf.filetransfer.feature"/>
-      <feature id="org.eclipse.ecf.core.ssl.feature"/>
-      <feature id="org.eclipse.ecf.filetransfer.ssl.feature"/>
    </features>
 
-   <configurations>
-      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="3" />
-      <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="3" />
-   </configurations>
+
+   <repositories>
+      <repository location="http://127.0.0.1:48082/update/program" enabled="true" />
+   </repositories>
 
    <preferencesInfo>
       <targetfile overwrite="false"/>
