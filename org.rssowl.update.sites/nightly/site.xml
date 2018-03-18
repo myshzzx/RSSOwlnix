@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<site>
-   <feature url="features/org.rssowl_2.4.2.qualifier.jar" id="org.rssowl" version="2.4.2.qualifier">
-      <category name="rssowlnix.nightly.update"/>
-   </feature>
-   <category-def name="rssowlnix.nightly.update" label="RSSOwlnix Nightly Update"/>
-</site>

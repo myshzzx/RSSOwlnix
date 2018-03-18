@@ -233,17 +233,6 @@ litigation.
       <update label="https://github.com/Xyrio/RSSOwlnix" url="https://xyrio.github.io/RSSOwlnix-site/update/program/"/>
    </url>
 
-   <includes
-         id="org.rssowl.dependencies"
-         version="0.0.0"
-         optional="true"/>
-
-   <includes
-         id="org.rssowl.dependencies.update.ui"
-         version="0.0.0"
-         name=""
-         optional="true"/>
-
    <requires>
       <import plugin="org.eclipse.ui" version="3.109.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.13.0" match="greaterOrEqual"/>
@@ -263,6 +252,8 @@ litigation.
       <import plugin="org.rssowl.lib.db4o" version="2.5.0" match="greaterOrEqual"/>
       <import plugin="org.rssowl.lib.jdom" version="2.5.0" match="greaterOrEqual"/>
       <import plugin="org.rssowl.lib.lucene" version="2.5.0" match="greaterOrEqual"/>
+      <import feature="org.rssowl.dependencies" version="2.5.0.qualifier"/>
+      <import feature="org.rssowl.dependencies.updater" version="2.5.0.qualifier"/>
    </requires>
 
    <plugin
