@@ -1,3 +1,5 @@
+updates feed: https://xyrio.github.io/RSSOwlnix-site/updates.rss
+
 2.5.0-beta
 - main program is now updateable
 - renamed to RSSOwlnix
@@ -21,3 +23,7 @@ based on RSSOwl 2.2.1
 wiki: https://github.com/Xyrio/RSSOwlnix/wiki
 
 bug reports: https://github.com/Xyrio/RSSOwlnix/issues
+
+addons repo: https://github.com/Xyrio/RSSOwlnix-plugins-contrib
+
+translations repo: https://github.com/Xyrio/RSSOwlnix-plugins-translation
