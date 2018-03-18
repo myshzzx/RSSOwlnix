@@ -24,6 +24,6 @@ wiki: https://github.com/Xyrio/RSSOwlnix/wiki
 
 bug reports: https://github.com/Xyrio/RSSOwlnix/issues
 
-addons repo: https://github.com/Xyrio/RSSOwlnix-plugins-contrib
+addons repo: https://github.com/Xyrio/RSSOwlnix-plugins-addons
 
 translations repo: https://github.com/Xyrio/RSSOwlnix-plugins-translation
