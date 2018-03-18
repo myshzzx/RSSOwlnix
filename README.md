@@ -1,3 +1,8 @@
+2.5.0-beta
+- main program is now updateable
+- renamed to RSSOwlnix
+- updated httpclient to 4.5.4
+- updated eclipse rcp to 4.7.2.20171218-0600
 
 2.4.0-beta
 - removed old update site and added new p2 one (addons work so far)
