@@ -1,7 +1,7 @@
 updates feed: https://xyrio.github.io/RSSOwlnix-site/updates.rss
 
 2.5.0-beta
-- main program is now updateable
+- main program is now updateable too (addons and translation available through Help/Install new Software...)
 - renamed to RSSOwlnix
 - updated httpclient to 4.5.5
 - updated eclipse rcp to 4.7.2.20171218-0600
