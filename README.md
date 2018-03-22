@@ -24,8 +24,8 @@ wiki: https://github.com/Xyrio/RSSOwlnix/wiki
 
 bug reports: https://github.com/Xyrio/RSSOwlnix/issues
 
-addons repo: https://github.com/Xyrio/RSSOwlnix-plugins-addons
+addons repository: https://github.com/Xyrio/RSSOwlnix-plugins-addons
 
-translations repo: https://github.com/Xyrio/RSSOwlnix-plugins-translation
+translations repository: https://github.com/Xyrio/RSSOwlnix-plugins-translation
 
 irc web chat: http://webchat.quakenet.org/?channels=#rssowlnix
