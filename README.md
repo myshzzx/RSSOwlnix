@@ -27,5 +27,3 @@ bug reports: https://github.com/Xyrio/RSSOwlnix/issues
 addons repository: https://github.com/Xyrio/RSSOwlnix-plugins-addons
 
 translations repository: https://github.com/Xyrio/RSSOwlnix-plugins-translation
-
-irc web chat: http://webchat.quakenet.org/?channels=#rssowlnix
