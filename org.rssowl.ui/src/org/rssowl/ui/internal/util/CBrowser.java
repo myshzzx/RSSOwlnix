@@ -24,14 +24,12 @@
 
 package org.rssowl.ui.internal.util;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
@@ -60,11 +58,9 @@ import org.rssowl.ui.internal.OwlUI;
 import org.rssowl.ui.internal.editors.browser.WebBrowserContext;
 import org.rssowl.ui.internal.editors.browser.WebBrowserView;
 
-import java.io.File;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -95,11 +91,6 @@ public class CBrowser {
 
   /* System Property to force disable XULRunner even if registered */
   private static final String DISABLE_XULRUNNER = "noXulrunner"; //$NON-NLS-1$
-
-  /* Local XULRunner Runtime Constants */
-  private static final String XULRUNNER_PATH_PROPERTY = "org.eclipse.swt.browser.XULRunnerPath"; //$NON-NLS-1$
-  private static final String XULRUNNER_DIR = "xulrunner"; //$NON-NLS-1$
-  private static boolean fgXulrunnerRuntimeTested = false;
 
   /* Delay in millies after a refresh until to allow ext. navigation again (see Bug 1429) */
   private static final long REFRESH_NAVIGATION_DELAY = 3000;
@@ -224,51 +215,9 @@ public class CBrowser {
       }
     }
 
-    /* Linux: Multiple approaches to get XULRunner right */
-    if (Application.IS_LINUX && !fgXulrunnerRuntimeTested) {
-      boolean xulrunnerPathSpecified = (System.getProperty(XULRUNNER_PATH_PROPERTY) != null);
-
-      /* 1.) User has XULRunner path explicitly set, try it first */
-      if (xulrunnerPathSpecified) {
-        try {
-          browser = new Browser(parent, styleForLinux(style));
-        } catch (SWTError e) {
-          Activator.safeLogInfo(NLS.bind("Error loading XULRunner from system property (''{0}'')", System.getProperty(XULRUNNER_PATH_PROPERTY))); //Ignored (we continue trying) //$NON-NLS-1$
-        }
-      }
-
-      /* 2.) Fallback to default OS XULRunner runtime */
-      if (browser == null) {
-        if (xulrunnerPathSpecified)
-          System.clearProperty(XULRUNNER_PATH_PROPERTY);
-
-        try {
-          browser = new Browser(parent, styleForLinux(style));
-        } catch (SWTError e) {
-          Activator.safeLogInfo("Error loading system default XULRunner"); //Ignored (we continue trying) //$NON-NLS-1$
-        }
-      }
-
-      /* 3.) Try with deployed XULRunner runtime */
-      if (browser == null) {
-        File xulRunnerRuntimeDir = getXULRunnerRuntimeDir();
-        if (xulRunnerRuntimeDir != null) {
-          System.setProperty(XULRUNNER_PATH_PROPERTY, xulRunnerRuntimeDir.toString());
-
-          try {
-            browser = new Browser(parent, styleForLinux(style));
-          } catch (SWTError e) {
-            Activator.safeLogInfo("Error loading XULRunner from bundled version"); //Ignored (we continue trying) //$NON-NLS-1$
-          }
-        }
-      }
-
-      fgXulrunnerRuntimeTested = true; //Avoid redundant lookup if XULRunner runtime found
-    }
-
     /* Any other OS, or Mozilla unavailable, use default */
     if (browser == null)
-      browser = new Browser(parent, styleForLinux(style));
+      browser = new Browser(parent, style);
 
     /* Add Focusless Scroll Hook on Windows */
     if (Application.IS_WINDOWS)
@@ -300,42 +249,6 @@ public class CBrowser {
     });
 
     return browser;
-  }
-
-  private File getXULRunnerRuntimeDir() {
-
-    /* Retrieve Install Location */
-    Location installLocation = Platform.getInstallLocation();
-    if (installLocation == null || installLocation.getURL() == null)
-      return null;
-
-    /* Retrieve Program Dir as File Object */
-    File programDir = toFile(installLocation.getURL());
-    if (programDir == null || !programDir.isDirectory() || !programDir.exists())
-      return null;
-
-    /* Retrieve the XULRunner Directory */
-    File xulrunnerDir = new File(programDir, XULRUNNER_DIR);
-    if (!xulrunnerDir.exists() || !xulrunnerDir.isDirectory())
-      return null;
-
-    return xulrunnerDir;
-  }
-
-  private File toFile(URL url) {
-    try {
-      return new File(url.toURI());
-    } catch (URISyntaxException e) {
-      return new File(url.getPath());
-    }
-  }
-
-  /* If RSSOwl runs with SWT 3.7, force use of Mozilla over WebKit */
-  private int styleForLinux(int style) {
-    if (Application.IS_LINUX && SWT.getVersion() >= 3700)
-      return style | SWT.MOZILLA;
-
-    return style;
   }
 
   private Method callCoInternetSetFeatureEnabled(Method method, int feature, int scope, boolean enable) {
@@ -621,7 +534,7 @@ public class CBrowser {
         if (OwlUI.useExternalBrowser()) {
 
           /* Avoid IE being loaded from SWT on Windows */
-          final Browser tempBrowser = new Browser(fBrowser.getShell(), useMozilla ? SWT.MOZILLA : styleForLinux(SWT.NONE));
+          final Browser tempBrowser = new Browser(fBrowser.getShell(), useMozilla ? SWT.MOZILLA : SWT.NONE);
           tempBrowser.setVisible(false);
           event.browser = tempBrowser;
           tempBrowser.getDisplay().timerExec(useMozilla ? MOZILLA_BROWSER_URL_DELAY : IE_BROWSER_URL_DELAY, new Runnable() {
@@ -648,7 +561,7 @@ public class CBrowser {
 
         /* Open internal Browser in same Browser */
         else {
-          final Browser tempBrowser = new Browser(fBrowser.getShell(), useMozilla ? SWT.MOZILLA : styleForLinux(SWT.NONE));
+          final Browser tempBrowser = new Browser(fBrowser.getShell(), useMozilla ? SWT.MOZILLA : SWT.NONE);
           tempBrowser.setVisible(false);
           event.browser = tempBrowser;
           tempBrowser.getDisplay().timerExec(useMozilla ? MOZILLA_BROWSER_URL_DELAY : IE_BROWSER_URL_DELAY, new Runnable() {
