@@ -117,6 +117,13 @@ public class ApplicationServer {
 
   /* Used after all HTTP-Headers */
   private static final String CRLF = "\r\n"; //$NON-NLS-1$
+  
+  /* HTTP status codes */
+  private static final String HTTP_CODE_200 = "HTTP/1.1 200 OK"; //$NON-NLS-1$
+  
+  /* HTTP content types */
+  private static final String HTTP_CONTENT_TYPE_TEXT = "Content-Type: text/html; charset=UTF-8"; //$NON-NLS-1$
+  private static final String HTTP_CONTENT_TYPE_GIF = "Content-Type: image/gif"; //$NON-NLS-1$
 
   /* Registry of known Viewer */
   private static Map<String, ContentViewer> fRegistry = new ConcurrentHashMap<String, ContentViewer>();
@@ -526,6 +533,11 @@ public class ApplicationServer {
     BufferedOutputStream outS = null;
     try {
       outS = new BufferedOutputStream(socket.getOutputStream());
+      outS.write(HTTP_CODE_200.getBytes());
+      outS.write(CRLF.getBytes());
+      outS.write(HTTP_CONTENT_TYPE_GIF.getBytes());
+      outS.write(CRLF.getBytes());
+      outS.write(CRLF.getBytes());
       CoreUtils.copy(OwlUI.class.getResourceAsStream(parameter), outS);
     } catch (IOException e) {
       /* Ignore */
@@ -680,14 +692,14 @@ public class ApplicationServer {
       if (Application.IS_WINDOWS && portable)
         writer.append("HTTP/1.1 205 OK").append(CRLF); //$NON-NLS-1$
       else
-        writer.append("HTTP/1.1 200 OK").append(CRLF); //$NON-NLS-1$
+        writer.append(HTTP_CODE_200).append(CRLF);
 
       synchronized (RFC_1123_DATE) {
         writer.append("Date: ").append(RFC_1123_DATE.format(new Date())).append(CRLF); //$NON-NLS-1$
       }
 
       writer.append("Server: " + Owl.APPLICATION_NAME + " Local Server").append(CRLF); //$NON-NLS-1$ //$NON-NLS-2$
-      writer.append("Content-Type: text/html; charset=UTF-8").append(CRLF); //$NON-NLS-1$
+      writer.append(HTTP_CONTENT_TYPE_TEXT).append(CRLF);
       writer.append("Connection: close").append(CRLF); //$NON-NLS-1$
       writer.append("Expires: 0").append(CRLF); //$NON-NLS-1$
       writer.write(CRLF);
