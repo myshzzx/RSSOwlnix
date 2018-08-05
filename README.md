@@ -20,6 +20,8 @@ based on RSSOwl 2.2.1
 
 ---
 
+how to build: https://github.com/Xyrio/RSSOwlnix/wiki/How-To-Build
+
 wiki: https://github.com/Xyrio/RSSOwlnix/wiki
 
 bug reports: https://github.com/Xyrio/RSSOwlnix/issues
