@@ -293,14 +293,17 @@ public class NewsBrowserControl implements IFeedViewPart {
 
     NewsColumn sortColumn = NewsColumn.values()[preferences.getInteger(DefaultPreferences.BM_NEWS_SORT_COLUMN)];
     boolean ascending = preferences.getBoolean(DefaultPreferences.BM_NEWS_SORT_ASCENDING);
+    boolean rightToLeftSorting = preferences.getBoolean(DefaultPreferences.BM_NEWS_SORT_RIGHT_TO_LEFT);
 
     NewsColumn oldSortColumn = fNewsSorter.getSortBy();
     boolean oldAscending = fNewsSorter.isAscending();
+    boolean oldRightToLeftSorting = fNewsSorter.isRightToLeftSorting();
 
     fNewsSorter.setSortBy(sortColumn);
     fNewsSorter.setAscending(ascending);
+    fNewsSorter.setRightToLeftSorting(rightToLeftSorting);
 
-    if (refreshIfChanged && ((oldSortColumn != sortColumn) || (oldAscending != ascending)))
+    if (refreshIfChanged && ((oldSortColumn != sortColumn) || (oldAscending != ascending)|| (oldRightToLeftSorting != rightToLeftSorting)))
       fViewer.refresh();
   }
 

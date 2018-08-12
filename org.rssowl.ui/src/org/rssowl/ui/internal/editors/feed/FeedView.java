@@ -1290,15 +1290,18 @@ public class FeedView extends EditorPart implements IReusableEditor {
 
       NewsColumn oldSortBy = comparator.getSortBy();
       boolean oldIsAscending = comparator.isAscending();
+      boolean oldIsRightToLeftSorting = comparator.isRightToLeftSorting();
 
       NewsColumn newSortBy = NewsColumn.values()[preferences.getInteger(DefaultPreferences.BM_NEWS_SORT_COLUMN)];
       boolean newIsAscending = preferences.getBoolean(DefaultPreferences.BM_NEWS_SORT_ASCENDING);
+      boolean newIsRightToLeftSorting = preferences.getBoolean(DefaultPreferences.BM_NEWS_SORT_RIGHT_TO_LEFT);
 
       /* Sorting changed and cache is at limit, so refresh cache */
-      if (oldSortBy != newSortBy || oldIsAscending != newIsAscending) {
+      if (oldSortBy != newSortBy || oldIsAscending != newIsAscending || oldIsRightToLeftSorting != newIsRightToLeftSorting) {
         NewsComparator comparer = new NewsComparator();
         comparer.setSortBy(newSortBy);
         comparer.setAscending(newIsAscending);
+        comparer.setRightToLeftSorting(newIsRightToLeftSorting);;
 
         fContentProvider.refreshCache(null, folderMark, comparer);
       }

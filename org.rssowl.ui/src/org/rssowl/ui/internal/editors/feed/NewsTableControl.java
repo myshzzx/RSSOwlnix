@@ -513,6 +513,9 @@ public class NewsTableControl implements IFeedViewPart {
       if (newModel.getSortColumn() == col && col.showSortIndicator()) {
         fCustomTree.getControl().setSortColumn(viewerColumn.getColumn());
         fCustomTree.getControl().setSortDirection(newModel.isAscending() ? SWT.UP : SWT.DOWN);
+        //RightToLeftSorting is shown as alignment of text
+        viewerColumn.getColumn().setAlignment(newModel.isRightToLeftSorting() ? SWT.RIGHT : SWT.LEFT); //not working
+        viewerColumn.getColumn().setText(getTitleTextRightToLeftSorting(viewerColumn.getColumn().getText(), newModel.isRightToLeftSorting()));
       }
     }
 
@@ -525,6 +528,7 @@ public class NewsTableControl implements IFeedViewPart {
 
     /* Update Sorter */
     fNewsSorter.setAscending(newModel.isAscending());
+    fNewsSorter.setRightToLeftSorting(newModel.isRightToLeftSorting());
     fNewsSorter.setSortBy(newModel.getSortColumn());
 
     /* Set Label Provider */
@@ -544,20 +548,29 @@ public class NewsTableControl implements IFeedViewPart {
           NewsColumn oldSortBy = fNewsSorter.getSortBy();
           NewsColumn newSortBy = (NewsColumn) column.getData(NewsColumnViewModel.COL_ID);
           boolean defaultAscending = newSortBy.prefersAscending();
-          boolean ascending = (oldSortBy != newSortBy) ? defaultAscending : !fNewsSorter.isAscending();
+          boolean defaultRightToLeftSorting = false;
+          boolean ascending =  (oldSortBy != newSortBy) ? defaultAscending : !fNewsSorter.isAscending();
+          //asc+l2r, desc+l2r, asc+r2l, desc+r2l, loop
+          boolean rightToLeftSorting = (oldSortBy != newSortBy) ? defaultRightToLeftSorting
+              : !fNewsSorter.isAscending() && !fNewsSorter.isRightToLeftSorting() || fNewsSorter.isAscending() && fNewsSorter.isRightToLeftSorting();
 
           /* Update Model */
           fColumnModel.setSortColumn(newSortBy);
           fColumnModel.setAscending(ascending);
+          fColumnModel.setRightToLeftSorting(rightToLeftSorting);
 
           /* Update Sorter */
           fNewsSorter.setSortBy(newSortBy);
           fNewsSorter.setAscending(ascending);
+          fNewsSorter.setRightToLeftSorting(rightToLeftSorting);
 
           /* Indicate Sort-Column in UI for Columns that have a certain width */
           if (newSortBy.showSortIndicator()) {
             fCustomTree.getControl().setSortColumn(column);
             fCustomTree.getControl().setSortDirection(ascending ? SWT.UP : SWT.DOWN);
+            //RightToLeftSorting is shown as alignment of text
+//            column.setAlignment(rightToLeftSorting ? SWT.RIGHT : SWT.LEFT); //not working
+            column.setText(getTitleTextRightToLeftSorting(column.getText(), rightToLeftSorting));
           } else {
             fCustomTree.getControl().setSortColumn(null);
           }
@@ -597,6 +610,16 @@ public class NewsTableControl implements IFeedViewPart {
         }
       });
     }
+  }
+
+  private static final String RIGHT_TO_LEFT_SORTING_TEXT_SUFFIX = "<-"; //$NON-NLS-1$
+  private String getTitleTextRightToLeftSorting(String titleText, boolean rightToLeftSorting) {
+
+    if (!titleText.endsWith(RIGHT_TO_LEFT_SORTING_TEXT_SUFFIX) && rightToLeftSorting)
+      return titleText + RIGHT_TO_LEFT_SORTING_TEXT_SUFFIX;
+    else if (titleText.endsWith(RIGHT_TO_LEFT_SORTING_TEXT_SUFFIX) && !rightToLeftSorting)
+      return titleText.substring(0, titleText.length() - RIGHT_TO_LEFT_SORTING_TEXT_SUFFIX.length());
+    return titleText;
   }
 
   private void registerListeners() {

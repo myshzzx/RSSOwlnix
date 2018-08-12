@@ -354,6 +354,10 @@ public class SearchNewsDialog extends TitleAreaDialog {
       fNewsComparator.setAscending(ascending);
     }
 
+    void setRightToLeftSorting(boolean rightToLeftSorting) {
+      fNewsComparator.setRightToLeftSorting(rightToLeftSorting);
+    }
+
     void setSortBy(NewsColumn sortColumn) {
       fNewsComparator.setSortBy(sortColumn);
     }

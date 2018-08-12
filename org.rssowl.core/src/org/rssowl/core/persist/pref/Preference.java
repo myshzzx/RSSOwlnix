@@ -124,6 +124,9 @@ public enum Preference {
   /** BookMarks: Ascended / Descended Sorting */
   BM_NEWS_SORT_ASCENDING("org.rssowl.pref.BMNewsSortAscending", IPreferenceType.BOOLEAN), //$NON-NLS-1$
 
+  /** BookMarks: left to right / right to left Sorting */
+  BM_NEWS_SORT_RIGHT_TO_LEFT("org.rssowl.pref.BMNewsSortRightToLeft", IPreferenceType.BOOLEAN), //$NON-NLS-1$
+
   /** BookMarks: Auto-Update Interval (integer) */
   BM_UPDATE_INTERVAL("org.rssowl.pref.BMUpdateInterval", IPreferenceType.LONG), //$NON-NLS-1$
 

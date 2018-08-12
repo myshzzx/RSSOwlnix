@@ -55,10 +55,12 @@ import java.util.Set;
  *
  * @author Ismael Juma (ismael@juma.me.uk)
  * @author bpasero
+ * @author Xyrio
  */
 public class NewsComparator extends ViewerComparator implements Comparator<INews> {
   private NewsColumn fSortBy;
   private boolean fAscending;
+  private boolean fRightToLeftSorting;
 
   /* A cache for the Location Column */
   private Map<Long, String> fMapBinIdToLocation = new HashMap<Long, String>();
@@ -76,6 +78,14 @@ public class NewsComparator extends ViewerComparator implements Comparator<INews
    */
   public void setAscending(boolean ascending) {
     fAscending = ascending;
+  }
+
+  public boolean isRightToLeftSorting() {
+    return fRightToLeftSorting;
+  }
+
+  public void setRightToLeftSorting(boolean rightToLeftSorting) {
+    fRightToLeftSorting = rightToLeftSorting;
   }
 
   /**
@@ -266,9 +276,11 @@ public class NewsComparator extends ViewerComparator implements Comparator<INews
   }
 
   private int compareByTitle(String title1, String title2) {
-    int result = compareByString(title1, title2);
-
-    /* Respect ascending / descending Order */
+    int result;
+    if (!fRightToLeftSorting)
+      result = compareByString(title1, title2);
+    else
+      result = compareByString(new StringBuilder(title1).reverse().toString(), new StringBuilder(title2).reverse().toString());
     return fAscending ? result : result * -1;
   }
 

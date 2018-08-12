@@ -127,6 +127,9 @@ public class DefaultPreferences {
   /** BookMarks: Ascended / Descended Sorting */
   public static final String BM_NEWS_SORT_ASCENDING = Preference.BM_NEWS_SORT_ASCENDING.id();
 
+  /** BookMarks: left to right / right to left Sorting */
+  public static final String BM_NEWS_SORT_RIGHT_TO_LEFT = Preference.BM_NEWS_SORT_RIGHT_TO_LEFT.id();
+
   /** BookMarks: Auto-Update Interval (integer) */
   public static final String BM_UPDATE_INTERVAL = Preference.BM_UPDATE_INTERVAL.id();
 

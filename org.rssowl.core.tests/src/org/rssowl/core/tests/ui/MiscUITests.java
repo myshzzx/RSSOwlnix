@@ -323,6 +323,7 @@ public class MiscUITests {
     /* By Title */
     comp.setSortBy(NewsColumn.TITLE);
     comp.setAscending(true);
+    comp.setRightToLeftSorting(false);
     Object[] elements = new Object[] { news1, news2, news3 };
     comp.sort(null, elements);
 
@@ -333,6 +334,7 @@ public class MiscUITests {
     /* By Date */
     comp.setSortBy(NewsColumn.DATE);
     comp.setAscending(false);
+    comp.setRightToLeftSorting(false);
 
     comp.sort(null, elements);
 

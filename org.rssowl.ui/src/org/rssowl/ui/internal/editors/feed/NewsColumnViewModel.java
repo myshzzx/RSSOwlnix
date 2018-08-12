@@ -53,6 +53,7 @@ public class NewsColumnViewModel {
   private final List<NewsColumn> fColumns = new ArrayList<NewsColumn>();
   private NewsColumn fSortColumn;
   private boolean fAscending;
+  private boolean fRightToLeftSorting;
 
   private NewsColumnViewModel() {}
 
@@ -65,6 +66,7 @@ public class NewsColumnViewModel {
     fColumns.addAll(copyFrom.getColumns());
     fSortColumn = copyFrom.getSortColumn();
     fAscending = copyFrom.isAscending();
+    fRightToLeftSorting = copyFrom.isRightToLeftSorting();
   }
 
   /**
@@ -234,6 +236,14 @@ public class NewsColumnViewModel {
    */
   public void setAscending(boolean ascending) {
     fAscending = ascending;
+  }
+
+  public boolean isRightToLeftSorting() {
+    return fRightToLeftSorting;
+  }
+
+  public void setRightToLeftSorting(boolean rightToLeftSorting) {
+    fRightToLeftSorting = rightToLeftSorting;
   }
 
   /**
