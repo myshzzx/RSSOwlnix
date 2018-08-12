@@ -1,5 +1,9 @@
 updates feed: https://xyrio.github.io/RSSOwlnix-site/updates.rss
 
+2.5.1-beta
+- added right to left sorting for title column of classic view
+- linux: do not force xulrunner (PR: sciamano)
+
 2.5.0-beta
 - main program is now updateable too (addons and translation available through Help/Install new Software...)
 - renamed to RSSOwlnix
