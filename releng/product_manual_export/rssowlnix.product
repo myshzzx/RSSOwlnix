@@ -8,7 +8,7 @@
       <text>
          RSSOwlnix fork of RSSOwl
 
-Version: 2.5.3-beta
+Version: 2.5.4-beta
 Build Id: 2018-08-15
 
 RSSOwlnix and RSSOwl is licensed under the terms of the Eclipse Public License version 1.0.
@@ -78,6 +78,42 @@ RSSOwl Development Team - initial API and implementation
 
 
    <repositories>
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/nls" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/program" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/addons" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/nls" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/program" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/addons" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/nls" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/program" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/addons" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/nls" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/program" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/addons" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/nls" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/program" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/addons" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/nls" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/program" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/addons" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/nls" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/program" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/addons" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/nls" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/program" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/addons" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/nls" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/program" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/addons" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/nls" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/program" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/addons" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/nls" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/program" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/addons" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/nls" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/program" enabled="true" />
+      <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/addons" enabled="true" />
       <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/nls" enabled="true" />
       <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/program" enabled="true" />
       <repository location="http://xyrio.github.io/RSSOwlnix-site/p2/addons" enabled="true" />

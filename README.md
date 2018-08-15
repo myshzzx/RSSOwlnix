@@ -1,14 +1,24 @@
 updates feed: https://xyrio.github.io/RSSOwlnix-site/updates.rss
 
+2.5.4-beta
+- updated httpclient to 4.5.6
+- removed version+date from branding/about view (version still visible on start in splash screen)
+
+2.5.3-beta
+- updated eclipse rcp to 4.7.3a
+
+2.5.2-beta
+- fixed missing 256x256 program logo icon #14
+
 2.5.1-beta
-- added right to left sorting for title column of classic view
+- added right to left sorting for title column of classic view (appends "<-" to Title column)
 - linux: do not force xulrunner (PR: sciamano)
 
 2.5.0-beta
-- main program is now updateable too (addons and translation available through Help/Install new Software...)
+- main program is not updateable (addons and translation available through Help/Install new Software...)
 - renamed to RSSOwlnix
 - updated httpclient to 4.5.5
-- updated eclipse rcp to 4.7.2.20171218-0600
+- updated eclipse rcp to 4.7.2
 
 2.4.0-beta
 - removed old update manager and added new p2 one (addons work so far)
