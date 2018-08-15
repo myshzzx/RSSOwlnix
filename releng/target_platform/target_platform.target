@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="rssowlnix" sequenceNumber="16">
+<?pde version="3.8"?><target name="rssowlnix" sequenceNumber="20">
 <locations>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.equinox.sdk.feature.group" version="3.13.2.v20171108-1834"/>
-<unit id="org.eclipse.rcp.feature.group" version="4.7.2.v20171130-0510"/>
-<unit id="org.eclipse.sdk.ide" version="4.7.2.M20171130-0510"/>
-<unit id="org.eclipse.test.feature.group" version="3.7.200.v20170511-1043"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.7"/>
-</location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.babel.nls_datatools_da.feature.group" version="4.7.0.v20171231020002"/>
 <unit id="org.eclipse.babel.nls_datatools_de.feature.group" version="4.7.0.v20171231020002"/>
@@ -178,6 +171,13 @@
 <unit id="org.eclipse.babel.nls_webtools_zh.feature.group" version="4.7.0.v20171231020002"/>
 <unit id="org.eclipse.babel.nls_webtools_zh_TW.feature.group" version="4.7.0.v20171231020002"/>
 <repository location="http://download.eclipse.org/technology/babel/update-site/R0.15.1/oxygen"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.equinox.sdk.feature.group" version="3.13.4.v20180322-2228"/>
+<unit id="org.eclipse.rcp.feature.group" version="4.7.3.v20180330-0640"/>
+<unit id="org.eclipse.sdk.ide" version="4.7.3.M20180330-0640"/>
+<unit id="org.eclipse.test.feature.group" version="3.7.200.v20170511-1043"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.7"/>
 </location>
 </locations>
 </target>
