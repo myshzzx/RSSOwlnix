@@ -549,10 +549,12 @@ public class NewsTableControl implements IFeedViewPart {
           NewsColumn newSortBy = (NewsColumn) column.getData(NewsColumnViewModel.COL_ID);
           boolean defaultAscending = newSortBy.prefersAscending();
           boolean defaultRightToLeftSorting = false;
-          boolean ascending =  (oldSortBy != newSortBy) ? defaultAscending : !fNewsSorter.isAscending();
+          boolean ascending = (oldSortBy != newSortBy) ? defaultAscending : !fNewsSorter.isAscending();
           //asc+l2r, desc+l2r, asc+r2l, desc+r2l, loop
           boolean rightToLeftSorting = (oldSortBy != newSortBy) ? defaultRightToLeftSorting
-              : !fNewsSorter.isAscending() && !fNewsSorter.isRightToLeftSorting() || fNewsSorter.isAscending() && fNewsSorter.isRightToLeftSorting();
+              : newSortBy == NewsColumn.TITLE &&
+                  (!fNewsSorter.isAscending() && !fNewsSorter.isRightToLeftSorting()
+                 || fNewsSorter.isAscending() && fNewsSorter.isRightToLeftSorting());
 
           /* Update Model */
           fColumnModel.setSortColumn(newSortBy);
@@ -569,7 +571,7 @@ public class NewsTableControl implements IFeedViewPart {
             fCustomTree.getControl().setSortColumn(column);
             fCustomTree.getControl().setSortDirection(ascending ? SWT.UP : SWT.DOWN);
             //RightToLeftSorting is shown as alignment of text
-//            column.setAlignment(rightToLeftSorting ? SWT.RIGHT : SWT.LEFT); //not working
+            //column.setAlignment(rightToLeftSorting ? SWT.RIGHT : SWT.LEFT); //not working
             column.setText(getTitleTextRightToLeftSorting(column.getText(), rightToLeftSorting));
           } else {
             fCustomTree.getControl().setSortColumn(null);
