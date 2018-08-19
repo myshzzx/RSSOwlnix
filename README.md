@@ -1,5 +1,8 @@
 updates feed: https://xyrio.github.io/RSSOwlnix-site/updates.rss
 
+
+- fixed type check for preferences
+
 2.5.4-beta
 - updated httpclient to 4.5.6
 - removed version+date from branding/about view (version still visible on start in splash screen)
