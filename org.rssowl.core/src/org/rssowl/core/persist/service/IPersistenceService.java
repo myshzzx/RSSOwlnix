@@ -25,7 +25,7 @@
 package org.rssowl.core.persist.service;
 
 import org.rssowl.core.persist.dao.DAOService;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IEntityDAO;
 import org.rssowl.core.util.LongOperationMonitor;
 
@@ -78,7 +78,7 @@ public interface IPersistenceService {
    * entities as well as some more advanced operations (e.g. reparenting for
    * folders).
    * @see IEntityDAO
-   * @see DynamicDAO
+   * @see OwlDAO
    */
   DAOService getDAOService();
 

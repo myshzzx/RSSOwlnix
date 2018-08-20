@@ -75,7 +75,7 @@ public class Migration2To5 implements Migration {
     oc.commit();
     oc.close();
 
-    File dbLastBackUpFile = DBManager.getDefault().getDBLastBackUpFile();
+    File dbLastBackUpFile = DBManager.getInstance().getDBLastBackUpFile();
     dbLastBackUpFile.delete();
 
     progressMonitor.worked(totalProgress - totalProgressIncremented);

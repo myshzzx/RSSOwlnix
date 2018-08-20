@@ -42,7 +42,7 @@ import org.rssowl.core.persist.INewsBin;
 import org.rssowl.core.persist.ISearchMark;
 import org.rssowl.core.persist.NewsCounter;
 import org.rssowl.core.persist.NewsCounterItem;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.reference.FeedLinkReference;
 import org.rssowl.core.util.DateUtils;
 import org.rssowl.ui.internal.EntityGroup;
@@ -107,9 +107,9 @@ public class FolderMarkGroupFilterTest {
     IFeed feed1 = fFactory.createFeed(null, new URI("http://www.link1.com"));
     IFeed feed2 = fFactory.createFeed(null, new URI("http://www.link2.com"));
     IFeed feed3 = fFactory.createFeed(null, new URI("http://www.link3.com"));
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
-    DynamicDAO.save(feed3);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
+    OwlDAO.save(feed3);
 
     IFolder root = fFactory.createFolder(null, null, "Root");
 
@@ -378,11 +378,11 @@ public class FolderMarkGroupFilterTest {
     feed1.setDescription("This is the foo.");
     fFactory.createNews(null, feed1, new Date());
     fFactory.createNews(null, feed1, new Date()).setState(INews.State.UNREAD);
-    DynamicDAO.save(feed1);
+    OwlDAO.save(feed1);
 
     IFeed feed2 = fFactory.createFeed(null, new URI("http://www.bar.com"));
     feed2.setDescription("This is the bar.");
-    DynamicDAO.save(feed2);
+    OwlDAO.save(feed2);
 
     IFolder root = fFactory.createFolder(null, null, "Root");
 

@@ -37,7 +37,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.keys.IBindingService;
 import org.rssowl.core.persist.INews;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
 import org.rssowl.ui.internal.Controller;
 import org.rssowl.ui.internal.OwlUI;
@@ -166,7 +166,7 @@ public class ToggleReadStateAction extends Action implements IWorkbenchWindowAct
       UndoStack.getInstance().addOperation(new NewsStateOperation(newsList, INews.State.UNREAD, false));
 
       /* Perform Operation */
-      DynamicDAO.getDAO(INewsDAO.class).setState(newsList, INews.State.UNREAD, false, false);
+      OwlDAO.getDAO(INewsDAO.class).setState(newsList, INews.State.UNREAD, false, false);
     }
   }
 

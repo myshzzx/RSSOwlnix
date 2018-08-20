@@ -40,7 +40,7 @@ import org.rssowl.core.persist.ILabel;
 import org.rssowl.core.persist.IModelFactory;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.IPerson;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.reference.FeedLinkReference;
 import org.rssowl.core.util.DateUtils;
 import org.rssowl.ui.internal.EntityGroup;
@@ -107,14 +107,14 @@ public class NewsGroupFilterTest {
   @Test
   public void testNewsGrouping() throws Exception {
     IFolder folder= fFactory.createFolder(null, null, "Root");
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IFeed feed = fFactory.createFeed(null, new URI("http://www.link.com"));
     feed.setTitle("Feed Name");
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IBookMark bookmark= fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "Feed Name");
-    DynamicDAO.save(bookmark);
+    OwlDAO.save(bookmark);
 
     INews news1 = fFactory.createNews(null, feed, new Date());
     news1.setTitle("News 1");
@@ -485,11 +485,11 @@ public class NewsGroupFilterTest {
     news5.setTitle("News 5");
     news5.setPublishDate(new Date(0));
 
-    DynamicDAO.save(news1);
-    DynamicDAO.save(news2);
-    DynamicDAO.save(news3);
-    DynamicDAO.save(news4);
-    DynamicDAO.save(news5);
+    OwlDAO.save(news1);
+    OwlDAO.save(news2);
+    OwlDAO.save(news3);
+    OwlDAO.save(news4);
+    OwlDAO.save(news5);
 
     waitForIndexer();
 
@@ -563,8 +563,8 @@ public class NewsGroupFilterTest {
       news1.setTitle("Foo Bar");
       news2.setTitle("Bar foo");
 
-      DynamicDAO.save(news1);
-      DynamicDAO.save(news2);
+      OwlDAO.save(news1);
+      OwlDAO.save(news2);
       waitForIndexer();
 
       fFiltering.setType(NewsFilter.Type.SHOW_ALL);
@@ -586,11 +586,11 @@ public class NewsGroupFilterTest {
       fFactory.createAttachment(null, news4).setLink(new URI("http://www.foo.com"));
       fFactory.createPerson(null, news5).setName("Foo bar");
 
-      DynamicDAO.save(news1);
-      DynamicDAO.save(news2);
-      DynamicDAO.save(news3);
-      DynamicDAO.save(news4);
-      DynamicDAO.save(news5);
+      OwlDAO.save(news1);
+      OwlDAO.save(news2);
+      OwlDAO.save(news3);
+      OwlDAO.save(news4);
+      OwlDAO.save(news5);
       waitForIndexer();
 
       fFiltering.setPattern("foo");
@@ -613,8 +613,8 @@ public class NewsGroupFilterTest {
       fFactory.createCategory(null, news1).setName("Foo bar");
       fFactory.createCategory(null, news2).setName("Bar Foo");
 
-      DynamicDAO.save(news1);
-      DynamicDAO.save(news2);
+      OwlDAO.save(news1);
+      OwlDAO.save(news2);
       waitForIndexer();
 
       fFiltering.setPattern("*foo*");
@@ -629,8 +629,8 @@ public class NewsGroupFilterTest {
       fFactory.createSource(news4).setLink(new URI("http://www.foo.com"));
       fFactory.createSource(news5).setLink(new URI("http://www.foo.com"));
 
-      DynamicDAO.save(news4);
-      DynamicDAO.save(news5);
+      OwlDAO.save(news4);
+      OwlDAO.save(news5);
       waitForIndexer();
 
       fFiltering.setPattern("*foo*");
@@ -648,8 +648,8 @@ public class NewsGroupFilterTest {
 
       fFactory.createAttachment(null, news2).setLink(new URI("http://www.foo.com"));
 
-      DynamicDAO.save(news1);
-      DynamicDAO.save(news2);
+      OwlDAO.save(news1);
+      OwlDAO.save(news2);
       waitForIndexer();
 
       fFiltering.setPattern("*foo*");

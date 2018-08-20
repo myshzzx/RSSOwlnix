@@ -36,7 +36,7 @@ import org.rssowl.core.Owl;
 import org.rssowl.core.internal.persist.service.PersistenceServiceImpl;
 import org.rssowl.core.persist.IModelFactory;
 import org.rssowl.core.persist.IPreference;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IPreferenceDAO;
 import org.rssowl.core.persist.event.PreferenceEvent;
 import org.rssowl.core.persist.event.PreferenceListener;
@@ -59,7 +59,7 @@ public class PreferencesDAOTest extends LargeBlockSizeTest {
   @Before
   public void setUp() throws Exception {
     ((PersistenceServiceImpl)Owl.getPersistenceService()).recreateSchemaForTests();
-    fDao = DynamicDAO.getDAO(IPreferenceDAO.class);
+    fDao = OwlDAO.getDAO(IPreferenceDAO.class);
     fFactory = Owl.getModelFactory();
   }
 

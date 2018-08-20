@@ -87,7 +87,7 @@ import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INewsBin;
 import org.rssowl.core.persist.INewsMark;
 import org.rssowl.core.persist.ISearchMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
 import org.rssowl.core.persist.event.LabelAdapter;
 import org.rssowl.core.persist.event.LabelEvent;
@@ -682,7 +682,7 @@ public class NewsTableControl implements IFeedViewPart {
         });
       }
     };
-    DynamicDAO.addEntityListener(ILabel.class, fLabelListener);
+    OwlDAO.addEntityListener(ILabel.class, fLabelListener);
 
     /* Refresh Viewer when Sticky Color Changes */
     fPropertyChangeListener = new IPropertyChangeListener() {
@@ -997,7 +997,7 @@ public class NewsTableControl implements IFeedViewPart {
           manager.add(new Separator("movecopy")); //$NON-NLS-1$
 
           /* Load all news bins and sort by name */
-          List<INewsBin> newsbins = new ArrayList<INewsBin>(DynamicDAO.loadAll(INewsBin.class));
+          List<INewsBin> newsbins = new ArrayList<INewsBin>(OwlDAO.loadAll(INewsBin.class));
 
           Comparator<INewsBin> comparator = new Comparator<INewsBin>() {
             @Override
@@ -1147,7 +1147,7 @@ public class NewsTableControl implements IFeedViewPart {
 
   private void unregisterListeners() {
     fViewer.removeSelectionChangedListener(fSelectionChangeListener);
-    DynamicDAO.removeEntityListener(ILabel.class, fLabelListener);
+    OwlDAO.removeEntityListener(ILabel.class, fLabelListener);
     PlatformUI.getWorkbench().getThemeManager().removePropertyChangeListener(fPropertyChangeListener);
   }
 
@@ -1218,9 +1218,9 @@ public class NewsTableControl implements IFeedViewPart {
         modelCopy.saveTo(scope[0]);
         if (saveMark[0]) {
           if (mark instanceof FolderNewsMark)
-            DynamicDAO.save(((FolderNewsMark) mark).getFolder());
+            OwlDAO.save(((FolderNewsMark) mark).getFolder());
           else
-            DynamicDAO.save(mark);
+            OwlDAO.save(mark);
         }
       }
     });

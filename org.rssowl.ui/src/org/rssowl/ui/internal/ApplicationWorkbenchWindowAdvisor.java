@@ -65,7 +65,7 @@ import org.rssowl.core.persist.ISearch;
 import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IPreferenceDAO;
 import org.rssowl.core.persist.event.NewsAdapter;
 import org.rssowl.core.persist.event.NewsEvent;
@@ -364,11 +364,11 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         onPreferencesChange(events, EventType.UPDATE);
       }
     };
-    DynamicDAO.getDAO(IPreferenceDAO.class).addEntityListener(fPrefListener);
+    OwlDAO.getDAO(IPreferenceDAO.class).addEntityListener(fPrefListener);
   }
 
   private void unregisterListeners() {
-    DynamicDAO.getDAO(IPreferenceDAO.class).removeEntityListener(fPrefListener);
+    OwlDAO.getDAO(IPreferenceDAO.class).removeEntityListener(fPrefListener);
   }
 
   private void onPreferencesChange(Set<PreferenceEvent> events, EventType type) {
@@ -430,7 +430,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
       fTrayItem.dispose();
 
     if (fNewsListener != null)
-      DynamicDAO.removeEntityListener(INews.class, fNewsListener);
+      OwlDAO.removeEntityListener(INews.class, fNewsListener);
 
     fResources.dispose();
   }
@@ -608,7 +608,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         });
       }
     };
-    DynamicDAO.addEntityListener(INews.class, fNewsListener);
+    OwlDAO.addEntityListener(INews.class, fNewsListener);
 
     return true;
   }
@@ -693,7 +693,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
       fTrayItem.dispose();
 
     if (fNewsListener != null)
-      DynamicDAO.removeEntityListener(INews.class, fNewsListener);
+      OwlDAO.removeEntityListener(INews.class, fNewsListener);
 
     if (fTrayShellListener != null)
       getWindowConfigurer().getWindow().getShell().removeShellListener(fTrayShellListener);

@@ -73,7 +73,7 @@ import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.ISearchFilter;
 import org.rssowl.core.persist.ISearchMark;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.util.CoreUtils;
 import org.rssowl.core.util.Pair;
 import org.rssowl.core.util.StringUtils;
@@ -209,13 +209,13 @@ public class NewsFilterDialog extends TitleAreaDialog {
     /* Create new Filter and save */
     if (fEditedFilter == null) {
       fAddedFilter = createFilter(actions);
-      DynamicDAO.save(fAddedFilter);
+      OwlDAO.save(fAddedFilter);
     }
 
     /* Update existing Filter */
     else {
       updateFilter(actions);
-      DynamicDAO.save(fEditedFilter);
+      OwlDAO.save(fEditedFilter);
     }
 
     super.okPressed();
@@ -297,7 +297,7 @@ public class NewsFilterDialog extends TitleAreaDialog {
     ISearch oldSearch = fEditedFilter.getSearch();
     fEditedFilter.setSearch(createSearch());
     if (oldSearch != null)
-      DynamicDAO.delete(oldSearch);
+      OwlDAO.delete(oldSearch);
   }
 
   private boolean isConflicting(List<IFilterAction> actions) {

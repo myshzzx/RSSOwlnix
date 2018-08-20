@@ -34,7 +34,7 @@ import org.rssowl.core.internal.persist.service.PersistenceServiceImpl;
 import org.rssowl.core.persist.IFeed;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.NewsCounter;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsCounterDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
 import org.rssowl.core.tests.model.LargeBlockSizeTest;
@@ -60,7 +60,7 @@ public class ControllerTestLocal extends LargeBlockSizeTest {
   }
 
   private NewsCounter loadNewsCounter() {
-    return DynamicDAO.getDAO(INewsCounterDAO.class).load();
+    return OwlDAO.getDAO(INewsCounterDAO.class).load();
   }
 
   private int getNewCount(IFeed feed) {
@@ -85,14 +85,14 @@ public class ControllerTestLocal extends LargeBlockSizeTest {
     INewsDAO newsDao = Owl.getPersistenceService().getDAOService().getNewsDAO();
 
     IFeed feed = new Feed(new URI("http://www.rssowl.org/rssowl2dg/tests/manager/rss_2_0.xml")); //$NON-NLS-1$
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     assertEquals(0, getUnreadCount(feed));
     assertEquals(0, getNewCount(feed));
     assertEquals(0, getStickyCount(feed));
 
     Owl.getModelFactory().createNews(null, feed, new Date()); //$NON-NLS-1$
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     assertEquals(1, getUnreadCount(feed));
     assertEquals(1, getNewCount(feed));
@@ -105,7 +105,7 @@ public class ControllerTestLocal extends LargeBlockSizeTest {
 
     newsDao.setState(feed.getNews(), INews.State.UNREAD, true, false);
     feed.getNews().get(0).setFlagged(true);
-    DynamicDAO.save(feed.getNews().get(0));
+    OwlDAO.save(feed.getNews().get(0));
 
     assertEquals(1, getUnreadCount(feed));
     assertEquals(0, getNewCount(feed));
@@ -122,7 +122,7 @@ public class ControllerTestLocal extends LargeBlockSizeTest {
     assertEquals(1, getStickyCount(feed));
 
     feed.getNews().get(0).setFlagged(false);
-    DynamicDAO.save(feed.getNews().get(0));
+    OwlDAO.save(feed.getNews().get(0));
     newsDao.setState(feed.getNews(), INews.State.READ, true, false);
 
     assertEquals(0, getUnreadCount(feed));
@@ -130,10 +130,10 @@ public class ControllerTestLocal extends LargeBlockSizeTest {
     assertEquals(0, getStickyCount(feed));
 
     Owl.getModelFactory().createNews(null, feed, new Date()); //$NON-NLS-1$
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     Owl.getModelFactory().createNews(null, feed, new Date()); //$NON-NLS-1$
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     assertEquals(2, getUnreadCount(feed));
     assertEquals(2, getNewCount(feed));
@@ -142,7 +142,7 @@ public class ControllerTestLocal extends LargeBlockSizeTest {
     newsDao.setState(feed.getNews(), INews.State.READ, true, false);
     feed.getNews().get(0).setFlagged(true);
     feed.getNews().get(1).setFlagged(true);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     assertEquals(0, getUnreadCount(feed));
     assertEquals(0, getNewCount(feed));
@@ -158,17 +158,17 @@ public class ControllerTestLocal extends LargeBlockSizeTest {
     ((PersistenceServiceImpl)Owl.getPersistenceService()).recreateSchemaForTests();
 
     feed = new Feed(new URI("http://www.rssowl.org/rssowl2dg/tests/manager/rss_2_0.xml")); //$NON-NLS-1$
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     Owl.getModelFactory().createNews(null, feed, new Date()); //$NON-NLS-1$
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     Owl.getModelFactory().createNews(null, feed, new Date()); //$NON-NLS-1$
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     feed.getNews().get(0).setFlagged(true);
     feed.getNews().get(1).setFlagged(true);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     assertEquals(2, getUnreadCount(feed));
     assertEquals(2, getNewCount(feed));
@@ -184,21 +184,21 @@ public class ControllerTestLocal extends LargeBlockSizeTest {
   @Test
   public void testNewsServiceWithUpdatedNews() throws Exception {
     IFeed feed = new Feed(new URI("http://www.feed.com"));
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     INews news1 = Owl.getModelFactory().createNews(null, feed, new Date());
     news1.setTitle("News Title #1");
     news1.setLink(new URI("http://www.link.com"));
     news1.setFlagged(true);
 
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     assertEquals(1, getUnreadCount(feed));
     assertEquals(1, getNewCount(feed));
     assertEquals(1, getStickyCount(feed));
 
     feed.getNews().get(0).setTitle("News Title Updated #1");
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     assertEquals(1, getUnreadCount(feed));
     assertEquals(1, getNewCount(feed));
@@ -214,14 +214,14 @@ public class ControllerTestLocal extends LargeBlockSizeTest {
   @Test
   public void testNewsServiceWithUpdatedNews2() throws Exception {
     IFeed feed = new Feed(new URI("http://www.feed.com"));
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     INews news1 = Owl.getModelFactory().createNews(null, feed, new Date());
     news1.setTitle("News Title #1");
     news1.setLink(new URI("http://www.link.com"));
     news1.setState(INews.State.READ);
 
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     assertEquals(0, getUnreadCount(feed));
     assertEquals(0, getNewCount(feed));
@@ -230,7 +230,7 @@ public class ControllerTestLocal extends LargeBlockSizeTest {
     feed.getNews().get(0).setTitle("News Title Updated #1");
     feed.getNews().get(0).setState(INews.State.UPDATED);
     feed.getNews().get(0).setFlagged(true);
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     assertEquals(1, getUnreadCount(feed));
     assertEquals(0, getNewCount(feed));
@@ -238,7 +238,7 @@ public class ControllerTestLocal extends LargeBlockSizeTest {
     assertEquals(1, getStickyCount(feed));
 
     feed.getNews().get(0).setState(INews.State.READ);
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     assertEquals(0, getUnreadCount(feed));
     assertEquals(0, getNewCount(feed));
@@ -254,20 +254,20 @@ public class ControllerTestLocal extends LargeBlockSizeTest {
   @Test
   public void testNewsServiceWithDeletedNews() throws Exception {
     IFeed feed = new Feed(new URI("http://www.feed.com"));
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     INews news1 = Owl.getModelFactory().createNews(null, feed, new Date());
     news1.setTitle("News Title #1");
     news1.setLink(new URI("http://www.link.com"));
     news1.setFlagged(true);
 
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     assertEquals(1, getUnreadCount(feed));
     assertEquals(1, getNewCount(feed));
     assertEquals(1, getStickyCount(feed));
 
-    DynamicDAO.delete(feed.getNews().get(0));
+    OwlDAO.delete(feed.getNews().get(0));
 
     assertEquals(0, getUnreadCount(feed));
     assertEquals(0, getNewCount(feed));
@@ -283,14 +283,14 @@ public class ControllerTestLocal extends LargeBlockSizeTest {
   @Test
   public void testNewsServiceWithDeletedNews2() throws Exception {
     IFeed feed = new Feed(new URI("http://www.feed.com"));
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     INews news1 = Owl.getModelFactory().createNews(null, feed, new Date());
     news1.setTitle("News Title #1");
     news1.setLink(new URI("http://www.link.com"));
     news1.setState(INews.State.READ);
 
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     assertEquals(0, getUnreadCount(feed));
     assertEquals(0, getNewCount(feed));
@@ -299,7 +299,7 @@ public class ControllerTestLocal extends LargeBlockSizeTest {
     feed.getNews().get(0).setTitle("News Title Updated #1");
     feed.getNews().get(0).setState(INews.State.UPDATED);
     feed.getNews().get(0).setFlagged(true);
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     assertEquals(1, getUnreadCount(feed));
     assertEquals(0, getNewCount(feed));
@@ -307,9 +307,9 @@ public class ControllerTestLocal extends LargeBlockSizeTest {
     assertEquals(INews.State.UPDATED, feed.getNews().get(0).getState());
 
     feed.getNews().get(0).setState(INews.State.READ);
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
-    DynamicDAO.delete(feed.getNews().get(0));
+    OwlDAO.delete(feed.getNews().get(0));
 
     assertEquals(0, getUnreadCount(feed));
     assertEquals(0, getNewCount(feed));
@@ -325,7 +325,7 @@ public class ControllerTestLocal extends LargeBlockSizeTest {
   @Test
   public void testNewsServiceWithApplicationLayerSaveNews() throws Exception {
     IFeed feed = new Feed(new URI("http://www.feed.com"));
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     INews news1 = Owl.getModelFactory().createNews(null, feed, new Date());
     news1.setTitle("News Title #1");
@@ -333,7 +333,7 @@ public class ControllerTestLocal extends LargeBlockSizeTest {
     news1.setState(INews.State.UNREAD);
     news1.setFlagged(true);
 
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     assertEquals(1, getUnreadCount(feed));
     assertEquals(0, getNewCount(feed));
@@ -344,7 +344,7 @@ public class ControllerTestLocal extends LargeBlockSizeTest {
     List<INews> news = new ArrayList<INews>();
     news.add(feed.getNews().get(0));
 
-    DynamicDAO.saveAll(news);
+    OwlDAO.saveAll(news);
 
     assertEquals(1, getUnreadCount(feed));
     assertEquals(0, getNewCount(feed));

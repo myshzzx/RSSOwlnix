@@ -75,7 +75,7 @@ import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.ISearchFilter;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.ISearchFilterDAO;
 import org.rssowl.core.persist.reference.NewsReference;
 import org.rssowl.core.persist.service.IModelSearch;
@@ -142,7 +142,7 @@ public class NewsFiltersListDialog extends TitleAreaDialog {
     super(parentShell);
     fResources = new LocalResourceManager(JFaceResources.getResources());
     fFilterIcon = OwlUI.getImage(fResources, OwlUI.FILTER);
-    fSearchFilterDao = DynamicDAO.getDAO(ISearchFilterDAO.class);
+    fSearchFilterDao = OwlDAO.getDAO(ISearchFilterDAO.class);
   }
 
   /**
@@ -569,7 +569,7 @@ public class NewsFiltersListDialog extends TitleAreaDialog {
 
     /* Make sure that changed entities are saved for all actions */
     if (!entitiesToSave.isEmpty())
-      DynamicDAO.saveAll(entitiesToSave);
+      OwlDAO.saveAll(entitiesToSave);
   }
 
   private void updateTitle() {
@@ -718,7 +718,7 @@ public class NewsFiltersListDialog extends TitleAreaDialog {
       filtersToSave.add(filter);
     }
 
-    DynamicDAO.saveAll(filtersToSave);
+    OwlDAO.saveAll(filtersToSave);
   }
 
   private String getMessage(List<?> elements) {

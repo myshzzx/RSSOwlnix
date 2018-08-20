@@ -32,7 +32,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.keys.IBindingService;
 import org.rssowl.core.persist.ILabel;
 import org.rssowl.core.persist.INews;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.ui.internal.Controller;
 import org.rssowl.ui.internal.util.ModelUtils;
 
@@ -127,6 +127,6 @@ public class LabelAction extends Action {
     Controller.getDefault().getSavedSearchService().forceQuickUpdate();
 
     /* Save */
-    DynamicDAO.saveAll(newsList);
+    OwlDAO.saveAll(newsList);
   }
 }

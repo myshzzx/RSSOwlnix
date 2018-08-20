@@ -57,7 +57,7 @@ import org.rssowl.core.persist.INews.State;
 import org.rssowl.core.persist.IPersistable;
 import org.rssowl.core.persist.IPerson;
 import org.rssowl.core.persist.ISource;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.reference.FeedLinkReference;
 import org.rssowl.core.tests.TestUtils.NullProgressLongOperationMonitor;
 import org.rssowl.core.tests.model.DBManagerTest;
@@ -97,9 +97,9 @@ public class StartupShutdownTest extends LargeBlockSizeTest {
   @After
   public void tearDown() throws Exception {
     System.setProperty("rssowl.reindex", "false"); //Clear any set reindex marker
-    DBManager.getDefault().getReIndexFile().delete();
-    DBManager.getDefault().getDefragmentFile().delete();
-    DBManager.getDefault().getCleanUpIndexFile().delete();
+    DBManager.getInstance().getReIndexFile().delete();
+    DBManager.getInstance().getDefragmentFile().delete();
+    DBManager.getInstance().getCleanUpIndexFile().delete();
   }
 
   /**
@@ -116,7 +116,7 @@ public class StartupShutdownTest extends LargeBlockSizeTest {
     IFeed feed = fFactory.createFeed(null, new URI("http://www.feed.com/feed.xml"));
     INews news1 = createNews(feed, "Foo", null, "http://www.news.com/news1.html", State.READ);
     INews news2 = createNews(feed, " Bar", null, "http://www.news.com/news2.html", State.NEW);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     entitiesToBeIndexed = DBHelper.getEntitiesToBeIndexedDAO().load();
     assertEquals(2, entitiesToBeIndexed.size());
@@ -144,8 +144,8 @@ public class StartupShutdownTest extends LargeBlockSizeTest {
   @Test
   public void testCleanUpOnNextStartup() {
     Owl.getPersistenceService().getModelSearch().cleanUpOnNextStartup();
-    assertTrue(DBManager.getDefault().getCleanUpIndexFile().exists());
-    DBManager.getDefault().getCleanUpIndexFile().delete();
+    assertTrue(DBManager.getInstance().getCleanUpIndexFile().exists());
+    DBManager.getInstance().getCleanUpIndexFile().delete();
   }
 
   /**
@@ -154,7 +154,7 @@ public class StartupShutdownTest extends LargeBlockSizeTest {
   @Test
   public void testReIndexOnNextStartup() {
     Owl.getPersistenceService().getModelSearch().reIndexOnNextStartup();
-    assertTrue(DBManager.getDefault().getReIndexFile().exists());
+    assertTrue(DBManager.getInstance().getReIndexFile().exists());
   }
 
   /**
@@ -162,26 +162,26 @@ public class StartupShutdownTest extends LargeBlockSizeTest {
    */
   @Test
   public void testRecreateEmptyProfile() {
-    IFeed feed = DynamicDAO.save(createFeed());
+    IFeed feed = OwlDAO.save(createFeed());
     INews news = createNews(feed);
     news.setState(INews.State.NEW);
     news.setFlagged(true);
 
-    DynamicDAO.save(news);
+    OwlDAO.save(news);
 
     IFolder folder = Owl.getModelFactory().createFolder(null, null, "Root");
     IBookMark bookmark = Owl.getModelFactory().createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "Bookmark");
 
-    DynamicDAO.save(bookmark);
+    OwlDAO.save(bookmark);
 
     assertNotNull(feed.toReference().resolve());
     assertNotNull(news.toReference().resolve());
     assertNotNull(folder.toReference().resolve());
     assertNotNull(bookmark.toReference().resolve());
 
-    InternalOwl.getDefault().recreateProfile(false); //Creates a new, empty rssowl.db.restore
+    InternalOwl.getInstance().recreateProfile(false); //Creates a new, empty rssowl.db.restore
     assertTrue(new File(DBManager.getDBRestoreFilePath()).exists());
-    InternalOwl.getDefault().startup(new LongOperationMonitor(new NullProgressMonitor()) {}, false, false); //Normal startup will pickup rssowl.db.restore
+    InternalOwl.getInstance().startup(new LongOperationMonitor(new NullProgressMonitor()) {}, false, false); //Normal startup will pickup rssowl.db.restore
     assertFalse(new File(DBManager.getDBRestoreFilePath()).exists());
 
     assertNull(feed.toReference().resolve());
@@ -189,17 +189,17 @@ public class StartupShutdownTest extends LargeBlockSizeTest {
     assertNull(folder.toReference().resolve());
     assertNull(bookmark.toReference().resolve());
 
-    feed = DynamicDAO.save(createFeed());
+    feed = OwlDAO.save(createFeed());
     news = createNews(feed);
     news.setState(INews.State.NEW);
     news.setFlagged(true);
 
-    DynamicDAO.save(news);
+    OwlDAO.save(news);
 
     folder = Owl.getModelFactory().createFolder(null, null, "Root");
     bookmark = Owl.getModelFactory().createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "Bookmark");
 
-    DynamicDAO.save(bookmark);
+    OwlDAO.save(bookmark);
 
     assertNotNull(feed.toReference().resolve());
     assertNotNull(news.toReference().resolve());
@@ -213,24 +213,24 @@ public class StartupShutdownTest extends LargeBlockSizeTest {
   @Test
   @Ignore
   public void testRecreateOPMLProfile() throws IOException, InterpreterException, ParserException {
-    IFeed feed = DynamicDAO.save(createFeed());
+    IFeed feed = OwlDAO.save(createFeed());
     INews news = createNews(feed);
     news.setState(INews.State.NEW);
     news.setFlagged(true);
 
-    DynamicDAO.save(news);
+    OwlDAO.save(news);
 
     IFolder folder = Owl.getModelFactory().createFolder(null, null, "Root");
     IBookMark bookmark = Owl.getModelFactory().createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "Bookmark");
 
-    DynamicDAO.save(bookmark);
+    OwlDAO.save(bookmark);
 
     assertNotNull(feed.toReference().resolve());
     assertNotNull(news.toReference().resolve());
     assertNotNull(folder.toReference().resolve());
     assertNotNull(bookmark.toReference().resolve());
 
-    InternalOwl.getDefault().recreateProfile(true);
+    InternalOwl.getInstance().recreateProfile(true);
     assertTrue(new File(DBManager.getDBRestoreFilePath()).exists());
 
     assertNull(feed.toReference().resolve());
@@ -245,12 +245,12 @@ public class StartupShutdownTest extends LargeBlockSizeTest {
 
     CoreUtils.copy(DBManagerTest.class.getResourceAsStream("/data/default_feeds.xml"), new FileOutputStream(tmpFile));
 
-    List<? extends IEntity> types = InternalOwl.getDefault().getInterpreter().importFrom(new FileInputStream(tmpFile));
+    List<? extends IEntity> types = InternalOwl.getInstance().getInterpreter().importFrom(new FileInputStream(tmpFile));
     ImportUtils.doImport(null, types, false);
 
-    assertTrue(DynamicDAO.loadAll(INews.class).isEmpty());
-    assertTrue(DynamicDAO.loadAll(IBookMark.class).size() > 100);
-    assertTrue(DynamicDAO.loadAll(IFolder.class).size() > 20);
+    assertTrue(OwlDAO.loadAll(INews.class).isEmpty());
+    assertTrue(OwlDAO.loadAll(IBookMark.class).size() > 100);
+    assertTrue(OwlDAO.loadAll(IFolder.class).size() > 20);
   }
 
   /**
@@ -261,17 +261,17 @@ public class StartupShutdownTest extends LargeBlockSizeTest {
     File marker = DBManager.getLargeBlockSizeMarkerFile();
     boolean markerExists = marker.exists();
 
-    IFeed feed = DynamicDAO.save(createFeed());
+    IFeed feed = OwlDAO.save(createFeed());
     INews news = createNews(feed);
     news.setState(INews.State.NEW);
     news.setFlagged(true);
 
-    DynamicDAO.save(news);
+    OwlDAO.save(news);
 
     IFolder folder = Owl.getModelFactory().createFolder(null, null, "Root");
     IBookMark bookmark = Owl.getModelFactory().createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "Bookmark");
 
-    DynamicDAO.save(bookmark);
+    OwlDAO.save(bookmark);
 
     assertNotNull(feed.toReference().resolve());
     assertNotNull(news.toReference().resolve());
@@ -284,16 +284,16 @@ public class StartupShutdownTest extends LargeBlockSizeTest {
     tmpFile.deleteOnExit();
 
     CoreUtils.copy(DBManagerTest.class.getResourceAsStream("/data/rssowl.db"), new FileOutputStream(tmpFile));
-    InternalOwl.getDefault().restoreProfile(tmpFile);
+    InternalOwl.getInstance().restoreProfile(tmpFile);
     assertTrue(new File(DBManager.getDBRestoreFilePath()).exists());
     if (markerExists)
       assertFalse(marker.exists());
-    InternalOwl.getDefault().startup(new LongOperationMonitor(new NullProgressMonitor()) {}, true, false);
+    InternalOwl.getInstance().startup(new LongOperationMonitor(new NullProgressMonitor()) {}, true, false);
     assertFalse(new File(DBManager.getDBRestoreFilePath()).exists());
 
-    assertTrue(DynamicDAO.loadAll(INews.class).isEmpty());
-    assertTrue(DynamicDAO.loadAll(IBookMark.class).size() > 100);
-    assertTrue(DynamicDAO.loadAll(IFolder.class).size() > 20);
+    assertTrue(OwlDAO.loadAll(INews.class).isEmpty());
+    assertTrue(OwlDAO.loadAll(IBookMark.class).size() > 100);
+    assertTrue(OwlDAO.loadAll(IFolder.class).size() > 20);
 
     if (markerExists && !marker.exists())
       marker.createNewFile();

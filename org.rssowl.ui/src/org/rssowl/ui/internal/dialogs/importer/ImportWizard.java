@@ -47,7 +47,7 @@ import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.ISearchFilter;
 import org.rssowl.core.persist.ISearchMark;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IBookMarkDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
 import org.rssowl.core.util.CoreUtils;
@@ -295,7 +295,7 @@ public class ImportWizard extends Wizard implements IImportWizard {
 
   /* Remove existing Bookmarks and Empty Folders */
   private List<IFolderChild> excludeExisting(List<IFolderChild> folderChilds) {
-    IBookMarkDAO dao = DynamicDAO.getDAO(IBookMarkDAO.class);
+    IBookMarkDAO dao = OwlDAO.getDAO(IBookMarkDAO.class);
 
     for (Iterator<IFolderChild> iterator = folderChilds.iterator(); iterator.hasNext();) {
       IFolderChild child = iterator.next();
@@ -339,7 +339,7 @@ public class ImportWizard extends Wizard implements IImportWizard {
 
   /* Remove existing Bookmarks and Empty Folders */
   private void excludeExisting(IFolder folder) {
-    IBookMarkDAO dao = DynamicDAO.getDAO(IBookMarkDAO.class);
+    IBookMarkDAO dao = OwlDAO.getDAO(IBookMarkDAO.class);
     List<IFolderChild> children = folder.getChildren();
 
     for (IFolderChild child : children) {
@@ -440,6 +440,6 @@ public class ImportWizard extends Wizard implements IImportWizard {
       factory.createSearchCondition(null, mark, field, SearchSpecifier.IS, "*"); //$NON-NLS-1$
     }
 
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
   }
 }

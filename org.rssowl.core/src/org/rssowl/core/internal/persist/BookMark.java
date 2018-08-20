@@ -30,7 +30,7 @@ import org.rssowl.core.persist.IFolder;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INews.State;
 import org.rssowl.core.persist.NewsCounter;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
 import org.rssowl.core.persist.reference.BookMarkReference;
 import org.rssowl.core.persist.reference.FeedLinkReference;
@@ -197,10 +197,10 @@ public class BookMark extends Mark implements IBookMark {
   @Override
   public List<INews> getNews(Set<State> states) {
     if (states.equals(EnumSet.of(INews.State.NEW)))
-      return (List<INews>) DynamicDAO.getDAO(INewsDAO.class).loadAll(getFeedLinkReference(), states);
+      return (List<INews>) OwlDAO.getDAO(INewsDAO.class).loadAll(getFeedLinkReference(), states);
 
     if (states.equals(EnumSet.of(INews.State.NEW, INews.State.UNREAD, INews.State.UPDATED)))
-      return (List<INews>) DynamicDAO.getDAO(INewsDAO.class).loadAll(getFeedLinkReference(), states);
+      return (List<INews>) OwlDAO.getDAO(INewsDAO.class).loadAll(getFeedLinkReference(), states);
 
     return getFeedLinkReference().resolve().getNewsByStates(states);
   }

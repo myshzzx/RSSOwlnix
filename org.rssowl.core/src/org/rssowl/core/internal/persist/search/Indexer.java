@@ -498,8 +498,8 @@ public class Indexer {
     };
 
     /* We register listeners as part of initialisation, we must use InternalOwl */
-    InternalOwl.getDefault().getPersistenceService().getDAOService().getNewsDAO().addEntityListener(fNewsListener);
-    InternalOwl.getDefault().getPersistenceService().getDAOService().getLabelDAO().addEntityListener(fLabelListener);
+    InternalOwl.getInstance().getPersistenceService().getDAOService().getNewsDAO().addEntityListener(fNewsListener);
+    InternalOwl.getInstance().getPersistenceService().getDAOService().getLabelDAO().addEntityListener(fLabelListener);
   }
 
   private void handleEntityEvents(Set<NewsEvent> events, EventType eventType) {

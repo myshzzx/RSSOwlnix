@@ -114,7 +114,7 @@ import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.ISearchMark;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
 import org.rssowl.core.persist.event.LabelAdapter;
 import org.rssowl.core.persist.event.LabelEvent;
@@ -495,7 +495,7 @@ public class SearchNewsDialog extends TitleAreaDialog {
         name = feedRef;
 
       if (news.getParentId() != 0) {
-        INewsBin bin = DynamicDAO.load(INewsBin.class, news.getParentId());
+        INewsBin bin = OwlDAO.load(INewsBin.class, news.getParentId());
         if (bin != null) {
           name = NLS.bind(Messages.SearchNewsDialog_BIN_NAME, bin.getName(), name);
         }
@@ -627,7 +627,7 @@ public class SearchNewsDialog extends TitleAreaDialog {
     fHandCursor = parentShell.getDisplay().getSystemCursor(SWT.CURSOR_HAND);
     fMatchAllConditions = matchAllConditions;
     fRunSearch = runSearch;
-    fNewsDao = DynamicDAO.getDAO(INewsDAO.class);
+    fNewsDao = OwlDAO.getDAO(INewsDAO.class);
 
     /* Look for initial conditions and scope */
     if (initialConditions != null) {
@@ -1668,7 +1668,7 @@ public class SearchNewsDialog extends TitleAreaDialog {
       /* Ignore */
       }
     };
-    DynamicDAO.addEntityListener(INews.class, fNewsListener);
+    OwlDAO.addEntityListener(INews.class, fNewsListener);
 
     /* Redraw on Label update */
     fLabelListener = new LabelAdapter() {
@@ -1682,7 +1682,7 @@ public class SearchNewsDialog extends TitleAreaDialog {
         });
       }
     };
-    DynamicDAO.addEntityListener(ILabel.class, fLabelListener);
+    OwlDAO.addEntityListener(ILabel.class, fLabelListener);
   }
 
   private void onNewsEvent(final Set<NewsEvent> events) {
@@ -1866,8 +1866,8 @@ public class SearchNewsDialog extends TitleAreaDialog {
   }
 
   private void unregisterListeners() {
-    DynamicDAO.removeEntityListener(INews.class, fNewsListener);
-    DynamicDAO.removeEntityListener(ILabel.class, fLabelListener);
+    OwlDAO.removeEntityListener(INews.class, fNewsListener);
+    OwlDAO.removeEntityListener(ILabel.class, fLabelListener);
   }
 
   private void onMouseDoubleClick(DoubleClickEvent event) {
@@ -1947,7 +1947,7 @@ public class SearchNewsDialog extends TitleAreaDialog {
           manager.add(new Separator("movecopy")); //$NON-NLS-1$
 
           /* Load all news bins and sort by name */
-          List<INewsBin> newsbins = new ArrayList<INewsBin>(DynamicDAO.loadAll(INewsBin.class));
+          List<INewsBin> newsbins = new ArrayList<INewsBin>(OwlDAO.loadAll(INewsBin.class));
 
           Comparator<INewsBin> comparator = new Comparator<INewsBin>() {
             @Override

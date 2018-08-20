@@ -130,7 +130,7 @@ import org.rssowl.core.persist.ILabel;
 import org.rssowl.core.persist.IMark;
 import org.rssowl.core.persist.INewsMark;
 import org.rssowl.core.persist.IPreference;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IFolderDAO;
 import org.rssowl.core.persist.dao.IPreferenceDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
@@ -2275,7 +2275,7 @@ public class OwlUI {
    */
   public static IFolder getSelectedParent(IFolder folder) throws PersistenceException {
     String selectedBookMarkSetPref = BookMarkExplorer.getSelectedBookMarkSetPref(getWindow());
-    IPreference preference = DynamicDAO.getDAO(IPreferenceDAO.class).load(selectedBookMarkSetPref);
+    IPreference preference = OwlDAO.getDAO(IPreferenceDAO.class).load(selectedBookMarkSetPref);
     if (preference != null) {
       Long selectedRootFolderID = preference.getLong();
 
@@ -2839,7 +2839,7 @@ public class OwlUI {
    */
   public static IFolder getSelectedBookMarkSet() {
     IPreferenceScope preferences = Owl.getPreferenceService().getGlobalScope();
-    IFolderDAO folderDAO = DynamicDAO.getDAO(IFolderDAO.class);
+    IFolderDAO folderDAO = OwlDAO.getDAO(IFolderDAO.class);
 
     String selectedBookMarkSetPref = BookMarkExplorer.getSelectedBookMarkSetPref(getWindow());
     long selectedFolderID = preferences.getLong(selectedBookMarkSetPref);

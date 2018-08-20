@@ -100,10 +100,24 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * The central class to configure the underlying database of RSSOwl.
  */
 public class DBManager {
+
+  private static volatile DBManager fInstance;
+
+  /**
+   * @return Singleton Instance.
+   */
+  public static final DBManager getInstance() {
+    if (fInstance == null)
+      synchronized (DBManager.class) {
+        if (fInstance == null)
+          fInstance = new DBManager();
+      }
+    return fInstance;
+  }
+
   private static final String FORMAT_FILE_NAME = "format2"; //$NON-NLS-1$
   private static final String DB_NAME = "rssowl.db"; //$NON-NLS-1$
   private static final String DB_RESTORE_NAME = "rssowl.db.restore"; //$NON-NLS-1$
-  private static DBManager fInstance;
 
   /* Some constants used when defragmenting to a larger block size */
   private static final long LARGE_DB_STARTING_SIZE = 1610612736; //1.5 GB in Bytes
@@ -156,16 +170,6 @@ public class DBManager {
   private final AtomicLong fNextOnlineBackup = new AtomicLong();
   private final ReadWriteLock fLock = new ReentrantReadWriteLock();
   private final List<DatabaseListener> fEntityStoreListeners = new CopyOnWriteArrayList<DatabaseListener>();
-
-  /**
-   * @return The Singleton Instance.
-   */
-  public static DBManager getDefault() {
-    if (fInstance == null)
-      fInstance = new DBManager();
-
-    return fInstance;
-  }
 
   /**
    * Load and initialize the contributed DataBase.
@@ -285,7 +289,7 @@ public class DBManager {
             subMonitor = SubMonitor.convert(progressMonitor, Messages.DBManager_PROGRESS_WAIT, 20);
           }
 
-          IModelSearch modelSearch = InternalOwl.getDefault().getPersistenceService().getModelSearch();
+          IModelSearch modelSearch = InternalOwl.getInstance().getPersistenceService().getModelSearch();
           if (!progressMonitor.isCanceled() && (shouldReindex || migrationResult.isOptimizeIndex())) {
 
             /* Reindex */
@@ -331,7 +335,7 @@ public class DBManager {
           subMonitor = SubMonitor.convert(progressMonitor, Messages.DBManager_PROGRESS_WAIT, 20);
 
           /* Startup Model Search to perform operation */
-          IModelSearch modelSearch = InternalOwl.getDefault().getPersistenceService().getModelSearch();
+          IModelSearch modelSearch = InternalOwl.getInstance().getPersistenceService().getModelSearch();
           modelSearch.startup();
 
           /* Trigger Clean Up */

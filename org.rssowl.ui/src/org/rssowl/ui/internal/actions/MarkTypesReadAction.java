@@ -41,7 +41,7 @@ import org.rssowl.core.persist.IFolderChild;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INews.State;
 import org.rssowl.core.persist.INewsMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IFolderDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
@@ -86,7 +86,7 @@ public class MarkTypesReadAction extends Action implements IWorkbenchWindowActio
    */
   public MarkTypesReadAction(IStructuredSelection selection) {
     fSelection = selection;
-    fNewsDao = DynamicDAO.getDAO(INewsDAO.class);
+    fNewsDao = OwlDAO.getDAO(INewsDAO.class);
   }
 
   /*
@@ -233,7 +233,7 @@ public class MarkTypesReadAction extends Action implements IWorkbenchWindowActio
   }
 
   private boolean equalsRootFolders(Collection<IFolder> folders) {
-    Collection<IFolder> rootFolders = DynamicDAO.getDAO(IFolderDAO.class).loadRoots();
+    Collection<IFolder> rootFolders = OwlDAO.getDAO(IFolderDAO.class).loadRoots();
     return folders != null && folders.size() == rootFolders.size() && rootFolders.containsAll(folders);
   }
 

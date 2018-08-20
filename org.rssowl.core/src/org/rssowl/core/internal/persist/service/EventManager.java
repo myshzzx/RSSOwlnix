@@ -88,7 +88,15 @@ import java.util.Set;
  * Central manager for events and related actions on the database.
  */
 public class EventManager implements DatabaseListener {
+  
+  private static final EventManager INSTANCE = new EventManager();
 
+  /**
+   * @return Singleton Instance.
+   */
+  public static final EventManager getInstance() {
+    return INSTANCE;
+  }
   /**
    * Iterator implementation that iterates from the end of the list. Useful if
    * items need to be removed from the list during iteration and specific method
@@ -131,7 +139,6 @@ public class EventManager implements DatabaseListener {
 
   private final ThreadLocal<Set<Object>> fItemsBeingDeleted = new ThreadLocal<Set<Object>>();
   private static final String PARENT_DELETED_KEY = "rssowl.db4o.EventManager.parentDeleted"; //$NON-NLS-1$
-  private final static EventManager INSTANCE = new EventManager();
   private ObjectContainer fDb;
   private IConditionalGetDAO fConditionalGetDAO;
   private IDGenerator fIDGenerator;
@@ -157,7 +164,7 @@ public class EventManager implements DatabaseListener {
 
   private INewsCounterDAO getNewsCounterDAO() {
     if (fNewsCounterDAO == null)
-      fNewsCounterDAO = InternalOwl.getDefault().getPersistenceService().getDAOService().getNewsCounterDAO();
+      fNewsCounterDAO = InternalOwl.getInstance().getPersistenceService().getDAOService().getNewsCounterDAO();
 
     return fNewsCounterDAO;
   }
@@ -626,7 +633,7 @@ public class EventManager implements DatabaseListener {
   }
 
   void initEntityStoreListener() {
-    DBManager.getDefault().addEntityStoreListener(this);
+    DBManager.getInstance().addEntityStoreListener(this);
   }
 
   /*
@@ -668,10 +675,4 @@ public class EventManager implements DatabaseListener {
     fItemsBeingDeleted.set(null);
   }
 
-  /**
-   * @return singleton instance
-   */
-  public final static EventManager getInstance() {
-    return INSTANCE;
-  }
 }

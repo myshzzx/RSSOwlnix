@@ -29,7 +29,7 @@ import org.eclipse.ui.IElementFactory;
 import org.eclipse.ui.IMemento;
 import org.rssowl.core.persist.IFolder;
 import org.rssowl.core.persist.INewsMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.ui.internal.FolderNewsMark;
 
 /**
@@ -50,7 +50,7 @@ public class FeedViewFactory implements IElementFactory {
 
       /* Special Case Folders */
       if (FolderNewsMark.class.getName().equals(inputClass)) {
-        IFolder folder = DynamicDAO.load(IFolder.class, Long.valueOf(inputId));
+        IFolder folder = OwlDAO.load(IFolder.class, Long.valueOf(inputId));
         if (folder != null)
           return new FeedViewInput(new FolderNewsMark(folder));
       }
@@ -61,7 +61,7 @@ public class FeedViewFactory implements IElementFactory {
           Class<?> klass = Class.forName(inputClass, true, Thread.currentThread().getContextClassLoader());
           if (INewsMark.class.isAssignableFrom(klass)) {
             Class<? extends INewsMark> markClass = klass.asSubclass(INewsMark.class);
-            INewsMark mark = DynamicDAO.load(markClass, Long.valueOf(inputId));
+            INewsMark mark = OwlDAO.load(markClass, Long.valueOf(inputId));
             if (mark != null)
               return new FeedViewInput(mark);
           } else

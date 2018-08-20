@@ -68,112 +68,112 @@ public abstract class DAOService {
   /**
    * @return Returns the instance of <code>IEntityDAO</code> responsible for
    * <code>IAttachment</code>.
-   * @see DynamicDAO#getDAO(Class)
+   * @see OwlDAO#getDAO(Class)
    */
   public abstract IAttachmentDAO getAttachmentDAO();
 
   /**
    * @return Returns the instance of <code>IEntityDAO</code> responsible for
    * <code>IBookMark</code>.
-   * @see DynamicDAO#getDAO(Class)
+   * @see OwlDAO#getDAO(Class)
    */
   public abstract IBookMarkDAO getBookMarkDAO();
 
   /**
    * @return Returns the instance of <code>IEntityDAO</code> responsible for
    * <code>ICategory</code>.
-   * @see DynamicDAO#getDAO(Class)
+   * @see OwlDAO#getDAO(Class)
    */
   public abstract ICategoryDAO getCategoryDAO();
 
   /**
    * @return Returns the instance of <code>IEntityDAO</code> responsible for
    * <code>IFeed</code>.
-   * @see DynamicDAO#getDAO(Class)
+   * @see OwlDAO#getDAO(Class)
    */
   public abstract IFeedDAO getFeedDAO();
 
   /**
    * @return Returns the instance of <code>IEntityDAO</code> responsible for
    * <code>IFolder</code>.
-   * @see DynamicDAO#getDAO(Class)
+   * @see OwlDAO#getDAO(Class)
    */
   public abstract IFolderDAO getFolderDAO();
 
   /**
    * @return Returns the instance of <code>IEntityDAO</code> responsible for
    * <code>INewsCounter</code>.
-   * @see DynamicDAO#getDAO(Class)
+   * @see OwlDAO#getDAO(Class)
    */
   public abstract INewsCounterDAO getNewsCounterDAO();
 
   /**
    * @return Returns the instance of <code>IEntityDAO</code> responsible for
    * <code>INews</code>.
-   * @see DynamicDAO#getDAO(Class)
+   * @see OwlDAO#getDAO(Class)
    */
   public abstract INewsDAO getNewsDAO();
 
   /**
    * @return Returns the instance of <code>IEntityDAO</code> responsible for
    * <code>IPerson</code>.
-   * @see DynamicDAO#getDAO(Class)
+   * @see OwlDAO#getDAO(Class)
    */
   public abstract IPersonDAO getPersonDAO();
 
   /**
    * @return Returns the instance of <code>IEntityDAO</code> responsible for
    * <code>IPreference</code>.
-   * @see DynamicDAO#getDAO(Class)
+   * @see OwlDAO#getDAO(Class)
    */
   public abstract IPreferenceDAO getPreferencesDAO();
 
   /**
    * @return Returns the instance of <code>IEntityDAO</code> responsible for
    * <code>ISearchCondition</code>.
-   * @see DynamicDAO#getDAO(Class)
+   * @see OwlDAO#getDAO(Class)
    */
   public abstract ISearchConditionDAO getSearchConditionDAO();
 
   /**
    * @return Returns the instance of <code>IEntityDAO</code> responsible for
    * <code>ISearchMark</code>.
-   * @see DynamicDAO#getDAO(Class)
+   * @see OwlDAO#getDAO(Class)
    */
   public abstract ISearchMarkDAO getSearchMarkDAO();
 
   /**
    * @return Returns the instance of <code>IEntityDAO</code> responsible for
    * <code>ILabel</code>.
-   * @see DynamicDAO#getDAO(Class)
+   * @see OwlDAO#getDAO(Class)
    */
   public abstract ILabelDAO getLabelDAO();
 
   /**
    * @return Returns the instance of <code>IEntityDAO</code> responsible for
    * <code>IConditionalGet</code>.
-   * @see DynamicDAO#getDAO(Class)
+   * @see OwlDAO#getDAO(Class)
    */
   public abstract IConditionalGetDAO getConditionalGetDAO();
 
   /**
    * @return Returns the instance of <code>IEntityDAO</code> responsible for
    * <code>INewsBin</code>.
-   * @see DynamicDAO#getDAO(Class)
+   * @see OwlDAO#getDAO(Class)
    */
   public abstract INewsBinDAO getNewsBinDao();
 
   /**
    * @return Returns the instance of <code>IEntityDAO</code> responsible for
    * <code>ISearch</code>.
-   * @see DynamicDAO#getDAO(Class)
+   * @see OwlDAO#getDAO(Class)
    */
   public abstract ISearchDAO getSearchDAO();
 
   /**
    * @return Returns the instance of <code>IEntityDAO</code> responsible for
    * <code>ISearchFilter</code>.
-   * @see DynamicDAO#getDAO(Class)
+   * @see OwlDAO#getDAO(Class)
    */
   public abstract ISearchFilterDAO getSearchFilterDAO();
 }

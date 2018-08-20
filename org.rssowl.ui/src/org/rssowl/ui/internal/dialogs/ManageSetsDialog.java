@@ -65,7 +65,7 @@ import org.rssowl.core.persist.IFolderChild;
 import org.rssowl.core.persist.IMark;
 import org.rssowl.core.persist.INewsBin;
 import org.rssowl.core.persist.ISearchMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IFolderDAO;
 import org.rssowl.core.persist.event.FolderAdapter;
 import org.rssowl.core.persist.event.FolderEvent;
@@ -151,7 +151,7 @@ public class ManageSetsDialog extends TitleAreaDialog {
       }
     };
 
-    DynamicDAO.addEntityListener(IFolder.class, fFolderListener);
+    OwlDAO.addEntityListener(IFolder.class, fFolderListener);
   }
 
   /*
@@ -166,7 +166,7 @@ public class ManageSetsDialog extends TitleAreaDialog {
   }
 
   private void unregisterListeners() {
-    DynamicDAO.removeEntityListener(IFolder.class, fFolderListener);
+    OwlDAO.removeEntityListener(IFolder.class, fFolderListener);
   }
 
   /*
@@ -322,7 +322,7 @@ public class ManageSetsDialog extends TitleAreaDialog {
     });
 
     /* Pre-Select the current visible Set */
-    Collection<IFolder> rootFolders = DynamicDAO.getDAO(IFolderDAO.class).loadRoots();
+    Collection<IFolder> rootFolders = OwlDAO.getDAO(IFolderDAO.class).loadRoots();
     for (IFolder rootFolder : rootFolders) {
       if (rootFolder.equals(fSelectedSet)) {
         fViewer.setSelection(new StructuredSelection(rootFolder));

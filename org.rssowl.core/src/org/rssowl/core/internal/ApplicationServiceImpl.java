@@ -72,7 +72,7 @@ import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.ISearch;
 import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchFilter;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
 import org.rssowl.core.persist.dao.ISearchFilterDAO;
 import org.rssowl.core.persist.event.NewsEvent;
@@ -128,7 +128,7 @@ public class ApplicationServiceImpl implements IApplicationService {
     fNewsActions = new HashMap<String, INewsAction>();
     loadNewsActions();
 
-    DBManager.getDefault().addEntityStoreListener(new DatabaseListener() {
+    DBManager.getInstance().addEntityStoreListener(new DatabaseListener() {
       @Override
       public void databaseOpened(DatabaseEvent event) {
         fDb = event.getObjectContainer();
@@ -226,7 +226,7 @@ public class ApplicationServiceImpl implements IApplicationService {
         if (!incomingLabels.isEmpty()) {
 
           /* Existing Labels */
-          Collection<ILabel> existingLabels = DynamicDAO.loadAll(ILabel.class);
+          Collection<ILabel> existingLabels = OwlDAO.loadAll(ILabel.class);
           Map<String, ILabel> mapNameToLabel = new HashMap<String, ILabel>();
           for (ILabel label : existingLabels) {
             mapNameToLabel.put(label.getName(), label);
@@ -247,7 +247,7 @@ public class ApplicationServiceImpl implements IApplicationService {
 
           /* Save new Labels */
           if (!labelsToCreate.isEmpty())
-            DynamicDAO.saveAll(labelsToCreate);
+            OwlDAO.saveAll(labelsToCreate);
 
           /* Assign Labels to News */
           for (INews item : interpretedFeed.getNews()) {
@@ -408,7 +408,7 @@ public class ApplicationServiceImpl implements IApplicationService {
   private Set<ISearchFilter> loadEnabledFilters(String feedLink) {
 
     /* Load Filters */
-    Collection<ISearchFilter> filters = DynamicDAO.getDAO(ISearchFilterDAO.class).loadAll();
+    Collection<ISearchFilter> filters = OwlDAO.getDAO(ISearchFilterDAO.class).loadAll();
     if (filters.isEmpty())
       return Collections.emptySet();
 
@@ -593,7 +593,7 @@ public class ApplicationServiceImpl implements IApplicationService {
     SafeRunner.run(new LoggingSafeRunnable() {
       @Override
       public void run() throws Exception {
-        DynamicDAO.getDAO(ISearchFilterDAO.class).fireFilterApplied(filter, news);
+        OwlDAO.getDAO(ISearchFilterDAO.class).fireFilterApplied(filter, news);
       }
     });
   }
@@ -735,7 +735,7 @@ public class ApplicationServiceImpl implements IApplicationService {
         descriptionUpdatedIds.removeByElement(event.getEntity().getId().longValue());
     }
 
-    INewsDAO newsDao = DynamicDAO.getDAO(INewsDAO.class);
+    INewsDAO newsDao = OwlDAO.getDAO(INewsDAO.class);
     for (int i = 0, c = descriptionUpdatedIds.size(); i < c; ++i) {
       long newsId = descriptionUpdatedIds.get(i);
       INews news = newsDao.load(newsId);

@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.rssowl.core.Owl;
 import org.rssowl.core.persist.ILabel;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.util.CoreUtils;
 import org.rssowl.ui.filter.INewsActionPresentation;
 import org.rssowl.ui.internal.OwlUI;
@@ -133,7 +133,7 @@ public class LabelNewsActionPresentation implements INewsActionPresentation {
       ILabel newLabel = Owl.getModelFactory().createLabel(null, name);
       newLabel.setColor(OwlUI.toString(color));
       newLabel.setOrder(fViewer.getCombo().getItemCount() - 1); // Do not count Marker
-      DynamicDAO.save(newLabel);
+      OwlDAO.save(newLabel);
 
       updateInput(CoreUtils.loadSortedLabels());
       fViewer.setSelection(new StructuredSelection(newLabel));

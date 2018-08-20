@@ -46,7 +46,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.rssowl.core.persist.IEntity;
 import org.rssowl.core.persist.ISearchMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.util.LoggingSafeRunnable;
 import org.rssowl.core.util.StringUtils;
 import org.rssowl.ui.dialogs.properties.IEntityPropertyPage;
@@ -149,7 +149,7 @@ public class EntityPropertyDialog extends Dialog implements IPropertyDialogSite 
       @Override
       public void run() {
         for (IEntity entity : entitiesToSave)
-          DynamicDAO.save(entity);
+          OwlDAO.save(entity);
       }
     });
 

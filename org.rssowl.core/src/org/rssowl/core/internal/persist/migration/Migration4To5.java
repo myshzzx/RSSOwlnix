@@ -62,7 +62,7 @@ public class Migration4To5 implements Migration {
    */
   @Override
   public MigrationResult migrate(ConfigurationFactory configFactory, String dbFileName, IProgressMonitor progressMonitor) {
-    File dbLastBackUpFile = DBManager.getDefault().getDBLastBackUpFile();
+    File dbLastBackUpFile = DBManager.getInstance().getDBLastBackUpFile();
     dbLastBackUpFile.delete();
 
     return new MigrationResult(true, false, true);

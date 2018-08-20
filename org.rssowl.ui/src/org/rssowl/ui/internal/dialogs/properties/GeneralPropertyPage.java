@@ -57,7 +57,7 @@ import org.rssowl.core.persist.IFolderChild;
 import org.rssowl.core.persist.IMark;
 import org.rssowl.core.persist.INewsBin;
 import org.rssowl.core.persist.dao.DAOService;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
 import org.rssowl.core.persist.reference.FeedLinkReference;
 import org.rssowl.core.util.CoreUtils;
@@ -581,13 +581,13 @@ public class GeneralPropertyPage implements IEntityPropertyPage {
           /* This is a new Feed, so create it! */
           if (!daoService.getFeedDAO().exists(newFeedLink)) {
             IFeed feed = Owl.getModelFactory().createFeed(null, newFeedLink);
-            feed = DynamicDAO.save(feed);
+            feed = OwlDAO.save(feed);
           }
 
           /* Check if the old reference can be deleted now */
           FeedLinkReference oldFeedRef = bookmark.getFeedLinkReference();
           if (daoService.getBookMarkDAO().loadAll(oldFeedRef).size() == 1)
-            DynamicDAO.delete(oldFeedRef.resolve());
+            OwlDAO.delete(oldFeedRef.resolve());
 
           /* Apply the new Reference */
           bookmark.setFeedLinkReference(new FeedLinkReference(newFeedLink));

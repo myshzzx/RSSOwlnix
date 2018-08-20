@@ -47,7 +47,7 @@ import org.rssowl.core.persist.IFolderChild;
 import org.rssowl.core.persist.IMark;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INewsBin;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IFolderDAO;
 import org.rssowl.core.util.CoreUtils;
 import org.rssowl.core.util.LoggingSafeRunnable;
@@ -83,7 +83,7 @@ public class BookMarkDNDImpl extends ViewerDropAdapter implements DragSourceList
   protected BookMarkDNDImpl(BookMarkExplorer explorer, Viewer viewer) {
     super(viewer);
     fExplorer = explorer;
-    fFolderDAO = DynamicDAO.getDAO(IFolderDAO.class);
+    fFolderDAO = OwlDAO.getDAO(IFolderDAO.class);
   }
 
   /*

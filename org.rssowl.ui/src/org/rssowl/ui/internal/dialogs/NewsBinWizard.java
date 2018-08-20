@@ -41,7 +41,7 @@ import org.rssowl.core.persist.IFolder;
 import org.rssowl.core.persist.IFolderChild;
 import org.rssowl.core.persist.IModelFactory;
 import org.rssowl.core.persist.INewsBin;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.util.Pair;
 import org.rssowl.core.util.StringUtils;
 import org.rssowl.ui.internal.OwlUI;
@@ -170,7 +170,7 @@ public class NewsBinWizard extends Wizard implements INewWizard {
     for (Map.Entry<String, Serializable> property : properties.entrySet())
       fNewsbin.setProperty(property.getKey(), property.getValue());
 
-    DynamicDAO.save(parent);
+    OwlDAO.save(parent);
 
     return true;
   }

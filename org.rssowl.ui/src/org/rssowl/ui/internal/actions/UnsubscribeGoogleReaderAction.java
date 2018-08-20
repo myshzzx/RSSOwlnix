@@ -37,7 +37,7 @@ import org.rssowl.core.persist.IFeed;
 import org.rssowl.core.persist.IFolder;
 import org.rssowl.core.persist.IFolderChild;
 import org.rssowl.core.persist.dao.DAOService;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.reference.FeedLinkReference;
 import org.rssowl.core.persist.service.PersistenceException;
 import org.rssowl.core.util.CoreUtils;
@@ -122,7 +122,7 @@ public class UnsubscribeGoogleReaderAction implements IWorkbenchWindowActionDele
     IFolder archive = null;
 
     // Iterate over all bookmarks that are synchronized
-    Collection<IBookMark> bookmarks = DynamicDAO.loadAll(IBookMark.class);
+    Collection<IBookMark> bookmarks = OwlDAO.loadAll(IBookMark.class);
     for (IBookMark oldBookMark : bookmarks) {
       if (SyncUtils.isSynchronized(oldBookMark)) {
         String oldFeedLink = oldBookMark.getFeedLinkReference().getLinkAsText();
@@ -156,24 +156,24 @@ public class UnsubscribeGoogleReaderAction implements IWorkbenchWindowActionDele
           DAOService daoService = Owl.getPersistenceService().getDAOService();
           if (!daoService.getFeedDAO().exists(newFeedLink)) {
             IFeed feed = Owl.getModelFactory().createFeed(null, newFeedLink);
-            feed = DynamicDAO.save(feed);
+            feed = OwlDAO.save(feed);
           }
 
           // Save folder where new bookmark is in
-          DynamicDAO.save(oldBookMark.getParent());
+          OwlDAO.save(oldBookMark.getParent());
         }
 
           // Disable automatic load for synchronized feeds
           oldBookMark.setProperty(DefaultPreferences.BM_RELOAD_ON_STARTUP, false);
           oldBookMark.setProperty(DefaultPreferences.BM_UPDATE_INTERVAL_STATE, false);
-          DynamicDAO.save(oldBookMark);
+          OwlDAO.save(oldBookMark);
 
         // Move old bookmark into archive
         if (archive == null) {
           archive = Owl.getModelFactory().createFolder(null, root, "Google Reader Archive"); //$NON-NLS-1$
           archive.setProperty(DefaultPreferences.BM_RELOAD_ON_STARTUP, false);
           archive.setProperty(DefaultPreferences.BM_UPDATE_INTERVAL_STATE, false);
-          DynamicDAO.save(root);
+          OwlDAO.save(root);
         }
 
         List<ReparentInfo<IFolderChild, IFolder>> reparenting = new ArrayList<ReparentInfo<IFolderChild, IFolder>>();
@@ -185,7 +185,7 @@ public class UnsubscribeGoogleReaderAction implements IWorkbenchWindowActionDele
     // Sort by name
     if (archive != null) {
       archive.sort();
-      DynamicDAO.save(archive);
+      OwlDAO.save(archive);
     }
 
     return feedsToReload;

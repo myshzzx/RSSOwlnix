@@ -40,7 +40,7 @@ import org.rssowl.core.Owl;
 import org.rssowl.core.persist.IFolder;
 import org.rssowl.core.persist.IFolderChild;
 import org.rssowl.core.persist.IModelFactory;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IFolderDAO;
 import org.rssowl.core.persist.service.PersistenceException;
 import org.rssowl.core.util.Pair;
@@ -170,7 +170,7 @@ public class FolderWizard extends Wizard implements INewWizard {
         folder.setProperty(property.getKey(), property.getValue());
     }
 
-    DynamicDAO.getDAO(IFolderDAO.class).save(parent);
+    OwlDAO.getDAO(IFolderDAO.class).save(parent);
     return true;
   }
 

@@ -62,7 +62,7 @@ public abstract class CachingDAO<D extends AbstractEntityDAO<T, L, E>, T extends
     fCache = new ConcurrentHashMap<Long, T>(16, 0.75f, 1);
 
     /* Update the Cache based on Database Events */
-    DBManager.getDefault().addEntityStoreListener(new DatabaseListener() {
+    DBManager.getInstance().addEntityStoreListener(new DatabaseListener() {
       @Override
       public void databaseClosed(DatabaseEvent event) {
         onDatabaseClosed(event);

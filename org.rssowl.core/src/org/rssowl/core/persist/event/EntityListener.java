@@ -25,7 +25,7 @@
 package org.rssowl.core.persist.event;
 
 import org.rssowl.core.persist.IEntity;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 
 import java.util.Set;
 
@@ -37,7 +37,7 @@ import java.util.Set;
  * @author Ismael Juma (ismael@juma.me.uk)
  * @param <E> A subclass of <code>ModelEvent</code>
  * @param <T> A subclass of <code>IEntity</code>
- * @see DynamicDAO
+ * @see OwlDAO
  */
 public interface EntityListener<E extends ModelEvent, T extends IEntity> {
 

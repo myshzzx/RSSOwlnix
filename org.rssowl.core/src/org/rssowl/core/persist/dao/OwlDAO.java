@@ -40,16 +40,20 @@ import java.util.Map;
 /**
  * Convinient access to commonly used methods from the persistence layer.
  */
-public final class DynamicDAO {
+public final class OwlDAO {
 
-  /* Singleton Instance */
-  private static DAOService DAO_SERVICE;
+  private static volatile DAOService fDefault;
 
-  private synchronized static final DAOService getDAOService() {
-    if (DAO_SERVICE == null)
-      DAO_SERVICE = Owl.getPersistenceService().getDAOService();
-
-    return DAO_SERVICE;
+  /**
+   * @return Singleton Instance.
+   */
+  private static final DAOService getDefault() {
+    if (fDefault == null)
+      synchronized (OwlDAO.class) {
+        if (fDefault == null)
+          fDefault = Owl.getPersistenceService().getDAOService();
+      }
+    return fDefault;
   }
 
   /**
@@ -301,7 +305,7 @@ public final class DynamicDAO {
    * or <code>null</code> if no such DAO exists.
    */
   public static <D extends IPersistableDAO<T>, T extends IPersistable> D getDAO(Class<D> daoInterface) {
-    return getDAOService().getDAO(daoInterface);
+    return getDefault().getDAO(daoInterface);
   }
 
   /**
@@ -315,7 +319,7 @@ public final class DynamicDAO {
    * <code>null</code> if no such DAO exists.
    */
   public static <T extends IPersistable> IPersistableDAO<T> getDAOFromPersistable(Class<? extends T> persistableClass) {
-    return getDAOService().getDAOFromPersistable(persistableClass);
+    return getDefault().getDAOFromPersistable(persistableClass);
   }
 
   /**
@@ -328,6 +332,6 @@ public final class DynamicDAO {
    * <code>null</code> if no such DAO exists.
    */
   public static <T extends IEntity> IEntityDAO<T, ?, ?> getDAOFromEntity(Class<? extends T> entityClass) {
-    return getDAOService().getDAOFromPersistable(entityClass);
+    return getDefault().getDAOFromPersistable(entityClass);
   }
 }

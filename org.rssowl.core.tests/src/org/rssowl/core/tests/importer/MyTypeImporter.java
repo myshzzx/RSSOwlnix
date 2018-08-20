@@ -35,7 +35,7 @@ import org.rssowl.core.persist.IEntity;
 import org.rssowl.core.persist.IFeed;
 import org.rssowl.core.persist.IFolder;
 import org.rssowl.core.persist.IPersistable;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.reference.FeedLinkReference;
 
 import java.net.URI;
@@ -140,7 +140,7 @@ public class MyTypeImporter implements ITypeImporter {
           IFeed feed = Owl.getModelFactory().createFeed(null, uri);
           feed.setHomepage(homepage != null ? createURI(homepage) : null);
           feed.setDescription(description);
-          feed = DynamicDAO.save(feed);
+          feed = OwlDAO.save(feed);
         }
 
         /* Create the BookMark */

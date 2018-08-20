@@ -55,7 +55,7 @@ import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.ISearchMark;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.util.CoreUtils;
 import org.rssowl.core.util.Pair;
 import org.rssowl.core.util.StringUtils;
@@ -303,7 +303,7 @@ public class SearchMarkWizard extends Wizard implements INewWizard {
     for (Map.Entry<String, Serializable> property : properties.entrySet())
       searchMark.setProperty(property.getKey(), property.getValue());
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     /* Update the Search */
     Controller.getDefault().getSavedSearchService().updateSavedSearches(Collections.singleton(searchMark));

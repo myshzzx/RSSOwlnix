@@ -64,7 +64,7 @@ import org.rssowl.core.persist.ISearchMark;
 import org.rssowl.core.persist.ISource;
 import org.rssowl.core.persist.ITextInput;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
 import org.rssowl.core.persist.reference.FeedLinkReference;
@@ -172,7 +172,7 @@ public class PerformanceTest {
 
       filter.addAction(factory.createFilterAction("org.rssowl.core.StopFilterAction"));
 
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
     }
 
     List<ITask> tasks = getRealWorldReloadTasks(feedFolder.getAbsolutePath());
@@ -298,13 +298,13 @@ public class PerformanceTest {
 
         IFeed feed = new Feed(feedLink);
 
-        feed = DynamicDAO.save(feed);
+        feed = OwlDAO.save(feed);
 
         IBookMark bookmark = new BookMark(null, rootFolder, new FeedLinkReference(feed.getLink()), "Bookmark");
         IPreferenceScope entityScope = Owl.getPreferenceService().getEntityScope(bookmark);
         entityScope.putInteger(DefaultPreferences.DEL_NEWS_BY_COUNT_VALUE, 50);
         rootFolder.addMark(bookmark, null, false);
-        DynamicDAO.save(rootFolder);
+        OwlDAO.save(rootFolder);
       } catch (Exception e) {
         Activator.getDefault().logError(e.getMessage(), e);
       }
@@ -370,7 +370,7 @@ public class PerformanceTest {
       @Override
       public IStatus run(IProgressMonitor monitor) {
         try {
-          smService.updateSavedSearches(DynamicDAO.loadAll(ISearchMark.class));
+          smService.updateSavedSearches(OwlDAO.loadAll(ISearchMark.class));
           smService.stopService();
         } catch (Exception e) {
           ex.add(e);
@@ -553,7 +553,7 @@ public class PerformanceTest {
       ISearchCondition cond4 = factory.createSearchCondition(null, mark, field4, SearchSpecifier.CONTAINS, "pasero");
     }
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
   }
 
   /**
@@ -611,7 +611,7 @@ public class PerformanceTest {
         @Override
         public IStatus run(IProgressMonitor monitor) {
           try {
-            DynamicDAO.save(feed);
+            OwlDAO.save(feed);
           } catch (Exception e) {
             ex.add(e);
           }
@@ -875,7 +875,7 @@ public class PerformanceTest {
           }
         }
 
-        feed = DynamicDAO.save(feed);
+        feed = OwlDAO.save(feed);
 
         IBookMark bookmark = new BookMark(null, rootFolder, new FeedLinkReference(feed.getLink()), "Bookmark");
 
@@ -883,7 +883,7 @@ public class PerformanceTest {
           Owl.getPreferenceService().getEntityScope(bookmark).putBoolean(DefaultPreferences.DEL_READ_NEWS_STATE, true);
 
         rootFolder.addMark(bookmark, null, false);
-        DynamicDAO.save(rootFolder);
+        OwlDAO.save(rootFolder);
       } catch (Exception e) {
         Activator.getDefault().logError(e.getMessage(), e);
       }
@@ -1026,13 +1026,13 @@ public class PerformanceTest {
           news.get(i).setState(INews.State.READ);
         }
       }
-      feedRefs.add(new FeedLinkReference(DynamicDAO.save(feed).getLink()));
+      feedRefs.add(new FeedLinkReference(OwlDAO.save(feed).getLink()));
     }
 
     feeds = null;
     System.gc();
 
-    final INewsDAO newsDAO = DynamicDAO.getDAO(INewsDAO.class);
+    final INewsDAO newsDAO = OwlDAO.getDAO(INewsDAO.class);
     List<ITask> tasks = new ArrayList<ITask>();
     tasks.add(new TaskAdapter() {
       @Override
@@ -1156,7 +1156,7 @@ public class PerformanceTest {
         @Override
         public IStatus run(IProgressMonitor monitor) {
           try {
-            DynamicDAO.save(feed);
+            OwlDAO.save(feed);
           } catch (Exception e) {
             ex.add(e);
           }
@@ -1410,7 +1410,7 @@ public class PerformanceTest {
         @Override
         public IStatus run(IProgressMonitor monitor) {
           try {
-            DynamicDAO.delete(feedRef.resolve());
+            OwlDAO.delete(feedRef.resolve());
           } catch (Exception e) {
             ex.add(e);
           }
@@ -1456,7 +1456,7 @@ public class PerformanceTest {
     List<IFeed> feeds = interpretFeedsHelper();
     List<IFeed> savedFeeds = new ArrayList<IFeed>(feeds.size());
     for (IFeed feed : feeds)
-      savedFeeds.add(DynamicDAO.save(feed));
+      savedFeeds.add(OwlDAO.save(feed));
 
     /* Interpret them again for updates */
     List<IFeed> newFeeds = interpretFeedsHelper();
@@ -1485,7 +1485,7 @@ public class PerformanceTest {
             // full feed before the merge
             // existingFeed[0] =
             // feedManager.loadFullEntity(existingFeed[0].getId());
-            existingFeed[0] = DynamicDAO.load(IFeed.class, existingFeed[0].getId());
+            existingFeed[0] = OwlDAO.load(IFeed.class, existingFeed[0].getId());
             feed.setCopyright("The new Copyright");
             feed.setDescription("The Description has changed as well");
             feed.setPublishDate(new Date());
@@ -1502,7 +1502,7 @@ public class PerformanceTest {
             // DynamicDAO.save(feed);
 
             existingFeed[0].merge(feed);
-            DynamicDAO.save(existingFeed[0]);
+            OwlDAO.save(existingFeed[0]);
           } catch (Exception e) {
             ex.add(e);
           }
@@ -1550,7 +1550,7 @@ public class PerformanceTest {
     final List<IFeed> feeds = interpretFeedsHelper();
     final int limit = feeds.size() / 2;
     for (int i = 0; i < limit; i++)
-      feedRefs.add(new FeedReference(DynamicDAO.save(feeds.get(i)).getId()));
+      feedRefs.add(new FeedReference(OwlDAO.save(feeds.get(i)).getId()));
 
     /* Tasks to resolve Feeds */
     for (int i = 0; i < limit; i++) {
@@ -1562,7 +1562,7 @@ public class PerformanceTest {
           @Override
           public IStatus run(IProgressMonitor monitor) {
             try {
-              DynamicDAO.save(feeds.get(a + limit));
+              OwlDAO.save(feeds.get(a + limit));
             } catch (Exception e) {
               ex.add(e);
             }
@@ -1590,7 +1590,7 @@ public class PerformanceTest {
     List<IFeed> feeds = interpretFeedsHelper();
     List<FeedReference> feedRefs = new ArrayList<FeedReference>();
     for (IFeed feed : feeds)
-      feedRefs.add(new FeedReference(DynamicDAO.save(feed).getId()));
+      feedRefs.add(new FeedReference(OwlDAO.save(feed).getId()));
 
     return feedRefs;
   }

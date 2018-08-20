@@ -48,7 +48,7 @@ import org.rssowl.core.internal.Activator;
 import org.rssowl.core.internal.InternalOwl;
 import org.rssowl.core.persist.IConditionalGet;
 import org.rssowl.core.persist.IFeed;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.event.FeedAdapter;
 import org.rssowl.core.persist.event.FeedEvent;
 import org.rssowl.core.persist.event.FeedListener;
@@ -133,7 +133,7 @@ public class ConnectionServiceImpl implements IConnectionService {
 
   private void registerListeners() {
     /* We register listeners as part of initialisation, we must use InternalOwl */
-    InternalOwl.getDefault().getPersistenceService().getDAOService().getFeedDAO().addEntityListener(fFeedListener);
+    InternalOwl.getInstance().getPersistenceService().getDAOService().getFeedDAO().addEntityListener(fFeedListener);
   }
 
   /*
@@ -146,7 +146,7 @@ public class ConnectionServiceImpl implements IConnectionService {
 
   private void unregisterListeners() {
     if (Owl.isStarted())
-      DynamicDAO.removeEntityListener(IFeed.class, fFeedListener);
+      OwlDAO.removeEntityListener(IFeed.class, fFeedListener);
   }
 
   /*

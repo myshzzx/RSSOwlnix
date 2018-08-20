@@ -46,7 +46,7 @@ import org.eclipse.swt.widgets.Text;
 import org.rssowl.core.Owl;
 import org.rssowl.core.persist.ILabel;
 import org.rssowl.core.persist.INews;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.ICategoryDAO;
 import org.rssowl.core.util.CoreUtils;
 import org.rssowl.core.util.Pair;
@@ -131,7 +131,7 @@ public class AssignLabelsDialog extends Dialog {
           ILabel newLabel = Owl.getModelFactory().createLabel(null, labelValue);
           newLabel.setColor(OwlUI.toString(new RGB(0, 0, 0)));
           newLabel.setOrder(fExistingLabels.size());
-          DynamicDAO.save(newLabel);
+          OwlDAO.save(newLabel);
           fExistingLabels.add(newLabel);
           label = newLabel;
         }
@@ -147,7 +147,7 @@ public class AssignLabelsDialog extends Dialog {
     Controller.getDefault().getSavedSearchService().forceQuickUpdate();
 
     /* Save News */
-    DynamicDAO.saveAll(fNews);
+    OwlDAO.saveAll(fNews);
 
     super.okPressed();
   }
@@ -210,7 +210,7 @@ public class AssignLabelsDialog extends Dialog {
           });
 
           /* Categories */
-          Set<String> categoryNames = DynamicDAO.getDAO(ICategoryDAO.class).loadAllNames();
+          Set<String> categoryNames = OwlDAO.getDAO(ICategoryDAO.class).loadAllNames();
           categoryNames = StringUtils.replaceAll(categoryNames, ",", " "); // Comma not allowed for Labels //$NON-NLS-1$ //$NON-NLS-2$
           values.addAll(categoryNames);
 

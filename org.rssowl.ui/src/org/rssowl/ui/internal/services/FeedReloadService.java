@@ -37,7 +37,7 @@ import org.rssowl.core.internal.persist.pref.DefaultPreferences;
 import org.rssowl.core.persist.IBookMark;
 import org.rssowl.core.persist.INewsBin;
 import org.rssowl.core.persist.INewsMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.event.BookMarkAdapter;
 import org.rssowl.core.persist.event.BookMarkEvent;
 import org.rssowl.core.persist.pref.IPreferenceScope;
@@ -168,8 +168,8 @@ public class FeedReloadService {
   private void init() {
 
     /* Query Update Intervals and reload/open state */
-    Collection<IBookMark> bookmarks = DynamicDAO.loadAll(IBookMark.class);
-    Collection<INewsBin> newsbins = DynamicDAO.loadAll(INewsBin.class);
+    Collection<IBookMark> bookmarks = OwlDAO.loadAll(IBookMark.class);
+    Collection<INewsBin> newsbins = OwlDAO.loadAll(INewsBin.class);
 
     final Set<IBookMark> bookmarksToReloadOnStartup = new HashSet<IBookMark>();
     final List<INewsMark> newsmarksToOpenOnStartup = new ArrayList<INewsMark>();
@@ -270,11 +270,11 @@ public class FeedReloadService {
       }
     };
 
-    DynamicDAO.addEntityListener(IBookMark.class, fBookMarkListener);
+    OwlDAO.addEntityListener(IBookMark.class, fBookMarkListener);
   }
 
   private void unregisterListeners() {
-    DynamicDAO.removeEntityListener(IBookMark.class, fBookMarkListener);
+    OwlDAO.removeEntityListener(IBookMark.class, fBookMarkListener);
   }
 
   private void onBookMarksAdded(Set<BookMarkEvent> events) {

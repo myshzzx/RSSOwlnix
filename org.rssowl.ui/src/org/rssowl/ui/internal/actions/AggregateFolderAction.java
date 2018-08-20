@@ -45,7 +45,7 @@ import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.ISearchMark;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
 import org.rssowl.core.util.CoreUtils;
 import org.rssowl.ui.internal.FolderNewsMark;
@@ -171,7 +171,7 @@ public class AggregateFolderAction implements IObjectActionDelegate {
   }
 
   private ISearchMark findSearch(IFolderChild folder) {
-    Collection<ISearchMark> existingSearches = DynamicDAO.loadAll(ISearchMark.class);
+    Collection<ISearchMark> existingSearches = OwlDAO.loadAll(ISearchMark.class);
     for (ISearchMark search : existingSearches) {
       List<ISearchCondition> conditions = search.getSearchConditions();
       if (conditions.size() == 1) {

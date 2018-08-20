@@ -76,7 +76,7 @@ import org.rssowl.core.persist.ISearchFilter;
 import org.rssowl.core.persist.ISearchMark;
 import org.rssowl.core.persist.ISource;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IConditionalGetDAO;
 import org.rssowl.core.persist.dao.IFeedDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
@@ -146,8 +146,8 @@ public class DBManagerTest extends LargeBlockSizeTest {
   public void setUp() throws Exception {
     ((PersistenceServiceImpl)Owl.getPersistenceService()).recreateSchemaForTests();
     fTypesFactory = Owl.getModelFactory();
-    fDb = DBManager.getDefault().getObjectContainer();
-    fNewsDAO = DynamicDAO.getDAO(INewsDAO.class);
+    fDb = DBManager.getInstance().getObjectContainer();
+    fNewsDAO = OwlDAO.getDAO(INewsDAO.class);
   }
 
   /**
@@ -157,17 +157,17 @@ public class DBManagerTest extends LargeBlockSizeTest {
   public void testNewsDaoLoadAllFromFeed() throws Exception {
     IFolder root = fTypesFactory.createFolder(null, null, "Root");
     INewsBin bin = fTypesFactory.createNewsBin(null, root, "Bin");
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     IFeed parent = fTypesFactory.createFeed(null, new URI("http://www.feed.com"));
     INews news = fTypesFactory.createNews(null, parent, new Date());
-    DynamicDAO.save(parent);
+    OwlDAO.save(parent);
 
     INews newsCopy = fTypesFactory.createNews(news, bin);
-    DynamicDAO.save(newsCopy);
-    DynamicDAO.save(bin);
+    OwlDAO.save(newsCopy);
+    OwlDAO.save(bin);
 
-    Collection<INews> newsFromFeed = DynamicDAO.getDAO(INewsDAO.class).loadAll(new FeedLinkReference(parent.getLink()), INews.State.getVisible());
+    Collection<INews> newsFromFeed = OwlDAO.getDAO(INewsDAO.class).loadAll(new FeedLinkReference(parent.getLink()), INews.State.getVisible());
     assertEquals(1, newsFromFeed.size());
     assertEquals(news, newsFromFeed.iterator().next());
   }
@@ -182,7 +182,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
     INews news = createNews(feed);
     newsList.add(news);
     newsList.add(news);
-    DynamicDAO.saveAll(newsList);
+    OwlDAO.saveAll(newsList);
   }
 
   /**
@@ -202,7 +202,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
     news.setState(INews.State.NEW);
     String news1Guid = "news1";
     fTypesFactory.createGuid(news, news1Guid, true);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     String feed1Link = "http://www.feed1.com";
     feed = fTypesFactory.createFeed(null, new URI(feed1Link));
@@ -214,7 +214,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
     news.setState(INews.State.READ);
     String news3Guid = "news3";
     fTypesFactory.createGuid(news, news3Guid, true);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     news = null;
     feed = null;
     System.gc();
@@ -236,7 +236,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
         newsEvents.addAll(events);
       }
     };
-    DynamicDAO.addEntityListener(INews.class, newsListener);
+    OwlDAO.addEntityListener(INews.class, newsListener);
     try {
       fNewsDAO.setState(EnumSet.of(INews.State.HIDDEN), INews.State.DELETED, false);
       assertEquals(2, newsEvents.size());
@@ -246,14 +246,14 @@ public class DBManagerTest extends LargeBlockSizeTest {
         assertEquals(true, guid.equals(news0Guid) || guid.equals(news2Guid));
       }
 
-      IFeedDAO feedDao = DynamicDAO.getDAO(IFeedDAO.class);
+      IFeedDAO feedDao = OwlDAO.getDAO(IFeedDAO.class);
       feed = feedDao.load(new URI(feed0Link));
       assertEquals(2, feed.getNews().size());
 
       feed = feedDao.load(new URI(feed1Link));
       assertEquals(2, feed.getNews().size());
     } finally {
-      DynamicDAO.removeEntityListener(INews.class, newsListener);
+      OwlDAO.removeEntityListener(INews.class, newsListener);
     }
   }
 
@@ -269,15 +269,15 @@ public class DBManagerTest extends LargeBlockSizeTest {
     IFeed feed = fTypesFactory.createFeed(null, new URI("http://www.feed.com"));
     INews news = fTypesFactory.createNews(null, feed, new Date());
     news.setState(INews.State.DELETED);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IFolder folder = fTypesFactory.createFolder(null, null, "Folder");
     INewsBin newsBin = fTypesFactory.createNewsBin(null, folder, "NewsBin");
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     INews newsCopy = fTypesFactory.createNews(news, newsBin);
-    DynamicDAO.save(newsCopy);
-    DynamicDAO.save(newsBin);
+    OwlDAO.save(newsCopy);
+    OwlDAO.save(newsBin);
 
     assertEquals(0, newsBin.getNews().size());
     assertEquals(null, fNewsDAO.load(newsCopy.getId()));
@@ -295,16 +295,16 @@ public class DBManagerTest extends LargeBlockSizeTest {
     IFeed feed = fTypesFactory.createFeed(null, new URI("http://www.feed.com"));
     INews news = fTypesFactory.createNews(null, feed, new Date());
     news.setState(INews.State.READ);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IFolder folder = fTypesFactory.createFolder(null, null, "Folder");
     INewsBin newsBin = fTypesFactory.createNewsBin(null, folder, "NewsBin");
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     INews newsCopy = fTypesFactory.createNews(news, newsBin);
     newsCopy.setState(INews.State.NEW);
-    DynamicDAO.save(newsCopy);
-    DynamicDAO.save(newsBin);
+    OwlDAO.save(newsCopy);
+    OwlDAO.save(newsBin);
 
     assertEquals(1, newsBin.getNews(EnumSet.of(INews.State.NEW)).size());
   }
@@ -321,10 +321,10 @@ public class DBManagerTest extends LargeBlockSizeTest {
     IFeed feed1 = fTypesFactory.createFeed(null, createURI("http://www.afeedlink.com"));
     INews news1 = fTypesFactory.createNews(null, feed1, new Date());
     news1.setLink(link);
-    DynamicDAO.save(feed0);
-    DynamicDAO.save(feed1);
+    OwlDAO.save(feed0);
+    OwlDAO.save(feed1);
 
-    DynamicDAO.getDAO(INewsDAO.class).setState(Arrays.asList(news0, news1), INews.State.HIDDEN, true, false);
+    OwlDAO.getDAO(INewsDAO.class).setState(Arrays.asList(news0, news1), INews.State.HIDDEN, true, false);
     assertEquals(INews.State.HIDDEN, news0.getState());
     assertEquals(INews.State.HIDDEN, news1.getState());
   }
@@ -339,39 +339,39 @@ public class DBManagerTest extends LargeBlockSizeTest {
     IFeed feed = createFeed();
     INews news = fTypesFactory.createNews(null, feed, new Date());
     fTypesFactory.createGuid(news, "http://www.link.com", true);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IFolder folder = fTypesFactory.createFolder(null, null, "Folder");
     IBookMark bookMark = fTypesFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark");
     INewsBin newsBin = fTypesFactory.createNewsBin(null, folder, "NewsBin");
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     INews newsCopy = fTypesFactory.createNews(news, newsBin);
-    DynamicDAO.save(newsCopy);
-    DynamicDAO.save(newsBin);
+    OwlDAO.save(newsCopy);
+    OwlDAO.save(newsBin);
 
     /* Feed referenced by bookMark and newsCopy */
     fNewsDAO.setState(Collections.singleton(newsCopy), INews.State.DELETED, false, false);
-    assertEquals(feed, DynamicDAO.load(IFeed.class, feed.getId()));
+    assertEquals(feed, OwlDAO.load(IFeed.class, feed.getId()));
 
     newsCopy = fTypesFactory.createNews(news, newsBin);
     fNewsDAO.save(newsCopy);
-    DynamicDAO.save(newsBin);
+    OwlDAO.save(newsBin);
 
-    DynamicDAO.delete(bookMark);
+    OwlDAO.delete(bookMark);
     newsBin = fTypesFactory.createNewsBin(null, folder, "NewsBin2");
-    DynamicDAO.save(newsBin);
+    OwlDAO.save(newsBin);
     INews newsCopy2 = fTypesFactory.createNews(newsCopy, newsBin);
-    DynamicDAO.save(newsCopy2);
-    DynamicDAO.save(newsBin);
+    OwlDAO.save(newsCopy2);
+    OwlDAO.save(newsBin);
 
     /* Feed referenced by newsCopy and newsCopy2 */
     fNewsDAO.setState(Collections.singleton(newsCopy), INews.State.DELETED, false, false);
-    assertEquals(feed, DynamicDAO.load(IFeed.class, feed.getId()));
+    assertEquals(feed, OwlDAO.load(IFeed.class, feed.getId()));
 
     /* Feed referenced by newsCopy2 which is being deleted */
     fNewsDAO.setState(Collections.singleton(newsCopy2), INews.State.DELETED, false, false);
-    assertEquals(null, DynamicDAO.load(IFeed.class, feed.getId()));
+    assertEquals(null, OwlDAO.load(IFeed.class, feed.getId()));
   }
 
   /**
@@ -383,16 +383,16 @@ public class DBManagerTest extends LargeBlockSizeTest {
     IFeed feed = createFeed();
     INews news = fTypesFactory.createNews(null, feed, new Date());
     fTypesFactory.createGuid(news, "http://www.link.com", true);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IFolder folder = fTypesFactory.createFolder(null, null, "Folder");
     IBookMark bookMark = fTypesFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark");
     INewsBin newsBin = fTypesFactory.createNewsBin(null, folder, "NewsBin");
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     INews newsCopy = fTypesFactory.createNews(news, newsBin);
-    DynamicDAO.save(newsCopy);
-    DynamicDAO.save(newsBin);
+    OwlDAO.save(newsCopy);
+    OwlDAO.save(newsBin);
 
     assertEquals(1, bookMark.getNewsCount(EnumSet.of(INews.State.NEW)));
     assertEquals(1, newsBin.getNewsCount(EnumSet.of(INews.State.NEW)));
@@ -413,16 +413,16 @@ public class DBManagerTest extends LargeBlockSizeTest {
     IFeed feed = createFeed();
     INews news = fTypesFactory.createNews(null, feed, new Date());
     fTypesFactory.createGuid(news, "http://www.link.com", true);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IFolder folder = fTypesFactory.createFolder(null, null, "Folder");
     fTypesFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark");
     INewsBin newsBin = fTypesFactory.createNewsBin(null, folder, "NewsBin");
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     INews newsCopy = fTypesFactory.createNews(news, newsBin);
-    DynamicDAO.save(newsCopy);
-    DynamicDAO.save(newsBin);
+    OwlDAO.save(newsCopy);
+    OwlDAO.save(newsBin);
 
     fNewsDAO.setState(Collections.singleton(newsCopy), INews.State.HIDDEN, false, false);
     assertEquals(1, newsBin.getNewsRefs().size());
@@ -447,18 +447,18 @@ public class DBManagerTest extends LargeBlockSizeTest {
     INews news = fTypesFactory.createNews(null, feed, new Date());
     news.setFlagged(true);
     fTypesFactory.createGuid(news, "http://www.link.com", true);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IFolder folder = fTypesFactory.createFolder(null, null, "Folder");
     IBookMark mark = fTypesFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark");
     INewsBin newsBin = fTypesFactory.createNewsBin(null, folder, "NewsBin");
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     INews newsCopy = fTypesFactory.createNews(news, newsBin);
-    DynamicDAO.save(newsCopy);
-    DynamicDAO.save(newsBin);
+    OwlDAO.save(newsCopy);
+    OwlDAO.save(newsBin);
 
-    DynamicDAO.delete(mark);
+    OwlDAO.delete(mark);
     /*
      * Mark containing the feed was deleted, but feed is not deleted because
      * it's still referenced by a copied news. The feed is hence empty.
@@ -477,19 +477,19 @@ public class DBManagerTest extends LargeBlockSizeTest {
     IFeed feed = createFeed();
     INews news = fTypesFactory.createNews(null, feed, new Date());
     fTypesFactory.createGuid(news, "http://www.link.com", true);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IFolder folder = fTypesFactory.createFolder(null, null, "Folder");
     IBookMark bookMark = fTypesFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "Mark");
     INewsBin newsBin = fTypesFactory.createNewsBin(null, folder, "bin");
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     INews newsCopy = fTypesFactory.createNews(news, newsBin);
-    DynamicDAO.save(newsCopy);
-    DynamicDAO.save(newsBin);
+    OwlDAO.save(newsCopy);
+    OwlDAO.save(newsBin);
 
-    DynamicDAO.delete(bookMark);
-    feed = DynamicDAO.load(IFeed.class, feed.getId());
+    OwlDAO.delete(bookMark);
+    feed = OwlDAO.load(IFeed.class, feed.getId());
     assertNotNull(feed);
     assertEquals(0, feed.getNews().size());
   }
@@ -503,16 +503,16 @@ public class DBManagerTest extends LargeBlockSizeTest {
     IFeed feed = createFeed();
     INews news = fTypesFactory.createNews(null, feed, new Date());
     fTypesFactory.createGuid(news, "http://www.link.com", true);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IFolder folder = fTypesFactory.createFolder(null, null, "Folder");
     fTypesFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark");
     INewsBin newsBin = fTypesFactory.createNewsBin(null, folder, "NewsBin");
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     INews newsCopy = fTypesFactory.createNews(news, newsBin);
-    DynamicDAO.save(newsCopy);
-    DynamicDAO.save(newsBin);
+    OwlDAO.save(newsCopy);
+    OwlDAO.save(newsBin);
 
     Query query = fDb.query();
     query.constrain(News.class);
@@ -553,15 +553,15 @@ public class DBManagerTest extends LargeBlockSizeTest {
   public void testDeleteSearchCondition() {
     IFolder folder = fTypesFactory.createFolder(null, null, "Folder");
     ISearchMark searchMark = fTypesFactory.createSearchMark(null, folder, "Mark");
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
     ISearchField searchField = fTypesFactory.createSearchField(0, "SomeEntity");
     ISearchCondition searchCondition = fTypesFactory.createSearchCondition(null, searchMark, searchField, SearchSpecifier.BEGINS_WITH, "value");
-    DynamicDAO.save(searchMark);
-    assertNotNull(DynamicDAO.load(ISearchCondition.class, searchCondition.getId()));
+    OwlDAO.save(searchMark);
+    assertNotNull(OwlDAO.load(ISearchCondition.class, searchCondition.getId()));
     long searchFieldId = fDb.ext().getID(searchCondition.getField());
     assertNotNull(fDb.ext().getByID(searchFieldId));
-    DynamicDAO.delete(searchCondition);
-    assertNull(DynamicDAO.load(ISearchCondition.class, searchCondition.getId()));
+    OwlDAO.delete(searchCondition);
+    assertNull(OwlDAO.load(ISearchCondition.class, searchCondition.getId()));
     assertNull(fDb.ext().getByID(searchFieldId));
     assertEquals(0, searchMark.getSearchConditions().size());
   }
@@ -576,14 +576,14 @@ public class DBManagerTest extends LargeBlockSizeTest {
     ISearchMark searchMark = fTypesFactory.createSearchMark(null, folder, "Mark");
     ISearchField searchField = fTypesFactory.createSearchField(0, "SomeEntity");
     ISearchCondition searchCondition = fTypesFactory.createSearchCondition(null, searchMark, searchField, SearchSpecifier.BEGINS_WITH, "value");
-    DynamicDAO.save(folder);
-    assertNotNull(DynamicDAO.load(ISearchMark.class, searchMark.getId()));
-    assertNotNull(DynamicDAO.load(ISearchCondition.class, searchCondition.getId()));
+    OwlDAO.save(folder);
+    assertNotNull(OwlDAO.load(ISearchMark.class, searchMark.getId()));
+    assertNotNull(OwlDAO.load(ISearchCondition.class, searchCondition.getId()));
     long searchFieldId = fDb.ext().getID(searchCondition.getField());
     assertNotNull(fDb.ext().getByID(searchFieldId));
-    DynamicDAO.delete(searchMark);
-    assertNull(DynamicDAO.load(ISearchMark.class, searchMark.getId()));
-    assertNull(DynamicDAO.load(ISearchCondition.class, searchCondition.getId()));
+    OwlDAO.delete(searchMark);
+    assertNull(OwlDAO.load(ISearchMark.class, searchMark.getId()));
+    assertNull(OwlDAO.load(ISearchCondition.class, searchCondition.getId()));
     assertNull(fDb.ext().getByID(searchFieldId));
   }
 
@@ -594,16 +594,16 @@ public class DBManagerTest extends LargeBlockSizeTest {
   public void testDeleteNewsBinDeletesNewsContainer() {
     IFeed feed = createFeed();
     INews news = fTypesFactory.createNews(null, feed, new Date());
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IFolder folder = fTypesFactory.createFolder(null, null, "Folder");
     fTypesFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark");
     NewsBin bin = (NewsBin) fTypesFactory.createNewsBin(null, folder, "News Bin");
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     INews newsCopy = fTypesFactory.createNews(news, bin);
-    DynamicDAO.save(newsCopy);
-    DynamicDAO.save(bin);
+    OwlDAO.save(newsCopy);
+    OwlDAO.save(bin);
 
     /*
      * Ensure that arrays are treated specially by db4o, don't need to delete
@@ -612,7 +612,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
     assertFalse(fDb.ext().isStored(bin.internalGetNewsContainer().internalGetNewsIds()));
 
     NewsContainer newsContainer = bin.internalGetNewsContainer();
-    DynamicDAO.delete(bin);
+    OwlDAO.delete(bin);
     assertFalse(fDb.ext().isStored(newsContainer));
   }
 
@@ -623,9 +623,9 @@ public class DBManagerTest extends LargeBlockSizeTest {
   public void testDeleteBinIsNotSendindFolderDeleteEvents() {
     IFolder folder = fTypesFactory.createFolder(null, null, "Folder");
     INewsBin bin = fTypesFactory.createNewsBin(null, folder, "News Bin");
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
-    assertNotNull(DynamicDAO.load(INewsBin.class, bin.getId()));
+    assertNotNull(OwlDAO.load(INewsBin.class, bin.getId()));
 
     final boolean[] bool = new boolean[] { false };
 
@@ -636,18 +636,18 @@ public class DBManagerTest extends LargeBlockSizeTest {
       }
     };
 
-    DynamicDAO.addEntityListener(IFolder.class, folderListener);
+    OwlDAO.addEntityListener(IFolder.class, folderListener);
 
-    DynamicDAO.delete(bin);
-    assertNull(DynamicDAO.load(INewsBin.class, bin.getId()));
+    OwlDAO.delete(bin);
+    assertNull(OwlDAO.load(INewsBin.class, bin.getId()));
 
-    DynamicDAO.removeEntityListener(IFolder.class, folderListener);
+    OwlDAO.removeEntityListener(IFolder.class, folderListener);
 
     assertFalse("Unexpected Folder Event", bool[0]);
   }
 
   private ICategory createFeedCategory() throws PersistenceException {
-    IFeed feed = DynamicDAO.save(createFeed());
+    IFeed feed = OwlDAO.save(createFeed());
     ICategory category = fTypesFactory.createCategory(null, feed);
     category.setName("categoryName");
     category.setDomain("some/domain");
@@ -656,8 +656,8 @@ public class DBManagerTest extends LargeBlockSizeTest {
   }
 
   private ICategory createNewsCategory() throws PersistenceException {
-    IFeed feed = DynamicDAO.save(createFeed());
-    INews news = DynamicDAO.save(createNews(feed));
+    IFeed feed = OwlDAO.save(createFeed());
+    INews news = OwlDAO.save(createNews(feed));
     ICategory category = fTypesFactory.createCategory(null, news);
     category.setName("categoryName");
     category.setDomain("some/domain");
@@ -666,12 +666,12 @@ public class DBManagerTest extends LargeBlockSizeTest {
   }
 
   private IBookMark createBookMark() throws PersistenceException {
-    IFolder folder = DynamicDAO.save(createFolder());
+    IFolder folder = OwlDAO.save(createFolder());
     return createBookMark(folder);
   }
 
   private ISearchMark createSearchMark() throws PersistenceException {
-    IFolder folder = DynamicDAO.save(createFolder());
+    IFolder folder = OwlDAO.save(createFolder());
     return createSearchMark(folder);
   }
 
@@ -679,7 +679,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
     IFeed feed = createFeed();
     IFeed savedFeed = Owl.getPersistenceService().getDAOService().getFeedDAO().load(feed.getLink());
     if (savedFeed == null)
-      savedFeed = DynamicDAO.save(feed);
+      savedFeed = OwlDAO.save(feed);
 
     IBookMark bookMark = fTypesFactory.createBookMark(null, folder, new FeedLinkReference(savedFeed.getLink()), "Default bookmark");
     bookMark.setLastVisitDate(createDate());
@@ -731,30 +731,30 @@ public class DBManagerTest extends LargeBlockSizeTest {
           assertTrue(updatedJohn[0].isIdentical(dbPerson));
         }
       };
-      DynamicDAO.addEntityListener(IPerson.class, personListener);
-      long savedJohnId = DynamicDAO.save(initialJohn).getId().longValue();
+      OwlDAO.addEntityListener(IPerson.class, personListener);
+      long savedJohnId = OwlDAO.save(initialJohn).getId().longValue();
       System.gc();
-      IPerson savedJohn = DynamicDAO.load(IPerson.class, savedJohnId);
+      IPerson savedJohn = OwlDAO.load(IPerson.class, savedJohnId);
       initialJohn.setId(savedJohn.getId());
       assertTrue(initialJohn.isIdentical(savedJohn));
       URI oldJohnEmail = savedJohn.getEmail();
       IPerson dan = createPersonDan(feed);
       dan.setEmail(oldJohnEmail);
-      DynamicDAO.removeEntityListener(IPerson.class, personListener);
-      DynamicDAO.save(dan);
+      OwlDAO.removeEntityListener(IPerson.class, personListener);
+      OwlDAO.save(dan);
       savedJohn.setEmail(createURI("anewemailaddress@gmail.com"));
       updatedJohn[0] = (Person) savedJohn;
-      DynamicDAO.addEntityListener(IPerson.class, personListener);
-      DynamicDAO.save(savedJohn);
+      OwlDAO.addEntityListener(IPerson.class, personListener);
+      OwlDAO.save(savedJohn);
       assertTrue(personAddedCalled[0]);
       assertTrue(personUpdatedCalled[0]);
-      DynamicDAO.delete(updatedJohn[0]);
+      OwlDAO.delete(updatedJohn[0]);
 
     } catch (PersistenceException e) {
       fail(e.getMessage());
     } finally {
       if (personListener != null) {
-        DynamicDAO.removeEntityListener(IPerson.class, personListener);
+        OwlDAO.removeEntityListener(IPerson.class, personListener);
       }
     }
 
@@ -767,7 +767,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
    */
   @Test
   public void testNewsMergeLink() throws Exception {
-    IFeed feed = DynamicDAO.save(createFeed());
+    IFeed feed = OwlDAO.save(createFeed());
     INews news = fTypesFactory.createNews(null, feed, new Date());
     news.setId(1L);
     news.setLink(createURI("http://www.uri.com"));
@@ -788,7 +788,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
    */
   @Test
   public void testNewsSetLink() throws Exception {
-    IFeed feed = DynamicDAO.save(createFeed());
+    IFeed feed = OwlDAO.save(createFeed());
     INews news = fTypesFactory.createNews(null, feed, new Date());
     URI uri = createURI("http://uri.com");
     news.setLink(uri);
@@ -812,14 +812,14 @@ public class DBManagerTest extends LargeBlockSizeTest {
   @Test
   public void testDeleteNews() throws PersistenceException {
     IFeed feed = createFeed();
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
     INews news = createNews(feed);
-    news = DynamicDAO.save(news);
+    news = OwlDAO.save(news);
     Long newsId = news.getId();
-    DynamicDAO.delete(new NewsReference(newsId).resolve());
-    feed = DynamicDAO.load(IFeed.class, feed.getId());
+    OwlDAO.delete(new NewsReference(newsId).resolve());
+    feed = OwlDAO.load(IFeed.class, feed.getId());
     assertEquals(0, feed.getNews().size());
-    assertNull(DynamicDAO.load(INews.class, newsId));
+    assertNull(OwlDAO.load(INews.class, newsId));
   }
 
   /**
@@ -830,14 +830,14 @@ public class DBManagerTest extends LargeBlockSizeTest {
     try {
       // Save root folders
       IFolder folder1 = createFolder();
-      folder1 = DynamicDAO.save(folder1);
+      folder1 = OwlDAO.save(folder1);
 
       IFolder folder2 = fTypesFactory.createFolder(null, null, "AnotherFolder");
-      folder2 = DynamicDAO.save(folder2);
+      folder2 = OwlDAO.save(folder2);
 
       // Save non-root folder
       IFolder nonRootFolder = createFolderWithParent();
-      DynamicDAO.save(nonRootFolder);
+      OwlDAO.save(nonRootFolder);
 
       Collection<IFolder> rootFolderRefs = Owl.getPersistenceService().getDAOService().getFolderDAO().loadRoots();
       assertEquals(3, rootFolderRefs.size());
@@ -858,8 +858,8 @@ public class DBManagerTest extends LargeBlockSizeTest {
   public void testAddAndDeleteBookMark() {
     try {
       IBookMark bookMark = createBookMark();
-      bookMark = DynamicDAO.save(bookMark);
-      DynamicDAO.delete(bookMark);
+      bookMark = OwlDAO.save(bookMark);
+      OwlDAO.delete(bookMark);
     } catch (PersistenceException e) {
       fail(e.getMessage());
     }
@@ -873,8 +873,8 @@ public class DBManagerTest extends LargeBlockSizeTest {
   public void testAddAndDeleteFeedCategory() {
     try {
       ICategory category = createFeedCategory();
-      ICategory savedCategory = DynamicDAO.save(category);
-      DynamicDAO.delete(savedCategory);
+      ICategory savedCategory = OwlDAO.save(category);
+      OwlDAO.delete(savedCategory);
     } catch (PersistenceException e) {
       fail(e.getMessage());
     }
@@ -888,8 +888,8 @@ public class DBManagerTest extends LargeBlockSizeTest {
   public void testAddAndDeleteNewsCategory() {
     try {
       ICategory category = createNewsCategory();
-      ICategory savedCategory = DynamicDAO.save(category);
-      DynamicDAO.delete(savedCategory);
+      ICategory savedCategory = OwlDAO.save(category);
+      OwlDAO.delete(savedCategory);
     } catch (PersistenceException e) {
       fail(e.getMessage());
     }
@@ -901,12 +901,12 @@ public class DBManagerTest extends LargeBlockSizeTest {
   @Test
   public void testAddAndGetFeedCategory() {
     Category category = (Category) createFeedCategory();
-    DynamicDAO.save(category);
-    Collection<ICategory> categories = DynamicDAO.loadAll(ICategory.class);
+    OwlDAO.save(category);
+    Collection<ICategory> categories = OwlDAO.loadAll(ICategory.class);
     assertEquals(1, categories.size());
     category.setId(categories.iterator().next().getId());
     assertTrue(category.isIdentical(categories.iterator().next()));
-    DynamicDAO.deleteAll(categories);
+    OwlDAO.deleteAll(categories);
   }
 
   /**
@@ -914,12 +914,12 @@ public class DBManagerTest extends LargeBlockSizeTest {
    */
   public void testAddAndGetNewsCategory() {
     Category category = (Category) createNewsCategory();
-    DynamicDAO.save(category);
-    Collection<ICategory> categories = DynamicDAO.loadAll(ICategory.class);
+    OwlDAO.save(category);
+    Collection<ICategory> categories = OwlDAO.loadAll(ICategory.class);
     assertEquals(1, categories.size());
     category.setId(categories.iterator().next().getId());
     assertTrue(category.isIdentical(categories.iterator().next()));
-    DynamicDAO.deleteAll(categories);
+    OwlDAO.deleteAll(categories);
   }
 
   private ILabel createLabel() {
@@ -959,23 +959,23 @@ public class DBManagerTest extends LargeBlockSizeTest {
           assertTrue(updatedLabel[0].isIdentical(dbLabel));
         }
       };
-      DynamicDAO.addEntityListener(ILabel.class, labelListener);
-      long savedLabelId = DynamicDAO.save(initialLabel).getId().longValue();
+      OwlDAO.addEntityListener(ILabel.class, labelListener);
+      long savedLabelId = OwlDAO.save(initialLabel).getId().longValue();
       System.gc();
-      ILabel dbLabel = DynamicDAO.load(ILabel.class, savedLabelId);
+      ILabel dbLabel = OwlDAO.load(ILabel.class, savedLabelId);
       initialLabel.setId(dbLabel.getId());
       assertTrue(initialLabel.isIdentical(dbLabel));
       dbLabel.setColor("255,255,137");
       updatedLabel[0] = (Label) dbLabel;
-      DynamicDAO.save(dbLabel);
+      OwlDAO.save(dbLabel);
       assertTrue(labelAddedCalled[0]);
       assertTrue(labelUpdatedCalled[0]);
-      DynamicDAO.delete(updatedLabel[0]);
+      OwlDAO.delete(updatedLabel[0]);
     } catch (PersistenceException e) {
       fail(e.getMessage());
     } finally {
       if (labelListener != null) {
-        DynamicDAO.removeEntityListener(ILabel.class, labelListener);
+        OwlDAO.removeEntityListener(ILabel.class, labelListener);
       }
     }
   }
@@ -1003,11 +1003,11 @@ public class DBManagerTest extends LargeBlockSizeTest {
       action.setData(new Long[] { 1l, 2l, 3l });
       filter.addAction(action);
 
-      filter = DynamicDAO.save(filter);
+      filter = OwlDAO.save(filter);
       if (gc)
         System.gc();
 
-      Collection<ISearchFilter> filters = DynamicDAO.loadAll(ISearchFilter.class);
+      Collection<ISearchFilter> filters = OwlDAO.loadAll(ISearchFilter.class);
       assertEquals(1, filters.size());
       ISearchFilter savedFilter = filters.iterator().next();
       assertEquals(filter.getName(), savedFilter.getName());
@@ -1032,7 +1032,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
 
     /* Update */
     {
-      Collection<ISearchFilter> filters = DynamicDAO.loadAll(ISearchFilter.class);
+      Collection<ISearchFilter> filters = OwlDAO.loadAll(ISearchFilter.class);
       ISearchFilter savedFilter = filters.iterator().next();
 
       savedFilter.setName("Disabled Filter");
@@ -1057,11 +1057,11 @@ public class DBManagerTest extends LargeBlockSizeTest {
       ISearchCondition condition2 = fTypesFactory.createSearchCondition(fTypesFactory.createSearchField(INews.LOCATION, INews.class.getName()), SearchSpecifier.IS, new Long[][] { { 2l } });
       savedSearch.addSearchCondition(condition2);
 
-      DynamicDAO.save(savedFilter);
+      OwlDAO.save(savedFilter);
       if (gc)
         System.gc();
 
-      filters = DynamicDAO.loadAll(ISearchFilter.class);
+      filters = OwlDAO.loadAll(ISearchFilter.class);
       assertEquals(1, filters.size());
       ISearchFilter loadedFilter = filters.iterator().next();
       assertEquals(savedFilter.getName(), loadedFilter.getName());
@@ -1086,14 +1086,14 @@ public class DBManagerTest extends LargeBlockSizeTest {
 
     /* Delete */
     {
-      Collection<ISearchFilter> filters = DynamicDAO.loadAll(ISearchFilter.class);
+      Collection<ISearchFilter> filters = OwlDAO.loadAll(ISearchFilter.class);
       assertEquals(1, filters.size());
 
-      DynamicDAO.delete(filters.iterator().next());
+      OwlDAO.delete(filters.iterator().next());
       if (gc)
         System.gc();
 
-      filters = DynamicDAO.loadAll(ISearchFilter.class);
+      filters = OwlDAO.loadAll(ISearchFilter.class);
       assertTrue(filters.isEmpty());
     }
   }
@@ -1135,7 +1135,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
             assertTrue(initialCategory[0].isIdentical(dbCategory));
             dbCategory.setDomain("newDomain/newDomain");
             updatedCategory[0] = dbCategory;
-            DynamicDAO.save(dbCategory);
+            OwlDAO.save(dbCategory);
           } catch (PersistenceException e) {
             fail(e.getMessage());
           }
@@ -1149,16 +1149,16 @@ public class DBManagerTest extends LargeBlockSizeTest {
           assertTrue(updatedCategory[0].isIdentical(dbCategory));
         }
       };
-      DynamicDAO.addEntityListener(ICategory.class, categoryListener);
-      DynamicDAO.save(initialCategory[0]);
+      OwlDAO.addEntityListener(ICategory.class, categoryListener);
+      OwlDAO.save(initialCategory[0]);
       assertTrue(categoryAddedCalled[0]);
       assertTrue(categoryUpdatedCalled[0]);
-      DynamicDAO.delete(updatedCategory[0]);
+      OwlDAO.delete(updatedCategory[0]);
     } catch (PersistenceException e) {
       fail(e.getMessage());
     } finally {
       if (categoryListener != null) {
-        DynamicDAO.removeEntityListener(ICategory.class, categoryListener);
+        OwlDAO.removeEntityListener(ICategory.class, categoryListener);
       }
     }
   }
@@ -1186,7 +1186,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
               dbFolder.setBlogrollLink(createURI("http://www.newuri.com"));
               dbFolder.setName("New name");
               updatedFolder[0] = dbFolder;
-              DynamicDAO.save(dbFolder);
+              OwlDAO.save(dbFolder);
             } catch (PersistenceException e) {
               fail(e.getMessage());
             }
@@ -1202,23 +1202,23 @@ public class DBManagerTest extends LargeBlockSizeTest {
           }
         }
       };
-      DynamicDAO.addEntityListener(IFolder.class, folderListener);
-      DynamicDAO.save(initialFolder);
+      OwlDAO.addEntityListener(IFolder.class, folderListener);
+      OwlDAO.save(initialFolder);
       assertTrue(folderAddedCalled[0]);
       assertTrue(folderUpdatedCalled[0]);
-      DynamicDAO.delete(updatedFolder[0]);
+      OwlDAO.delete(updatedFolder[0]);
     } catch (PersistenceException e) {
       fail(e.getMessage());
     } finally {
       if (folderListener != null) {
-        DynamicDAO.removeEntityListener(IFolder.class, folderListener);
+        OwlDAO.removeEntityListener(IFolder.class, folderListener);
       }
     }
   }
 
   private IFolder createFolderWithParent() throws PersistenceException {
     IFolder parentFolder = createFolder();
-    parentFolder = DynamicDAO.save(parentFolder);
+    parentFolder = OwlDAO.save(parentFolder);
     IFolder folder = fTypesFactory.createFolder(null, parentFolder, "MainFolder");
     folder.setBlogrollLink(createURI("http://www.rssowl.com"));
     folder.setProperty("skey", "svalue");
@@ -1255,7 +1255,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
               assertTrue(initialFolder[0].isIdentical(dbFolder));
               dbFolder.setBlogrollLink(createURI("http://www.newuri.com"));
               updatedFolder[0] = dbFolder;
-              DynamicDAO.save(dbFolder);
+              OwlDAO.save(dbFolder);
             } catch (PersistenceException e) {
               fail(e.getMessage());
             }
@@ -1275,16 +1275,16 @@ public class DBManagerTest extends LargeBlockSizeTest {
           }
         }
       };
-      DynamicDAO.addEntityListener(IFolder.class, folderListener);
-      DynamicDAO.save(initialFolder[0]);
+      OwlDAO.addEntityListener(IFolder.class, folderListener);
+      OwlDAO.save(initialFolder[0]);
       assertTrue(folderAddedCalled[0]);
       assertTrue(folderUpdatedCalled[0]);
-      DynamicDAO.delete(updatedFolder[0]);
+      OwlDAO.delete(updatedFolder[0]);
     } catch (PersistenceException e) {
       fail(e.getMessage());
     } finally {
       if (folderListener != null) {
-        DynamicDAO.removeEntityListener(IFolder.class, folderListener);
+        OwlDAO.removeEntityListener(IFolder.class, folderListener);
       }
     }
   }
@@ -1317,13 +1317,13 @@ public class DBManagerTest extends LargeBlockSizeTest {
           }
         }
       };
-      DynamicDAO.addEntityListener(IFolder.class, folderListener);
-      DynamicDAO.save(initialFolder[0]);
+      OwlDAO.addEntityListener(IFolder.class, folderListener);
+      OwlDAO.save(initialFolder[0]);
     } catch (PersistenceException e) {
       fail(e.getMessage());
     } finally {
       if (folderListener != null) {
-        DynamicDAO.removeEntityListener(IFolder.class, folderListener);
+        OwlDAO.removeEntityListener(IFolder.class, folderListener);
       }
     }
   }
@@ -1371,8 +1371,8 @@ public class DBManagerTest extends LargeBlockSizeTest {
    */
   @Test(expected = UniqueConstraintException.class)
   public void testSaveFeedTwice() throws PersistenceException {
-    DynamicDAO.save(createFeed());
-    DynamicDAO.save(createFeed());
+    OwlDAO.save(createFeed());
+    OwlDAO.save(createFeed());
   }
 
   /**
@@ -1381,9 +1381,9 @@ public class DBManagerTest extends LargeBlockSizeTest {
    */
   @Test
   public void testSaveFeedTwiceAfterMerging() {
-    IFeed savedFeed = DynamicDAO.save(createFeed());
+    IFeed savedFeed = OwlDAO.save(createFeed());
     savedFeed.merge(createFeed());
-    DynamicDAO.save(savedFeed);
+    OwlDAO.save(savedFeed);
   }
 
   /**
@@ -1408,7 +1408,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
             assertTrue(initialBookMark.isIdentical(dbBookMark));
             dbBookMark.setName("Another name");
             updatedBookMark[0] = dbBookMark;
-            DynamicDAO.save(dbBookMark);
+            OwlDAO.save(dbBookMark);
           } catch (PersistenceException e) {
             fail(e.getMessage());
           }
@@ -1422,8 +1422,8 @@ public class DBManagerTest extends LargeBlockSizeTest {
           assertTrue(updatedBookMark[0].isIdentical(dbBookMark));
         }
       };
-      DynamicDAO.addEntityListener(IBookMark.class, bookMarkListener);
-      DynamicDAO.save(initialBookMark);
+      OwlDAO.addEntityListener(IBookMark.class, bookMarkListener);
+      OwlDAO.save(initialBookMark);
       assertTrue(bookMarkAddedCalled[0]);
       assertTrue(bookMarkUpdatedCalled[0]);
     } catch (PersistenceException e) {
@@ -1432,7 +1432,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
 
     finally {
       if (bookMarkListener != null) {
-        DynamicDAO.removeEntityListener(IBookMark.class, bookMarkListener);
+        OwlDAO.removeEntityListener(IBookMark.class, bookMarkListener);
       }
     }
   }
@@ -1459,7 +1459,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
             assertTrue(initialSearchMark.isIdentical(dbSearchMark));
             dbSearchMark.setName("Another name");
             updatedSearchMark[0] = dbSearchMark;
-            DynamicDAO.save(dbSearchMark);
+            OwlDAO.save(dbSearchMark);
           } catch (PersistenceException e) {
             fail(e.getMessage());
           }
@@ -1473,8 +1473,8 @@ public class DBManagerTest extends LargeBlockSizeTest {
           assertTrue(updatedSearchMark[0].isIdentical(dbSearchMark));
         }
       };
-      DynamicDAO.addEntityListener(ISearchMark.class, searchMarkListener);
-      DynamicDAO.save(initialSearchMark);
+      OwlDAO.addEntityListener(ISearchMark.class, searchMarkListener);
+      OwlDAO.save(initialSearchMark);
       assertTrue(searchMarkAddedCalled[0]);
       assertTrue(searchMarkUpdatedCalled[0]);
     } catch (PersistenceException e) {
@@ -1483,7 +1483,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
 
     finally {
       if (searchMarkListener != null) {
-        DynamicDAO.removeEntityListener(ISearchMark.class, searchMarkListener);
+        OwlDAO.removeEntityListener(ISearchMark.class, searchMarkListener);
       }
     }
   }
@@ -1512,10 +1512,10 @@ public class DBManagerTest extends LargeBlockSizeTest {
       for (IAttachment attachment : attachments)
         news.removeAttachment(attachment);
 
-      DynamicDAO.save(feed);
+      OwlDAO.save(feed);
       NewsReference newsRef = new NewsReference(feed.getNews().get(0).getId());
       fTypesFactory.createAttachment(null, news);
-      DynamicDAO.save(feed);
+      OwlDAO.save(feed);
       feed = null;
       news = null;
       System.gc();
@@ -1528,11 +1528,11 @@ public class DBManagerTest extends LargeBlockSizeTest {
           assertEquals(1, attachmentsSize);
         }
       };
-      DynamicDAO.addEntityListener(INews.class, newsListener);
-      DynamicDAO.save(newsRef.resolve());
+      OwlDAO.addEntityListener(INews.class, newsListener);
+      OwlDAO.save(newsRef.resolve());
     } finally {
       if (newsListener != null)
-        DynamicDAO.removeEntityListener(INews.class, newsListener);
+        OwlDAO.removeEntityListener(INews.class, newsListener);
     }
   }
 
@@ -1543,7 +1543,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
   public void testAddUpdateAndGetNews() {
     final IFeed feed;
     try {
-      feed = DynamicDAO.save(createFeed());
+      feed = OwlDAO.save(createFeed());
     } catch (PersistenceException e) {
       fail(e.getMessage());
       return;
@@ -1584,20 +1584,20 @@ public class DBManagerTest extends LargeBlockSizeTest {
           assertTrue(updatedNews[0].isIdentical(dbNews));
         }
       };
-      DynamicDAO.addEntityListener(INews.class, newsListener);
-      INews news = DynamicDAO.save(initialNews);
+      OwlDAO.addEntityListener(INews.class, newsListener);
+      INews news = OwlDAO.save(initialNews);
       news.setDescription("The description has been changed in the news");
       news.setState(State.UNREAD);
       updatedNews[0] = (News) news;
-      DynamicDAO.save(news);
+      OwlDAO.save(news);
       assertTrue(NewsAddedCalled[0]);
       assertTrue(NewsUpdatedCalled[0]);
-      DynamicDAO.delete(updatedNews[0]);
+      OwlDAO.delete(updatedNews[0]);
     } catch (PersistenceException e) {
       fail(e.getMessage());
     } finally {
       if (newsListener != null) {
-        DynamicDAO.removeEntityListener(INews.class, newsListener);
+        OwlDAO.removeEntityListener(INews.class, newsListener);
       }
     }
   }
@@ -1610,12 +1610,12 @@ public class DBManagerTest extends LargeBlockSizeTest {
   public void testSaveFeedNewsCascadeWithGC() {
     IFeed feed = createFeed();
     INews news = createNews(feed);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     String authorName = news.getAuthor().getName();
     URI attachmentLink = news.getAttachments().get(0).getLink();
     String categoryName = news.getCategories().get(0).getName();
     URI sourceLink = news.getSource().getLink();
-    DynamicDAO.save(news);
+    OwlDAO.save(news);
     NewsReference newsRef = new NewsReference(news.getId());
     feed = null;
     news = null;
@@ -1627,7 +1627,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
     categoryName = categoryName + " changed";
     sourceLink = createURI(sourceLink.toString() + "/new");
     updateNews(authorName, attachmentLink, categoryName, sourceLink, news);
-    DynamicDAO.save(news.getFeedReference().resolve());
+    OwlDAO.save(news.getFeedReference().resolve());
     news = null;
     System.gc();
     news = newsRef.resolve();
@@ -1641,13 +1641,13 @@ public class DBManagerTest extends LargeBlockSizeTest {
   @Test
   public void testSaveNewsCascadeWithGC() {
     IFeed feed = createFeed();
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     INews news = createNews(feed);
     String authorName = news.getAuthor().getName();
     URI attachmentLink = news.getAttachments().get(0).getLink();
     String categoryName = news.getCategories().get(0).getName();
     URI sourceLink = news.getSource().getLink();
-    DynamicDAO.save(news);
+    OwlDAO.save(news);
     NewsReference newsRef = new NewsReference(news.getId());
     feed = null;
     news = null;
@@ -1659,7 +1659,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
     categoryName = categoryName + " changed";
     sourceLink = createURI(sourceLink.toString() + "/new");
     updateNews(authorName, attachmentLink, categoryName, sourceLink, news);
-    DynamicDAO.save(news);
+    OwlDAO.save(news);
     news = null;
     System.gc();
     news = newsRef.resolve();
@@ -1673,13 +1673,13 @@ public class DBManagerTest extends LargeBlockSizeTest {
   @Test
   public void testSaveNewsListCascadeWithGC() {
     IFeed feed = createFeed();
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     INews news = createNews(feed);
     String authorName = news.getAuthor().getName();
     URI attachmentLink = news.getAttachments().get(0).getLink();
     String categoryName = news.getCategories().get(0).getName();
     URI sourceLink = news.getSource().getLink();
-    DynamicDAO.saveAll(Collections.singletonList(news));
+    OwlDAO.saveAll(Collections.singletonList(news));
     NewsReference newsRef = new NewsReference(news.getId());
     feed = null;
     news = null;
@@ -1691,7 +1691,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
     categoryName = categoryName + " changed";
     sourceLink = createURI(sourceLink.toString() + "/new");
     updateNews(authorName, attachmentLink, categoryName, sourceLink, news);
-    DynamicDAO.saveAll(Collections.singletonList(news));
+    OwlDAO.saveAll(Collections.singletonList(news));
     news = null;
     System.gc();
     news = newsRef.resolve();
@@ -1776,17 +1776,17 @@ public class DBManagerTest extends LargeBlockSizeTest {
     IFeed feed = createFeed();
 
     /* Need to save this without the news first */
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     createNews(feed);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     long feedId = feed.getId();
     feed = null;
     System.gc();
-    IFeed savedFeed = DynamicDAO.load(IFeed.class, feedId);
+    IFeed savedFeed = OwlDAO.load(IFeed.class, feedId);
     assertEquals(1, savedFeed.getNews().size());
-    DynamicDAO.delete(new FeedReference(feedId).resolve());
+    OwlDAO.delete(new FeedReference(feedId).resolve());
   }
 
   /**
@@ -1797,12 +1797,12 @@ public class DBManagerTest extends LargeBlockSizeTest {
     IFeed feed = createFeed();
     createNews(feed);
     fTypesFactory.createNews(null, feed, new Date());
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     FeedReference feedRef = new FeedReference(feed.getId());
     System.gc();
-    DynamicDAO.delete(feedRef.resolve());
-    assertNull(DynamicDAO.load(IFeed.class, feedRef.getId()));
+    OwlDAO.delete(feedRef.resolve());
+    assertNull(OwlDAO.load(IFeed.class, feedRef.getId()));
   }
 
   /**
@@ -1812,15 +1812,15 @@ public class DBManagerTest extends LargeBlockSizeTest {
   public void testDeleteFeedDeletesConditionalGet() throws Exception {
     IFeed feed = createFeed();
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IConditionalGet conditionalGet = fTypesFactory.createConditionalGet("2005/11/04", feed.getLink(), null);
 
-    DynamicDAO.save(conditionalGet);
+    OwlDAO.save(conditionalGet);
 
-    DynamicDAO.delete(feed);
-    assertNull(DynamicDAO.load(IFeed.class, feed.getId()));
-    assertNull(DynamicDAO.getDAO(IConditionalGetDAO.class).load(feed.getLink()));
+    OwlDAO.delete(feed);
+    assertNull(OwlDAO.load(IFeed.class, feed.getId()));
+    assertNull(OwlDAO.getDAO(IConditionalGetDAO.class).load(feed.getLink()));
   }
 
   /**
@@ -1829,15 +1829,15 @@ public class DBManagerTest extends LargeBlockSizeTest {
   @Test
   public void testAddUpdateAndGetConditionalGet() {
     IFeed feed = createFeed();
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     final String ifModifiedSince = "2005/11/04";
     final String ifNoneMatch = "2005/05/12";
     IConditionalGet conditionalGet = fTypesFactory.createConditionalGet(ifModifiedSince, feed.getLink(), ifNoneMatch);
-    DynamicDAO.save(conditionalGet);
+    OwlDAO.save(conditionalGet);
     conditionalGet = null;
     System.gc();
-    conditionalGet = DynamicDAO.getDAO(IConditionalGetDAO.class).load(feed.getLink());
+    conditionalGet = OwlDAO.getDAO(IConditionalGetDAO.class).load(feed.getLink());
     assertEquals(ifModifiedSince, conditionalGet.getIfModifiedSince());
     assertEquals(ifNoneMatch, conditionalGet.getIfNoneMatch());
     assertEquals(feed.getLink().toString(), conditionalGet.getLink().toString());
@@ -1850,9 +1850,9 @@ public class DBManagerTest extends LargeBlockSizeTest {
   public void testAddAndDeleteFeed() {
     try {
       IFeed feed = createFeed();
-      feed = DynamicDAO.save(feed);
-      DynamicDAO.delete(new FeedReference(feed.getId()).resolve());
-      assertNull(DynamicDAO.load(IFeed.class, feed.getId()));
+      feed = OwlDAO.save(feed);
+      OwlDAO.delete(new FeedReference(feed.getId()).resolve());
+      assertNull(OwlDAO.load(IFeed.class, feed.getId()));
     } catch (PersistenceException e) {
       fail(e.getMessage());
     }
@@ -1865,9 +1865,9 @@ public class DBManagerTest extends LargeBlockSizeTest {
   public void testAddAndDeleteFeed2() {
     try {
       IFeed feed = createFeed();
-      feed = DynamicDAO.save(feed);
-      DynamicDAO.delete(feed);
-      assertNull(DynamicDAO.load(IFeed.class, feed.getId()));
+      feed = OwlDAO.save(feed);
+      OwlDAO.delete(feed);
+      assertNull(OwlDAO.load(IFeed.class, feed.getId()));
     } catch (PersistenceException e) {
       fail(e.getMessage());
     }
@@ -1907,7 +1907,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
             dbFeed.getImage().setDescription("Some new description");
             dbFeed.getImage().setTitle("yet another title");
             updatedFeed[0] = dbFeed;
-            DynamicDAO.save(dbFeed);
+            OwlDAO.save(dbFeed);
           } catch (PersistenceException e) {
             fail(e.getMessage());
           }
@@ -1921,17 +1921,17 @@ public class DBManagerTest extends LargeBlockSizeTest {
           assertTrue(updatedFeed[0].isIdentical(dbFeed));
         }
       };
-      DynamicDAO.addEntityListener(IFeed.class, feedListener);
-      DynamicDAO.save(initialFeed);
+      OwlDAO.addEntityListener(IFeed.class, feedListener);
+      OwlDAO.save(initialFeed);
       assertTrue(feedAddedCalled[0]);
       assertTrue(feedUpdatedCalled[0]);
-      assertTrue(DynamicDAO.exists(IFeed.class, initialFeed.getId()));
-      DynamicDAO.delete(updatedFeed[0]);
+      assertTrue(OwlDAO.exists(IFeed.class, initialFeed.getId()));
+      OwlDAO.delete(updatedFeed[0]);
     } catch (PersistenceException e) {
       fail(e.getMessage());
     } finally {
       if (feedListener != null) {
-        DynamicDAO.removeEntityListener(IFeed.class, feedListener);
+        OwlDAO.removeEntityListener(IFeed.class, feedListener);
       }
     }
   }
@@ -1965,7 +1965,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
             dbFeed.getImage().setTitle("yet another title");
             dbFeed.getImage().setHomepage(createURI("http://www.newimageuri.com"));
             updatedFeed[0] = dbFeed;
-            DynamicDAO.save(dbFeed);
+            OwlDAO.save(dbFeed);
           } catch (PersistenceException e) {
             TestUtils.fail(e);
           }
@@ -1987,14 +1987,14 @@ public class DBManagerTest extends LargeBlockSizeTest {
         }
 
       };
-      DynamicDAO.addEntityListener(IFeed.class, feedListener);
-      DynamicDAO.save(initialFeed);
-      DynamicDAO.delete(updatedFeed[0]);
+      OwlDAO.addEntityListener(IFeed.class, feedListener);
+      OwlDAO.save(initialFeed);
+      OwlDAO.delete(updatedFeed[0]);
     } catch (PersistenceException e) {
       fail(e.getMessage());
     } finally {
       if (feedListener != null) {
-        DynamicDAO.removeEntityListener(IFeed.class, feedListener);
+        OwlDAO.removeEntityListener(IFeed.class, feedListener);
       }
     }
   }
@@ -2007,7 +2007,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
   public void testNewsManagerSetSameStateWithQuery() {
     final IFeed feed;
     try {
-      feed = DynamicDAO.save(createFeed());
+      feed = OwlDAO.save(createFeed());
     } catch (PersistenceException e) {
       fail(e.getMessage());
       return;
@@ -2016,7 +2016,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
     initialNews.setState(State.NEW);
     INews news = null;
     try {
-      news = DynamicDAO.save(initialNews);
+      news = OwlDAO.save(initialNews);
     } catch (PersistenceException e) {
       fail(e.getMessage());
       return;
@@ -2039,18 +2039,18 @@ public class DBManagerTest extends LargeBlockSizeTest {
           fail("No events should have been fired, but NewsListener#newsUpdated() was called.");
         }
       };
-      DynamicDAO.addEntityListener(INews.class, newsListener);
+      OwlDAO.addEntityListener(INews.class, newsListener);
       List<INews> newsList = new ArrayList<INews>();
       newsList.add(news);
       Owl.getPersistenceService().getDAOService().getNewsDAO().setState(newsList, State.NEW, true, false);
-      DynamicDAO.removeEntityListener(INews.class, newsListener);
-      DynamicDAO.delete(news);
-      DynamicDAO.delete(feed);
+      OwlDAO.removeEntityListener(INews.class, newsListener);
+      OwlDAO.delete(news);
+      OwlDAO.delete(feed);
     } catch (PersistenceException e) {
       fail(e.getMessage());
     } finally {
       if (newsListener != null) {
-        DynamicDAO.removeEntityListener(INews.class, newsListener);
+        OwlDAO.removeEntityListener(INews.class, newsListener);
       }
     }
   }
@@ -2061,12 +2061,12 @@ public class DBManagerTest extends LargeBlockSizeTest {
   @Test
   public void testNewsManagerSetState() {
     final IFeed feed;
-    feed = DynamicDAO.save(createFeed());
+    feed = OwlDAO.save(createFeed());
     final News initialNews = (News) createNews(feed);
     initialNews.setState(State.NEW);
     INews newsItem = null;
     NewsReference newsRef = null;
-    newsItem = DynamicDAO.save(initialNews);
+    newsItem = OwlDAO.save(initialNews);
     newsRef = new NewsReference(newsItem.getId());
     List<INews> newsList = new ArrayList<INews>();
     newsList.add(newsItem);
@@ -2093,18 +2093,18 @@ public class DBManagerTest extends LargeBlockSizeTest {
     news = newsRef.resolve();
     assertEquals(State.NEW, news.getState());
 
-    DynamicDAO.delete(newsRef.resolve());
-    DynamicDAO.delete(feed);
+    OwlDAO.delete(newsRef.resolve());
+    OwlDAO.delete(feed);
   }
 
   public void testNewsDAOSetStateFromDeletedWithAffectEquivalentNews() {
     final IFeed feed;
-    feed = DynamicDAO.save(createFeed());
+    feed = OwlDAO.save(createFeed());
     final News initialNews = (News) createNews(feed);
     initialNews.setState(State.NEW);
     INews newsItem = null;
     NewsReference newsRef = null;
-    newsItem = DynamicDAO.save(initialNews);
+    newsItem = OwlDAO.save(initialNews);
     newsRef = new NewsReference(newsItem.getId());
     List<INews> newsList = new ArrayList<INews>();
     newsList.add(newsItem);
@@ -2116,12 +2116,12 @@ public class DBManagerTest extends LargeBlockSizeTest {
 
   public void testNewsDAOSetStateFromHiddenWithAffectEquivalentNews() {
     final IFeed feed;
-    feed = DynamicDAO.save(createFeed());
+    feed = OwlDAO.save(createFeed());
     final News initialNews = (News) createNews(feed);
     initialNews.setState(State.NEW);
     INews newsItem = null;
     NewsReference newsRef = null;
-    newsItem = DynamicDAO.save(initialNews);
+    newsItem = OwlDAO.save(initialNews);
     newsRef = new NewsReference(newsItem.getId());
     List<INews> newsList = new ArrayList<INews>();
     newsList.add(newsItem);
@@ -2140,12 +2140,12 @@ public class DBManagerTest extends LargeBlockSizeTest {
   @Test
   public void testFoldersOrder() throws PersistenceException {
     IFolder root = createFolder();
-    root = DynamicDAO.save(root);
+    root = OwlDAO.save(root);
     for (int i = 0; i < 10; ++i) {
       IFolder child = createFolder(root);
       child.setName(String.valueOf(i));
     }
-    root = DynamicDAO.save(root);
+    root = OwlDAO.save(root);
     int counter = 0;
     for (IFolder child : root.getFolders()) {
       String name = String.valueOf(counter++);
@@ -2162,7 +2162,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
   @Test
   public void testMarksOrder() throws PersistenceException {
     IFolder root = createFolder();
-    root = DynamicDAO.save(root);
+    root = OwlDAO.save(root);
     int count = 10;
     for (int i = 0; i < count; ++i) {
       IBookMark child = createBookMark(root);
@@ -2173,7 +2173,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
       ISearchMark child = createSearchMark(root);
       child.setName(String.valueOf(i));
     }
-    root = DynamicDAO.save(root);
+    root = OwlDAO.save(root);
     int counter = 0;
     for (IMark child : root.getMarks()) {
       String name = String.valueOf(counter++);
@@ -2209,10 +2209,10 @@ public class DBManagerTest extends LargeBlockSizeTest {
     IFeed feed2;
     NewsAdapter newsAdapter;
     try {
-      feed1 = DynamicDAO.save(createFeed());
+      feed1 = OwlDAO.save(createFeed());
       IFeed tempFeed = createFeed("http://adifferentlink.com");
       tempFeed.setTitle("A different title");
-      feed2 = DynamicDAO.save(tempFeed);
+      feed2 = OwlDAO.save(tempFeed);
     } catch (PersistenceException e) {
       fail(e.getMessage());
       return;
@@ -2226,7 +2226,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
         newsRef[0] = new NewsReference(events.iterator().next().getEntity().getId());
       }
     };
-    DynamicDAO.addEntityListener(INews.class, newsAdapter);
+    OwlDAO.addEntityListener(INews.class, newsAdapter);
 
     final News initialNews1 = (News) createNews(feed1);
     initialNews1.setGuid(null);
@@ -2243,11 +2243,11 @@ public class DBManagerTest extends LargeBlockSizeTest {
 
     NewsReference newsRef3 = null;
     try {
-      DynamicDAO.save(feed1);
+      OwlDAO.save(feed1);
       newsRef1 = newsRef[0];
       newsItem1 = newsRef1.resolve();
 
-      feed2 = DynamicDAO.save(feed2);
+      feed2 = OwlDAO.save(feed2);
       newsRef2 = newsRef[0];
       newsItem2 = newsRef2.resolve();
 
@@ -2256,13 +2256,13 @@ public class DBManagerTest extends LargeBlockSizeTest {
       initialNews3.setGuid(null);
       initialNews3.setLink(null);
       initialNews3.setState(State.NEW);
-      DynamicDAO.save(feed2);
+      OwlDAO.save(feed2);
       newsRef3 = newsRef[0];
     } catch (PersistenceException e) {
       fail(e.getMessage());
       return;
     } finally {
-      DynamicDAO.removeEntityListener(INews.class, newsAdapter);
+      OwlDAO.removeEntityListener(INews.class, newsAdapter);
     }
     try {
       List<INews> newsList1 = new ArrayList<INews>();
@@ -2336,10 +2336,10 @@ public class DBManagerTest extends LargeBlockSizeTest {
       assertEquals(State.HIDDEN, news2.getState());
       assertEquals(State.NEW, news3.getState());
 
-      DynamicDAO.delete(newsRef1.resolve());
-      DynamicDAO.delete(newsRef2.resolve());
-      DynamicDAO.delete(feed1);
-      DynamicDAO.delete(feed2);
+      OwlDAO.delete(newsRef1.resolve());
+      OwlDAO.delete(newsRef2.resolve());
+      OwlDAO.delete(feed1);
+      OwlDAO.delete(feed2);
     } catch (PersistenceException e) {
       fail(e.getMessage());
     }
@@ -2356,10 +2356,10 @@ public class DBManagerTest extends LargeBlockSizeTest {
     IFeed feed2;
     NewsListener newsAdapter = null;
     try {
-      feed1 = DynamicDAO.save(createFeed());
+      feed1 = OwlDAO.save(createFeed());
       IFeed tempFeed = createFeed("http://adifferentlink.com");
       tempFeed.setTitle("A different title");
-      feed2 = DynamicDAO.save(tempFeed);
+      feed2 = OwlDAO.save(tempFeed);
     } catch (PersistenceException e) {
       fail(e.getMessage());
       return;
@@ -2378,7 +2378,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
         newsRef[0] = new NewsReference(events.iterator().next().getEntity().getId());
       }
     };
-    DynamicDAO.addEntityListener(INews.class, newsAdapter);
+    OwlDAO.addEntityListener(INews.class, newsAdapter);
     INews newsItem1 = null;
     NewsReference newsRef1 = null;
 
@@ -2387,11 +2387,11 @@ public class DBManagerTest extends LargeBlockSizeTest {
 
     NewsReference newsRef3 = null;
     try {
-      DynamicDAO.save(feed1);
+      OwlDAO.save(feed1);
       newsRef1 = newsRef[0];
       newsItem1 = newsRef1.resolve();
 
-      feed2 = DynamicDAO.save(feed2);
+      feed2 = OwlDAO.save(feed2);
       newsRef2 = newsRef[0];
       newsItem2 = newsRef2.resolve();
 
@@ -2400,13 +2400,13 @@ public class DBManagerTest extends LargeBlockSizeTest {
       initialNews3.setGuid(null);
       initialNews3.setLink(null);
       initialNews3.setState(State.NEW);
-      DynamicDAO.save(feed2);
+      OwlDAO.save(feed2);
       newsRef3 = newsRef[0];
     } catch (PersistenceException e) {
       fail(e.getMessage());
       return;
     } finally {
-      DynamicDAO.removeEntityListener(INews.class, newsAdapter);
+      OwlDAO.removeEntityListener(INews.class, newsAdapter);
     }
     try {
       List<INews> newsList1 = new ArrayList<INews>();
@@ -2480,10 +2480,10 @@ public class DBManagerTest extends LargeBlockSizeTest {
       assertEquals(State.DELETED, news2.getState());
       assertEquals(State.NEW, news3.getState());
 
-      DynamicDAO.delete(newsRef1.resolve());
-      DynamicDAO.delete(newsRef2.resolve());
-      DynamicDAO.delete(feed1);
-      DynamicDAO.delete(feed2);
+      OwlDAO.delete(newsRef1.resolve());
+      OwlDAO.delete(newsRef2.resolve());
+      OwlDAO.delete(feed1);
+      OwlDAO.delete(feed2);
     } catch (PersistenceException e) {
       fail(e.getMessage());
     }
@@ -2494,13 +2494,13 @@ public class DBManagerTest extends LargeBlockSizeTest {
    */
   @Test
   public void testNewsManagerSetStateWithGuidNull() {
-    final IFeed feed = DynamicDAO.save(createFeed());
+    final IFeed feed = OwlDAO.save(createFeed());
     final News initialNews = (News) createNews(feed);
     initialNews.setState(State.NEW);
     initialNews.setGuid(null);
     INews newsItem = null;
     NewsReference newsRef = null;
-    newsItem = DynamicDAO.save(initialNews);
+    newsItem = OwlDAO.save(initialNews);
     newsRef = new NewsReference(newsItem.getId());
     List<INews> newsList = new ArrayList<INews>();
     newsList.add(newsItem);
@@ -2536,8 +2536,8 @@ public class DBManagerTest extends LargeBlockSizeTest {
     news = newsRef.resolve();
     assertEquals(State.HIDDEN, news.getState());
 
-    DynamicDAO.delete(newsRef.resolve());
-    DynamicDAO.delete(feed);
+    OwlDAO.delete(newsRef.resolve());
+    OwlDAO.delete(feed);
   }
 
   /**
@@ -2545,17 +2545,17 @@ public class DBManagerTest extends LargeBlockSizeTest {
    */
   @Test
   public void testNewsCounterOnDeletedAddedNews() {
-    final IFeed feed = DynamicDAO.save(createFeed());
+    final IFeed feed = OwlDAO.save(createFeed());
     INews news = createNews(feed);
     news.setFlagged(true);
     news.setState(INews.State.DELETED);
 
-    DynamicDAO.save(news);
+    OwlDAO.save(news);
 
     IFolder folder = Owl.getModelFactory().createFolder(null, null, "Root");
     IBookMark bookmark = Owl.getModelFactory().createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "Bookmark");
 
-    DynamicDAO.save(bookmark);
+    OwlDAO.save(bookmark);
 
     assertEquals(0, bookmark.getStickyNewsCount());
     assertEquals(0, bookmark.getNewsCount(INews.State.getVisible()));
@@ -2566,27 +2566,27 @@ public class DBManagerTest extends LargeBlockSizeTest {
    */
   @Test
   public void testNewsCounterOnStickyDeletedNews() {
-    final IFeed feed = DynamicDAO.save(createFeed());
+    final IFeed feed = OwlDAO.save(createFeed());
     INews news = createNews(feed);
     news.setState(INews.State.NEW);
     news.setFlagged(true);
 
-    DynamicDAO.save(news);
+    OwlDAO.save(news);
 
     IFolder folder = Owl.getModelFactory().createFolder(null, null, "Root");
     IBookMark bookmark = Owl.getModelFactory().createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "Bookmark");
 
-    DynamicDAO.save(bookmark);
+    OwlDAO.save(bookmark);
 
     assertEquals(1, bookmark.getStickyNewsCount());
     assertEquals(1, bookmark.getNewsCount(INews.State.getVisible()));
 
-    DynamicDAO.getDAO(INewsDAO.class).setState(Collections.singleton(news), INews.State.HIDDEN, false, false);
+    OwlDAO.getDAO(INewsDAO.class).setState(Collections.singleton(news), INews.State.HIDDEN, false, false);
 
     assertEquals(0, bookmark.getStickyNewsCount());
     assertEquals(0, bookmark.getNewsCount(INews.State.getVisible()));
 
-    DynamicDAO.getDAO(INewsDAO.class).setState(Collections.singleton(news), INews.State.DELETED, false, false);
+    OwlDAO.getDAO(INewsDAO.class).setState(Collections.singleton(news), INews.State.DELETED, false, false);
 
     assertEquals(0, bookmark.getStickyNewsCount());
     assertEquals(0, bookmark.getNewsCount(INews.State.getVisible()));
@@ -2597,7 +2597,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
    */
   @Test
   public void testGetProfile() {
-    Pair<File, Long> profile = InternalOwl.getDefault().getProfile();
+    Pair<File, Long> profile = InternalOwl.getInstance().getProfile();
     assertTrue(profile.getFirst().exists());
     if (profile.getSecond() != null)
       assertTrue(profile.getSecond() > 0);
@@ -2608,7 +2608,7 @@ public class DBManagerTest extends LargeBlockSizeTest {
    */
   @Test
   public void testBackups() {
-    List<File> backups = InternalOwl.getDefault().getProfileBackups();
+    List<File> backups = InternalOwl.getInstance().getProfileBackups();
     if (!backups.isEmpty()) {
       for (File backup : backups) {
         assertTrue(backup.exists());

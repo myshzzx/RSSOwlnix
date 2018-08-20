@@ -42,7 +42,7 @@ import org.rssowl.core.internal.persist.pref.DefaultPreferences;
 import org.rssowl.core.persist.IFolder;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INewsBin;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
 import org.rssowl.core.util.CoreUtils;
 import org.rssowl.ui.internal.OwlUI;
@@ -172,7 +172,7 @@ public class ArchiveNewsAction extends Action implements IWorkbenchWindowActionD
       archivePreferences.putBoolean(DefaultPreferences.ARCHIVE_BIN_MARKER, true);
 
       /* Save Archive */
-      DynamicDAO.save(selectedSet);
+      OwlDAO.save(selectedSet);
 
       /* Actually archive selected news now into new Archive */
       archiveNews(archive);

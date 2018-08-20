@@ -26,7 +26,7 @@ package org.rssowl.ui.internal.undo;
 
 import org.eclipse.osgi.util.NLS;
 import org.rssowl.core.persist.INews;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.reference.NewsReference;
 import org.rssowl.ui.internal.Controller;
 
@@ -109,7 +109,7 @@ public class StickyOperation implements IUndoOperation {
       Controller.getDefault().getSavedSearchService().forceQuickUpdate();
 
       /* Set old sticky-state back to all news */
-      DynamicDAO.saveAll(resolvedNews);
+      OwlDAO.saveAll(resolvedNews);
     }
   }
 
@@ -136,7 +136,7 @@ public class StickyOperation implements IUndoOperation {
     Controller.getDefault().getSavedSearchService().forceQuickUpdate();
 
     /* Set state back to all news */
-    DynamicDAO.saveAll(resolvedNews);
+    OwlDAO.saveAll(resolvedNews);
   }
 
   /*

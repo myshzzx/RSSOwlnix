@@ -72,7 +72,7 @@ import org.rssowl.core.persist.IBookMark;
 import org.rssowl.core.persist.IFolder;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INewsBin;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
 import org.rssowl.ui.internal.Controller.BookMarkLoadListener;
 import org.rssowl.ui.internal.actions.ArchiveNewsAction;
@@ -1415,7 +1415,7 @@ public class CoolBarAdvisor {
         MenuManager manager = new MenuManager();
 
         /* Load all news bins and sort by name */
-        List<INewsBin> newsbins = new ArrayList<INewsBin>(DynamicDAO.loadAll(INewsBin.class));
+        List<INewsBin> newsbins = new ArrayList<INewsBin>(OwlDAO.loadAll(INewsBin.class));
 
         Comparator<INewsBin> comparator = new Comparator<INewsBin>() {
           @Override

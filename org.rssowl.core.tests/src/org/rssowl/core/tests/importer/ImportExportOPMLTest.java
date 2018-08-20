@@ -56,7 +56,7 @@ import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.ISearchFilter;
 import org.rssowl.core.persist.ISearchMark;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IFolderDAO;
 import org.rssowl.core.persist.dao.ILabelDAO;
 import org.rssowl.core.persist.dao.INewsBinDAO;
@@ -138,8 +138,8 @@ public class ImportExportOPMLTest {
 
     /* Fill Defaults */
     fillDefaults();
-    DynamicDAO.getDAO(IFolderDAO.class).save(fDefaultSet);
-    DynamicDAO.getDAO(IFolderDAO.class).save(fCustomSet);
+    OwlDAO.getDAO(IFolderDAO.class).save(fDefaultSet);
+    OwlDAO.getDAO(IFolderDAO.class).save(fCustomSet);
 
     /* Export */
     Set<IFolder> rootFolders = new HashSet<IFolder>();
@@ -164,7 +164,7 @@ public class ImportExportOPMLTest {
     ((PersistenceServiceImpl)Owl.getPersistenceService()).recreateSchemaForTests();
 
     /* Add Default Set */
-    DynamicDAO.getDAO(IFolderDAO.class).save(fFactory.createFolder(null, null, "My Bookmarks"));
+    OwlDAO.getDAO(IFolderDAO.class).save(fFactory.createFolder(null, null, "My Bookmarks"));
   }
 
   private void fillDefaults() throws URISyntaxException {
@@ -175,8 +175,8 @@ public class ImportExportOPMLTest {
     /* Set: Custom */
     fillCustomSet();
 
-    DynamicDAO.getDAO(IFolderDAO.class).save(fDefaultSet);
-    DynamicDAO.getDAO(IFolderDAO.class).save(fCustomSet);
+    OwlDAO.getDAO(IFolderDAO.class).save(fDefaultSet);
+    OwlDAO.getDAO(IFolderDAO.class).save(fCustomSet);
 
     /* Default > List of SearchMarks */
     fillSearchMarks(fDefaultSet);
@@ -242,7 +242,7 @@ public class ImportExportOPMLTest {
     filter.setEnabled(true);
     filter.setOrder(5);
     filter.addAction(fFactory.createFilterAction("org.rssowl.core.MarkReadNewsAction"));
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     /* 2) Match All News - Disabled - Mark Read + Mark Sticky */
     filter = fFactory.createSearchFilter(null, null, "Filter 2");
@@ -251,7 +251,7 @@ public class ImportExportOPMLTest {
     filter.setOrder(0);
     filter.addAction(fFactory.createFilterAction("org.rssowl.core.MarkReadNewsAction"));
     filter.addAction(fFactory.createFilterAction("org.rssowl.core.MarkStickyNewsAction"));
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     /* 3) Entire News contains "Foo" - Enabled - Mark Read */
     ISearch search = fFactory.createSearch(null);
@@ -261,7 +261,7 @@ public class ImportExportOPMLTest {
     filter.setMatchAllNews(false);
     filter.setOrder(3);
     filter.addAction(fFactory.createFilterAction("org.rssowl.core.MarkReadNewsAction"));
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     /* 4) Entire News contains "Foo" or "Bar" - Enabled - Mark Read */
     search = fFactory.createSearch(null);
@@ -272,7 +272,7 @@ public class ImportExportOPMLTest {
     filter.setMatchAllNews(false);
     filter.setOrder(4);
     filter.addAction(fFactory.createFilterAction("org.rssowl.core.MarkReadNewsAction"));
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     /* 5) Location is "XY" - Enabled - Mark Read */
     search = fFactory.createSearch(null);
@@ -282,7 +282,7 @@ public class ImportExportOPMLTest {
     filter.setMatchAllNews(false);
     filter.setOrder(8);
     filter.addAction(fFactory.createFilterAction("org.rssowl.core.MarkReadNewsAction"));
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     /* 6) Match All News - Enabled - Label News */
     filter = fFactory.createSearchFilter(null, null, "Filter 6");
@@ -291,7 +291,7 @@ public class ImportExportOPMLTest {
     IFilterAction action = fFactory.createFilterAction(LabelNewsAction.ID);
     action.setData(fImportantLabel.getId());
     filter.addAction(action);
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     /* 7) Match All News - Enabled - Label News + Move News + Play Sound */
     filter = fFactory.createSearchFilter(null, null, "Filter 7");
@@ -309,7 +309,7 @@ public class ImportExportOPMLTest {
     action.setData("C:\\ProgramData\\Microsoft\\Windows & Help\\Start Menu");
     filter.addAction(action);
 
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     /* 8) Filter with Properties as Data */
     filter = fFactory.createSearchFilter(null, null, "Filter 8");
@@ -324,7 +324,7 @@ public class ImportExportOPMLTest {
     action.setData(props);
     filter.addAction(action);
 
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     /* 9) Location is DELETED - Enabled - Mark Read */
     search = fFactory.createSearch(null);
@@ -336,34 +336,34 @@ public class ImportExportOPMLTest {
     filter.setMatchAllNews(false);
     filter.setOrder(9);
     filter.addAction(fFactory.createFilterAction("org.rssowl.core.MarkReadNewsAction"));
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
   }
 
   private void fillLabels() {
     ILabel label = fFactory.createLabel(null, "Later");
     label.setColor("113,21,88");
     label.setOrder(4);
-    DynamicDAO.save(label);
+    OwlDAO.save(label);
 
     label = fFactory.createLabel(null, "Personal");
     label.setColor("105,130,73");
     label.setOrder(3);
-    DynamicDAO.save(label);
+    OwlDAO.save(label);
 
     fImportantLabel = fFactory.createLabel(null, "Important");
     fImportantLabel.setColor("177,39,52");
     fImportantLabel.setOrder(2);
-    DynamicDAO.save(fImportantLabel);
+    OwlDAO.save(fImportantLabel);
 
     label = fFactory.createLabel(null, "Work");
     label.setColor("234,152,79");
     label.setOrder(1);
-    DynamicDAO.save(label);
+    OwlDAO.save(label);
 
     label = fFactory.createLabel(null, "To Do");
     label.setColor("113,160,168");
     label.setOrder(0);
-    DynamicDAO.save(label);
+    OwlDAO.save(label);
   }
 
   private void fillDefaultSet() throws URISyntaxException {
@@ -615,7 +615,7 @@ public class ImportExportOPMLTest {
     ImportUtils.doImport(null, elements, true);
 
     /* Validate */
-    Collection<IFolder> rootFolders = DynamicDAO.getDAO(IFolderDAO.class).loadRoots();
+    Collection<IFolder> rootFolders = OwlDAO.getDAO(IFolderDAO.class).loadRoots();
 
     assertEquals(2, rootFolders.size());
 
@@ -665,7 +665,7 @@ public class ImportExportOPMLTest {
     ImportUtils.doImport(null, elements, true);
 
     /* Validate */
-    Collection<IFolder> rootFolders = DynamicDAO.getDAO(IFolderDAO.class).loadRoots();
+    Collection<IFolder> rootFolders = OwlDAO.getDAO(IFolderDAO.class).loadRoots();
 
     IFolder defaultSet = null;
     IFolder customSet = null;
@@ -712,12 +712,12 @@ public class ImportExportOPMLTest {
     ILabel label = fFactory.createLabel(null, "Later");
     label.setColor("113,21,88");
     label.setOrder(0);
-    DynamicDAO.save(label);
+    OwlDAO.save(label);
 
     label = fFactory.createLabel(null, "Personal");
     label.setColor("0,0,0");
     label.setOrder(1);
-    DynamicDAO.save(label);
+    OwlDAO.save(label);
 
     exportImportCompleteOPML(true);
   }
@@ -730,7 +730,7 @@ public class ImportExportOPMLTest {
     ImportUtils.doImport(null, elements, true);
 
     /* Validate */
-    Collection<IFolder> rootFolders = DynamicDAO.getDAO(IFolderDAO.class).loadRoots();
+    Collection<IFolder> rootFolders = OwlDAO.getDAO(IFolderDAO.class).loadRoots();
 
     assertEquals(2, rootFolders.size());
 
@@ -854,7 +854,7 @@ public class ImportExportOPMLTest {
   }
 
   private void assertFilters() {
-    Collection<ISearchFilter> filters = DynamicDAO.loadAll(ISearchFilter.class);
+    Collection<ISearchFilter> filters = OwlDAO.loadAll(ISearchFilter.class);
     assertEquals(9, filters.size());
 
     for (ISearchFilter filter : filters) {
@@ -942,7 +942,7 @@ public class ImportExportOPMLTest {
         Object data = filter.getActions().get(0).getData();
         assertNotNull(data);
         assertEquals(true, data instanceof Long);
-        ILabel label = DynamicDAO.getDAO(ILabelDAO.class).load(((Long) data).longValue());
+        ILabel label = OwlDAO.getDAO(ILabelDAO.class).load(((Long) data).longValue());
         assertNotNull(label);
         assertEquals(fImportantLabel.getName(), label.getName());
       }
@@ -953,7 +953,7 @@ public class ImportExportOPMLTest {
         Object data = filter.getActions().get(0).getData();
         assertNotNull(data);
         assertEquals(true, data instanceof Long);
-        ILabel label = DynamicDAO.getDAO(ILabelDAO.class).load(((Long) data).longValue());
+        ILabel label = OwlDAO.getDAO(ILabelDAO.class).load(((Long) data).longValue());
         assertNotNull(label);
         assertEquals(fImportantLabel.getName(), label.getName());
 
@@ -962,7 +962,7 @@ public class ImportExportOPMLTest {
         assertNotNull(data);
         assertEquals(true, data instanceof Long[]);
         assertEquals(1, ((Long[]) data).length);
-        INewsBin bin = DynamicDAO.getDAO(INewsBinDAO.class).load(((Long[]) data)[0].longValue());
+        INewsBin bin = OwlDAO.getDAO(INewsBinDAO.class).load(((Long[]) data)[0].longValue());
         assertNotNull(bin);
         assertEquals(fNewsBin.getName(), bin.getName());
 
@@ -994,7 +994,7 @@ public class ImportExportOPMLTest {
   }
 
   private void assertLabels() {
-    Collection<ILabel> labels = DynamicDAO.loadAll(ILabel.class);
+    Collection<ILabel> labels = OwlDAO.loadAll(ILabel.class);
     assertEquals(5, labels.size());
     for (ILabel label : labels) {
       if ("Later".equals(label.getName())) {

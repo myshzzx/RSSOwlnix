@@ -48,7 +48,7 @@ import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.ISearchFilter;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.event.SearchFilterAdapter;
 import org.rssowl.core.persist.pref.IPreferenceScope;
 import org.rssowl.core.persist.reference.FeedLinkReference;
@@ -119,7 +119,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     IFilterAction action = fFactory.createFilterAction(MARK_READ_ID);
     filter.addAction(action);
 
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     final AtomicBoolean listenerCalled = new AtomicBoolean();
     SearchFilterAdapter listener = new SearchFilterAdapter() {
@@ -130,7 +130,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
       }
     };
 
-    DynamicDAO.addEntityListener(ISearchFilter.class, listener);
+    OwlDAO.addEntityListener(ISearchFilter.class, listener);
 
     try {
       fAppService.handleFeedReload(bm, feed, null, false, true, new NullProgressMonitor());
@@ -144,7 +144,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
         assertEquals(INews.State.READ, newsitem.getState());
       }
     } finally {
-      DynamicDAO.removeEntityListener(ISearchFilter.class, listener);
+      OwlDAO.removeEntityListener(ISearchFilter.class, listener);
     }
   }
 
@@ -172,7 +172,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     IFilterAction action = fFactory.createFilterAction(MARK_UNREAD_ID);
     filter.addAction(action);
 
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     fAppService.handleFeedReload(bm, feed, null, false, true, new NullProgressMonitor());
 
@@ -208,7 +208,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     IFilterAction action = fFactory.createFilterAction(MARK_STICKY_ID);
     filter.addAction(action);
 
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     fAppService.handleFeedReload(bm, feed, null, false, true, new NullProgressMonitor());
 
@@ -238,7 +238,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     news3.setState(INews.State.NEW);
 
     ILabel label = fFactory.createLabel(null, "New Label");
-    DynamicDAO.save(label);
+    OwlDAO.save(label);
 
     ISearchFilter filter = fFactory.createSearchFilter(null, null, "All News");
     filter.setMatchAllNews(true);
@@ -248,7 +248,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     action.setData(label.getId());
     filter.addAction(action);
 
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     fAppService.handleFeedReload(bm, feed, null, false, true, new NullProgressMonitor());
 
@@ -286,7 +286,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     IFilterAction action = fFactory.createFilterAction(DELETE_NEWS_ID);
     filter.addAction(action);
 
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     fAppService.handleFeedReload(bm, feed, null, false, true, new NullProgressMonitor());
 
@@ -317,7 +317,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     news3.setState(INews.State.NEW);
 
     INewsBin bin = fFactory.createNewsBin(null, bm.getParent(), "Bin");
-    DynamicDAO.save(bin);
+    OwlDAO.save(bin);
 
     ISearchFilter filter = fFactory.createSearchFilter(null, null, "All News");
     filter.setMatchAllNews(true);
@@ -327,7 +327,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     action.setData(new Long[] { bin.getId() });
     filter.addAction(action);
 
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     fAppService.handleFeedReload(bm, feed, null, false, true, new NullProgressMonitor());
 
@@ -367,7 +367,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     news3.setState(INews.State.NEW);
 
     INewsBin bin = fFactory.createNewsBin(null, bm.getParent(), "Bin");
-    DynamicDAO.save(bin);
+    OwlDAO.save(bin);
 
     ISearchFilter filter = fFactory.createSearchFilter(null, null, "All News");
     filter.setMatchAllNews(true);
@@ -377,7 +377,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     action.setData(new Long[] { bin.getId() });
     filter.addAction(action);
 
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     fAppService.handleFeedReload(bm, feed, null, false, true, new NullProgressMonitor());
 
@@ -415,7 +415,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     news3.setState(INews.State.NEW);
 
     INewsBin bin = fFactory.createNewsBin(null, bm.getParent(), "Bin");
-    DynamicDAO.save(bin);
+    OwlDAO.save(bin);
 
     ISearchFilter filter = fFactory.createSearchFilter(null, null, "All News");
     filter.setMatchAllNews(true);
@@ -428,7 +428,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     action = fFactory.createFilterAction(MARK_STICKY_ID);
     filter.addAction(action);
 
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     fAppService.handleFeedReload(bm, feed, null, false, true, new NullProgressMonitor());
 
@@ -480,7 +480,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
       action = fFactory.createFilterAction(MARK_STICKY_ID);
       filter.addAction(action);
 
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
     }
 
     {
@@ -492,7 +492,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
       IFilterAction action = fFactory.createFilterAction(MARK_READ_ID);
       filter.addAction(action);
 
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
     }
 
     fAppService.handleFeedReload(bm, feed, null, false, true, new NullProgressMonitor());
@@ -543,7 +543,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
       action = fFactory.createFilterAction(MARK_STICKY_ID);
       filter.addAction(action);
 
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
     }
 
     {
@@ -555,7 +555,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
       IFilterAction action = fFactory.createFilterAction(MARK_READ_ID);
       filter.addAction(action);
 
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
     }
 
     fAppService.handleFeedReload(bm, feed, null, false, true, new NullProgressMonitor());
@@ -600,7 +600,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
       IFilterAction action = fFactory.createFilterAction(MARK_READ_ID);
       filter.addAction(action);
 
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
     }
 
     {
@@ -616,7 +616,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
       action = fFactory.createFilterAction(MARK_STICKY_ID);
       filter.addAction(action);
 
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
     }
 
     fAppService.handleFeedReload(bm, feed, null, false, true, new NullProgressMonitor());
@@ -655,13 +655,13 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     news4.setState(INews.State.NEW);
 
     ILabel label = fFactory.createLabel(null, "New Label");
-    DynamicDAO.save(label);
+    OwlDAO.save(label);
 
     INewsBin bin1 = fFactory.createNewsBin(null, bm.getParent(), "Bin 1");
     INewsBin bin2 = fFactory.createNewsBin(null, bm.getParent(), "Bin 2");
 
-    DynamicDAO.save(bin1);
-    DynamicDAO.save(bin2);
+    OwlDAO.save(bin1);
+    OwlDAO.save(bin2);
 
     /* Filter "Title is Title": Mark Read, Sticky, Label, Copy */
     {
@@ -682,7 +682,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
       copyAction.setData(new Long[] { bin1.getId(), bin2.getId() });
       filter.addAction(copyAction);
 
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
     }
 
     /* Filter "Title is Other": Move */
@@ -697,7 +697,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
       moveAction.setData(new Long[] { bin1.getId(), bin2.getId() });
       filter.addAction(moveAction);
 
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
     }
 
     /* Filter "Match All": Label News */
@@ -712,7 +712,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
       labelAction.setData(label.getId());
       filter.addAction(labelAction);
 
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
     }
 
     final AtomicInteger listenerCalled = new AtomicInteger();
@@ -723,12 +723,12 @@ public class NewsFilterTest extends LargeBlockSizeTest {
       }
     };
 
-    DynamicDAO.addEntityListener(ISearchFilter.class, listener);
+    OwlDAO.addEntityListener(ISearchFilter.class, listener);
 
     try {
       fAppService.handleFeedReload(bm, feed, null, false, true, new NullProgressMonitor());
     } finally {
-      DynamicDAO.removeEntityListener(ISearchFilter.class, listener);
+      OwlDAO.removeEntityListener(ISearchFilter.class, listener);
     }
 
     assertEquals(3, listenerCalled.get());
@@ -810,7 +810,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     preferences.putBoolean(DefaultPreferences.DEL_NEWS_BY_COUNT_STATE, true);
     preferences.putInteger(DefaultPreferences.DEL_NEWS_BY_COUNT_VALUE, 2);
 
-    DynamicDAO.save(bm);
+    OwlDAO.save(bm);
 
     IFeed feed = fFactory.createFeed(null, bm.getFeedLinkReference().getLink());
 
@@ -824,7 +824,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     news3.setState(INews.State.NEW);
 
     ILabel label = fFactory.createLabel(null, "New Label");
-    DynamicDAO.save(label);
+    OwlDAO.save(label);
 
     ISearchFilter filter = fFactory.createSearchFilter(null, null, "All News");
     filter.setMatchAllNews(true);
@@ -834,7 +834,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     action.setData(label.getId());
     filter.addAction(action);
 
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     fAppService.handleFeedReload(bm, feed, null, false, true, new NullProgressMonitor());
 
@@ -860,7 +860,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     preferences.putBoolean(DefaultPreferences.NEVER_DEL_UNREAD_NEWS_STATE, false);
     preferences.putBoolean(DefaultPreferences.NEVER_DEL_LABELED_NEWS_STATE, false);
 
-    DynamicDAO.save(bm);
+    OwlDAO.save(bm);
 
     IFeed feed = fFactory.createFeed(null, bm.getFeedLinkReference().getLink());
 
@@ -887,7 +887,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     news3.setModifiedDate(oldDate);
 
     ILabel label = fFactory.createLabel(null, "New Label");
-    DynamicDAO.save(label);
+    OwlDAO.save(label);
 
     ISearchFilter filter = fFactory.createSearchFilter(null, null, "All News");
     filter.setMatchAllNews(true);
@@ -897,7 +897,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     action.setData(label.getId());
     filter.addAction(action);
 
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     fAppService.handleFeedReload(bm, feed, null, false, true, new NullProgressMonitor());
 
@@ -931,7 +931,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     news3.setDescription("Description 1");
 
     ILabel label = fFactory.createLabel(null, "New Label");
-    DynamicDAO.save(label);
+    OwlDAO.save(label);
 
     ISearchFilter filter = fFactory.createSearchFilter(null, null, "All News");
     filter.setMatchAllNews(true);
@@ -941,7 +941,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     action.setData(label.getId());
     filter.addAction(action);
 
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     fAppService.handleFeedReload(bm, feed, null, false, true, new NullProgressMonitor());
 
@@ -976,7 +976,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     news3.setDescription("Bar");
 
     ILabel label = fFactory.createLabel(null, "New Label");
-    DynamicDAO.save(label);
+    OwlDAO.save(label);
 
     ISearchFilter filter = fFactory.createSearchFilter(null, createDescriptionSearch("description"), "Some News");
     filter.setEnabled(true);
@@ -985,7 +985,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     action.setData(label.getId());
     filter.addAction(action);
 
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     fAppService.handleFeedReload(bm, feed, null, false, true, new NullProgressMonitor());
 
@@ -1015,7 +1015,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     news1_feed1.setState(INews.State.READ);
     news1_feed1.setLink(new URI("news_link"));
 
-    DynamicDAO.save(feed1);
+    OwlDAO.save(feed1);
 
     IBookMark bm2 = createBookMark("local2");
     IFeed feed2 = fFactory.createFeed(null, bm2.getFeedLinkReference().getLink());
@@ -1025,7 +1025,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     news1_feed2.setState(INews.State.NEW);
 
     ILabel label = fFactory.createLabel(null, "New Label");
-    DynamicDAO.save(label);
+    OwlDAO.save(label);
 
     ISearchFilter filter = fFactory.createSearchFilter(null, null, "All News");
     filter.setMatchAllNews(true);
@@ -1035,7 +1035,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     action.setData(label.getId());
     filter.addAction(action);
 
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     fAppService.handleFeedReload(bm2, feed2, null, false, true, new NullProgressMonitor());
 
@@ -1059,7 +1059,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     IFeed feed = fFactory.createFeed(null, bm1.getFeedLinkReference().getLink());
 
     IBookMark bm2 = fFactory.createBookMark(null, bm1.getParent(), new FeedLinkReference(new URI("local2")), "local2");
-    DynamicDAO.save(bm2);
+    OwlDAO.save(bm2);
 
     INews news1 = createNews(feed, "News1");
     news1.setState(INews.State.NEW);
@@ -1079,7 +1079,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     IFilterAction action = fFactory.createFilterAction(MARK_READ_ID);
     filter.addAction(action);
 
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     fAppService.handleFeedReload(bm1, feed, null, false, true, new NullProgressMonitor());
 
@@ -1100,7 +1100,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     IFeed feed = fFactory.createFeed(null, bm1.getFeedLinkReference().getLink());
 
     IBookMark bm2 = fFactory.createBookMark(null, bm1.getParent(), new FeedLinkReference(new URI("local2")), "local2");
-    DynamicDAO.save(bm2);
+    OwlDAO.save(bm2);
 
     INews news1 = createNews(feed, "News1");
     news1.setState(INews.State.NEW);
@@ -1120,7 +1120,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     IFilterAction action = fFactory.createFilterAction(MARK_READ_ID);
     filter.addAction(action);
 
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     fAppService.handleFeedReload(bm1, feed, null, false, true, new NullProgressMonitor());
 
@@ -1150,7 +1150,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     news3.setState(INews.State.NEW);
 
     INewsBin bin = fFactory.createNewsBin(null, bm.getParent(), "Bin");
-    DynamicDAO.save(bin);
+    OwlDAO.save(bin);
 
     ISearchFilter filter = fFactory.createSearchFilter(null, null, "All News");
     filter.setMatchAllNews(true);
@@ -1160,7 +1160,7 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     action.setData(new Long[] { bin.getId() + 1 });
     filter.addAction(action);
 
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     fAppService.handleFeedReload(bm, feed, null, false, true, new NullProgressMonitor());
 
@@ -1232,10 +1232,10 @@ public class NewsFilterTest extends LargeBlockSizeTest {
     IFolder folder = fFactory.createFolder(null, null, "Root");
 
     IFeed feed = fFactory.createFeed(null, new URI(link));
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IBookMark bm = fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark");
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     return bm;
   }

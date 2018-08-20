@@ -51,7 +51,7 @@ import org.rssowl.core.Owl;
 import org.rssowl.core.persist.IFolder;
 import org.rssowl.core.persist.IMark;
 import org.rssowl.core.persist.INewsBin;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.service.PersistenceException;
 import org.rssowl.ui.internal.OwlUI;
 import org.rssowl.ui.internal.util.FolderChooser;
@@ -230,7 +230,7 @@ public class NewNewsBinAction implements IWorkbenchWindowActionDelegate, IObject
       for (Map.Entry<String, Serializable> property : properties.entrySet())
         fNewsbin.setProperty(property.getKey(), property.getValue());
 
-      DynamicDAO.save(parent);
+      OwlDAO.save(parent);
     }
   }
 

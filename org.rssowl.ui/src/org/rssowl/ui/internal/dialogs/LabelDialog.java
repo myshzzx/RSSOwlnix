@@ -44,7 +44,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.rssowl.core.persist.ILabel;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.ICategoryDAO;
 import org.rssowl.core.util.CoreUtils;
 import org.rssowl.core.util.Pair;
@@ -169,7 +169,7 @@ public class LabelDialog extends Dialog {
               }
             });
 
-            Set<String> categoryNames = DynamicDAO.getDAO(ICategoryDAO.class).loadAllNames();
+            Set<String> categoryNames = OwlDAO.getDAO(ICategoryDAO.class).loadAllNames();
             categoryNames = StringUtils.replaceAll(categoryNames, ",", " "); // Comma not allowed for Labels //$NON-NLS-1$ //$NON-NLS-2$
 
             values.addAll(categoryNames);

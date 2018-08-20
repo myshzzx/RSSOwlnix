@@ -37,7 +37,7 @@ import org.rssowl.core.persist.IFeed;
 import org.rssowl.core.persist.IFolder;
 import org.rssowl.core.persist.IMark;
 import org.rssowl.core.persist.IModelFactory;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.event.BookMarkAdapter;
 import org.rssowl.core.persist.event.BookMarkEvent;
 import org.rssowl.core.persist.event.BookMarkListener;
@@ -203,11 +203,11 @@ public class PreferencesScopeTest extends LargeBlockSizeTest implements IPrefere
    */
   @Test
   public final void testEntityScope() throws Exception {
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
     IFeed feed = fFactory.createFeed(null, new URI("http://www.link.com"));
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark");
-    folder = DynamicDAO.save(folder);
+    folder = OwlDAO.save(folder);
 
     IPreferenceScope entityScope = Owl.getPreferenceService().getEntityScope(folder);
 
@@ -282,10 +282,10 @@ public class PreferencesScopeTest extends LargeBlockSizeTest implements IPrefere
    */
   @Test
   public final void testEntityScopeChangeWithGC() throws Exception {
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
     IFeed feed = fFactory.createFeed(null, new URI("http://www.link.com"));
-    feed = DynamicDAO.save(feed);
-    folder = DynamicDAO.save(folder);
+    feed = OwlDAO.save(feed);
+    folder = OwlDAO.save(folder);
 
     IPreferenceScope entityScope = Owl.getPreferenceService().getEntityScope(folder);
 
@@ -326,11 +326,11 @@ public class PreferencesScopeTest extends LargeBlockSizeTest implements IPrefere
   public final void testEntityScopeUpdateEvents() throws Exception {
     BookMarkListener bookmarkListener = null;
     try {
-      IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+      IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
       IFeed feed = fFactory.createFeed(null, new URI("http://www.link.com"));
-      feed = DynamicDAO.save(feed);
+      feed = OwlDAO.save(feed);
       fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark");
-      folder = DynamicDAO.save(folder);
+      folder = OwlDAO.save(folder);
 
       final int eventsCounter[] = new int[] { 0 };
       bookmarkListener = new BookMarkAdapter() {
@@ -339,7 +339,7 @@ public class PreferencesScopeTest extends LargeBlockSizeTest implements IPrefere
           eventsCounter[0]++;
         }
       };
-      DynamicDAO.addEntityListener(IBookMark.class, bookmarkListener);
+      OwlDAO.addEntityListener(IBookMark.class, bookmarkListener);
 
       IMark mark = folder.getMarks().get(0);
 
@@ -355,7 +355,7 @@ public class PreferencesScopeTest extends LargeBlockSizeTest implements IPrefere
       assertEquals(2, eventsCounter[0]);
     } finally {
       if (bookmarkListener != null)
-        DynamicDAO.removeEntityListener(IBookMark.class, bookmarkListener);
+        OwlDAO.removeEntityListener(IBookMark.class, bookmarkListener);
     }
   }
 

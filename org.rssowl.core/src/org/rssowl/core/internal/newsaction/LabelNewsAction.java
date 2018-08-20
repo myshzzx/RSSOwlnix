@@ -29,7 +29,7 @@ import org.rssowl.core.INewsAction;
 import org.rssowl.core.persist.IEntity;
 import org.rssowl.core.persist.ILabel;
 import org.rssowl.core.persist.INews;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.util.CoreUtils;
 
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ public class LabelNewsAction implements INewsAction {
     /* Run Filter */
     List<IEntity> entitiesToSave = new ArrayList<IEntity>(news.size());
     Long labelId = (Long) data;
-    ILabel label = DynamicDAO.load(ILabel.class, labelId);
+    ILabel label = OwlDAO.load(ILabel.class, labelId);
 
     if (label != null) {
       for (INews newsitem : news) {
@@ -88,7 +88,7 @@ public class LabelNewsAction implements INewsAction {
   public String getLabel(Object data) {
     if (data != null && data instanceof Long) {
       Long labelId = (Long) data;
-      ILabel label = DynamicDAO.load(ILabel.class, labelId);
+      ILabel label = OwlDAO.load(ILabel.class, labelId);
       if (label != null)
         return NLS.bind(Messages.LabelNewsAction_LABEL_NEWS_N, label.getName());
     }

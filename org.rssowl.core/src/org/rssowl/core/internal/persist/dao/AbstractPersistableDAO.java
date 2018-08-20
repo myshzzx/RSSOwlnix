@@ -64,7 +64,7 @@ public abstract class AbstractPersistableDAO<T extends IPersistable> implements 
     Assert.isNotNull(entityClass, "entityClass"); //$NON-NLS-1$
     fEntityClass = entityClass;
     fSaveFully = saveFully;
-    DBManager.getDefault().addEntityStoreListener(new DatabaseListener() {
+    DBManager.getInstance().addEntityStoreListener(new DatabaseListener() {
       @Override
       public void databaseOpened(DatabaseEvent event) {
         onDatabaseOpened(event);

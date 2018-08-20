@@ -82,7 +82,7 @@ import org.rssowl.core.persist.INewsBin;
 import org.rssowl.core.persist.INewsMark;
 import org.rssowl.core.persist.ISearchFilter;
 import org.rssowl.core.persist.ISearchMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IBookMarkDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
 import org.rssowl.core.util.CoreUtils;
@@ -1210,7 +1210,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
           manager.add(new Separator("movecopy")); //$NON-NLS-1$
 
           /* Load all news bins and sort by name */
-          List<INewsBin> newsbins = new ArrayList<INewsBin>(DynamicDAO.loadAll(INewsBin.class));
+          List<INewsBin> newsbins = new ArrayList<INewsBin>(OwlDAO.loadAll(INewsBin.class));
 
           Comparator<INewsBin> comparator = new Comparator<INewsBin>() {
             @Override
@@ -1533,7 +1533,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
               nl = "\n"; //$NON-NLS-1$
 
             StringBuilder errorReport = new StringBuilder();
-            Collection<IBookMark> bookmarks = DynamicDAO.getDAO(IBookMarkDAO.class).loadAll();
+            Collection<IBookMark> bookmarks = OwlDAO.getDAO(IBookMarkDAO.class).loadAll();
             for (IBookMark bookmark : bookmarks) {
               if (bookmark.isErrorLoading()) {
                 Object errorObj = bookmark.getProperty(Controller.LOAD_ERROR_KEY);
@@ -1870,7 +1870,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
     }
 
     /* Check Filters */
-    Collection<ISearchFilter> filters = DynamicDAO.loadAll(ISearchFilter.class);
+    Collection<ISearchFilter> filters = OwlDAO.loadAll(ISearchFilter.class);
     for (ISearchFilter filter : filters) {
       List<IFilterAction> actions = filter.getActions();
       for (IFilterAction action : actions) {
@@ -2015,7 +2015,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
           ILabel newLabel = Owl.getModelFactory().createLabel(null, name);
           newLabel.setColor(OwlUI.toString(color));
           newLabel.setOrder(labels.size());
-          DynamicDAO.save(newLabel);
+          OwlDAO.save(newLabel);
 
           LabelAction labelAction = new LabelAction(newLabel, selection);
           labelAction.run();

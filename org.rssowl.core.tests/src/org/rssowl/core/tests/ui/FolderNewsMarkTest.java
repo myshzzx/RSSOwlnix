@@ -44,7 +44,7 @@ import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.ISearchMark;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.event.NewsEvent;
 import org.rssowl.core.persist.reference.FeedLinkReference;
 import org.rssowl.core.persist.reference.NewsReference;
@@ -90,10 +90,10 @@ public class FolderNewsMarkTest {
     news.setState(INews.State.NEW);
     news = fFactory.createNews(null, feed, new Date());
     news.setState(INews.State.READ);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IBookMark bookMark = fFactory.createBookMark(null, childFolder, new FeedLinkReference(feed.getLink()), "Mark");
-    folder = DynamicDAO.save(folder);
+    folder = OwlDAO.save(folder);
 
     FolderNewsMark mark = new FolderNewsMark(childFolder);
     assertEquals(childFolder.getId(), mark.getId());
@@ -123,7 +123,7 @@ public class FolderNewsMarkTest {
     news2.setState(INews.State.UNREAD);
     INews news3 = fFactory.createNews(null, feed, new Date());
     news3.setState(INews.State.READ);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IBookMark bookMark1 = fFactory.createBookMark(null, childFolder, new FeedLinkReference(feed.getLink()), "Mark");
 
@@ -134,25 +134,25 @@ public class FolderNewsMarkTest {
     othernews2.setState(INews.State.UNREAD);
     INews othernews3 = fFactory.createNews(null, otherFeed, new Date());
     othernews3.setState(INews.State.READ);
-    DynamicDAO.save(otherFeed);
+    OwlDAO.save(otherFeed);
 
     IBookMark bookMark2 = fFactory.createBookMark(null, folder, new FeedLinkReference(otherFeed.getLink()), "Other Mark");
 
     INewsBin bin = fFactory.createNewsBin(null, childFolder, "bin");
-    DynamicDAO.save(bin);
+    OwlDAO.save(bin);
     INews copiedNews1 = fFactory.createNews(news1, bin);
     INews copiedNews2 = fFactory.createNews(news2, bin);
     INews copiedNews3 = fFactory.createNews(news3, bin);
-    DynamicDAO.save(copiedNews1);
-    DynamicDAO.save(copiedNews2);
-    DynamicDAO.save(copiedNews3);
+    OwlDAO.save(copiedNews1);
+    OwlDAO.save(copiedNews2);
+    OwlDAO.save(copiedNews3);
 
     ISearchField stateField = fFactory.createSearchField(INews.STATE, INews.class.getName());
     ISearchCondition condition = fFactory.createSearchCondition(stateField, SearchSpecifier.IS, EnumSet.of(INews.State.NEW));
     ISearchMark search = fFactory.createSearchMark(null, childFolder, "search");
     search.addSearchCondition(condition);
 
-    folder = DynamicDAO.save(folder);
+    folder = OwlDAO.save(folder);
 
     waitForIndexer();
     Controller.getDefault().getSavedSearchService().updateSavedSearches(true);
@@ -274,7 +274,7 @@ public class FolderNewsMarkTest {
     IFolder folder = fFactory.createFolder(null, null, "Root");
     IFolder childFolder = fFactory.createFolder(null, folder, "Child");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     FolderNewsMark mark = new FolderNewsMark(childFolder);
     mark.resolve(NewsFilter.Type.SHOW_ALL, null);
@@ -286,7 +286,7 @@ public class FolderNewsMarkTest {
     news2.setState(INews.State.UNREAD);
     INews news3 = fFactory.createNews(null, feed, new Date());
     news3.setState(INews.State.READ);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     fFactory.createBookMark(null, childFolder, new FeedLinkReference(feed.getLink()), "Mark");
 
@@ -297,25 +297,25 @@ public class FolderNewsMarkTest {
     othernews2.setState(INews.State.UNREAD);
     INews othernews3 = fFactory.createNews(null, otherFeed, new Date());
     othernews3.setState(INews.State.READ);
-    DynamicDAO.save(otherFeed);
+    OwlDAO.save(otherFeed);
 
     fFactory.createBookMark(null, folder, new FeedLinkReference(otherFeed.getLink()), "Other Mark");
 
     INewsBin bin = fFactory.createNewsBin(null, childFolder, "bin");
-    DynamicDAO.save(bin);
+    OwlDAO.save(bin);
     INews copiedNews1 = fFactory.createNews(news1, bin);
     INews copiedNews2 = fFactory.createNews(news2, bin);
     INews copiedNews3 = fFactory.createNews(news3, bin);
-    DynamicDAO.save(copiedNews1);
-    DynamicDAO.save(copiedNews2);
-    DynamicDAO.save(copiedNews3);
+    OwlDAO.save(copiedNews1);
+    OwlDAO.save(copiedNews2);
+    OwlDAO.save(copiedNews3);
 
     ISearchField stateField = fFactory.createSearchField(INews.STATE, INews.class.getName());
     ISearchCondition condition = fFactory.createSearchCondition(stateField, SearchSpecifier.IS, EnumSet.of(INews.State.NEW));
     ISearchMark search = fFactory.createSearchMark(null, childFolder, "search");
     search.addSearchCondition(condition);
 
-    folder = DynamicDAO.save(folder);
+    folder = OwlDAO.save(folder);
 
     waitForIndexer();
     Controller.getDefault().getSavedSearchService().updateSavedSearches(true);
@@ -443,7 +443,7 @@ public class FolderNewsMarkTest {
     news2.setState(INews.State.UNREAD);
     INews news3 = fFactory.createNews(null, feed, new Date());
     news3.setState(INews.State.READ);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     fFactory.createBookMark(null, childFolder, new FeedLinkReference(feed.getLink()), "Mark");
 
@@ -454,25 +454,25 @@ public class FolderNewsMarkTest {
     othernews2.setState(INews.State.UNREAD);
     INews othernews3 = fFactory.createNews(null, otherFeed, new Date());
     othernews3.setState(INews.State.READ);
-    DynamicDAO.save(otherFeed);
+    OwlDAO.save(otherFeed);
 
     fFactory.createBookMark(null, folder, new FeedLinkReference(otherFeed.getLink()), "Other Mark");
 
     INewsBin bin = fFactory.createNewsBin(null, childFolder, "bin");
-    DynamicDAO.save(bin);
+    OwlDAO.save(bin);
     INews copiedNews1 = fFactory.createNews(news1, bin);
     INews copiedNews2 = fFactory.createNews(news2, bin);
     INews copiedNews3 = fFactory.createNews(news3, bin);
-    DynamicDAO.save(copiedNews1);
-    DynamicDAO.save(copiedNews2);
-    DynamicDAO.save(copiedNews3);
+    OwlDAO.save(copiedNews1);
+    OwlDAO.save(copiedNews2);
+    OwlDAO.save(copiedNews3);
 
     ISearchField stateField = fFactory.createSearchField(INews.STATE, INews.class.getName());
     ISearchCondition condition = fFactory.createSearchCondition(stateField, SearchSpecifier.IS, EnumSet.of(INews.State.NEW));
     ISearchMark search = fFactory.createSearchMark(null, childFolder, "search");
     search.addSearchCondition(condition);
 
-    folder = DynamicDAO.save(folder);
+    folder = OwlDAO.save(folder);
 
     waitForIndexer();
     Controller.getDefault().getSavedSearchService().updateSavedSearches(true);
@@ -600,7 +600,7 @@ public class FolderNewsMarkTest {
     news2.setState(INews.State.UNREAD);
     INews news3 = fFactory.createNews(null, feed, new Date());
     news3.setState(INews.State.READ);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     fFactory.createBookMark(null, childFolder, new FeedLinkReference(feed.getLink()), "Mark");
 
@@ -611,26 +611,26 @@ public class FolderNewsMarkTest {
     othernews2.setState(INews.State.UNREAD);
     INews othernews3 = fFactory.createNews(null, otherFeed, new Date());
     othernews3.setState(INews.State.READ);
-    DynamicDAO.save(otherFeed);
+    OwlDAO.save(otherFeed);
 
     fFactory.createBookMark(null, folder, new FeedLinkReference(otherFeed.getLink()), "Other Mark");
 
     INewsBin bin = fFactory.createNewsBin(null, childFolder, "bin");
-    DynamicDAO.save(bin);
+    OwlDAO.save(bin);
     INews copiedNews1 = fFactory.createNews(news1, bin);
     copiedNews1.setState(INews.State.READ);
     INews copiedNews2 = fFactory.createNews(news2, bin);
     INews copiedNews3 = fFactory.createNews(news3, bin);
-    DynamicDAO.save(copiedNews1);
-    DynamicDAO.save(copiedNews2);
-    DynamicDAO.save(copiedNews3);
+    OwlDAO.save(copiedNews1);
+    OwlDAO.save(copiedNews2);
+    OwlDAO.save(copiedNews3);
 
     ISearchField stateField = fFactory.createSearchField(INews.STATE, INews.class.getName());
     ISearchCondition condition = fFactory.createSearchCondition(stateField, SearchSpecifier.IS, EnumSet.of(INews.State.NEW));
     ISearchMark search = fFactory.createSearchMark(null, childFolder, "search");
     search.addSearchCondition(condition);
 
-    folder = DynamicDAO.save(folder);
+    folder = OwlDAO.save(folder);
 
     waitForIndexer();
     Controller.getDefault().getSavedSearchService().updateSavedSearches(true);
@@ -774,13 +774,13 @@ public class FolderNewsMarkTest {
     news1.setState(INews.State.NEW);
     news1.setFlagged(true);
     ILabel label = fFactory.createLabel(null, "Foo");
-    DynamicDAO.save(label);
+    OwlDAO.save(label);
     news1.addLabel(label);
     INews news2 = fFactory.createNews(null, feed, new Date());
     news2.setState(INews.State.UNREAD);
     INews news3 = fFactory.createNews(null, feed, new Date());
     news3.setState(INews.State.READ);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     fFactory.createBookMark(null, childFolder, new FeedLinkReference(feed.getLink()), "Mark");
 
@@ -791,19 +791,19 @@ public class FolderNewsMarkTest {
     othernews2.setState(INews.State.UNREAD);
     INews othernews3 = fFactory.createNews(null, otherFeed, new Date());
     othernews3.setState(INews.State.READ);
-    DynamicDAO.save(otherFeed);
+    OwlDAO.save(otherFeed);
 
     fFactory.createBookMark(null, folder, new FeedLinkReference(otherFeed.getLink()), "Other Mark");
 
     INewsBin bin = fFactory.createNewsBin(null, childFolder, "bin");
-    DynamicDAO.save(bin);
+    OwlDAO.save(bin);
     INews copiedNews1 = fFactory.createNews(news1, bin);
     copiedNews1.setState(INews.State.READ);
     INews copiedNews2 = fFactory.createNews(news2, bin);
     INews copiedNews3 = fFactory.createNews(news3, bin);
-    DynamicDAO.save(copiedNews1);
-    DynamicDAO.save(copiedNews2);
-    DynamicDAO.save(copiedNews3);
+    OwlDAO.save(copiedNews1);
+    OwlDAO.save(copiedNews2);
+    OwlDAO.save(copiedNews3);
 
     ISearchField stateField = fFactory.createSearchField(INews.STATE, INews.class.getName());
     ISearchCondition condition = fFactory.createSearchCondition(stateField, SearchSpecifier.IS, EnumSet.of(INews.State.NEW));
@@ -811,7 +811,7 @@ public class FolderNewsMarkTest {
     search.setMatchAllConditions(true);
     search.addSearchCondition(condition);
 
-    folder = DynamicDAO.save(folder);
+    folder = OwlDAO.save(folder);
 
     waitForIndexer();
     Controller.getDefault().getSavedSearchService().updateSavedSearches(true);
@@ -860,13 +860,13 @@ public class FolderNewsMarkTest {
     news1.setState(INews.State.NEW);
     news1.setFlagged(true);
     ILabel label = fFactory.createLabel(null, "Foo");
-    DynamicDAO.save(label);
+    OwlDAO.save(label);
     news1.addLabel(label);
     INews news2 = fFactory.createNews(null, feed, new Date());
     news2.setState(INews.State.UNREAD);
     INews news3 = fFactory.createNews(null, feed, new Date());
     news3.setState(INews.State.READ);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     fFactory.createBookMark(null, childFolder, new FeedLinkReference(feed.getLink()), "Mark");
 
@@ -877,19 +877,19 @@ public class FolderNewsMarkTest {
     othernews2.setState(INews.State.UNREAD);
     INews othernews3 = fFactory.createNews(null, otherFeed, new Date());
     othernews3.setState(INews.State.READ);
-    DynamicDAO.save(otherFeed);
+    OwlDAO.save(otherFeed);
 
     fFactory.createBookMark(null, folder, new FeedLinkReference(otherFeed.getLink()), "Other Mark");
 
     INewsBin bin = fFactory.createNewsBin(null, childFolder, "bin");
-    DynamicDAO.save(bin);
+    OwlDAO.save(bin);
     INews copiedNews1 = fFactory.createNews(news1, bin);
     copiedNews1.setState(INews.State.READ);
     INews copiedNews2 = fFactory.createNews(news2, bin);
     INews copiedNews3 = fFactory.createNews(news3, bin);
-    DynamicDAO.save(copiedNews1);
-    DynamicDAO.save(copiedNews2);
-    DynamicDAO.save(copiedNews3);
+    OwlDAO.save(copiedNews1);
+    OwlDAO.save(copiedNews2);
+    OwlDAO.save(copiedNews3);
 
     ISearchField stateField = fFactory.createSearchField(INews.STATE, INews.class.getName());
     ISearchCondition condition1 = fFactory.createSearchCondition(stateField, SearchSpecifier.IS, EnumSet.of(INews.State.NEW));
@@ -906,7 +906,7 @@ public class FolderNewsMarkTest {
     search.addSearchCondition(condition2);
     search.addSearchCondition(condition3);
 
-    folder = DynamicDAO.save(folder);
+    folder = OwlDAO.save(folder);
 
     waitForIndexer();
     Controller.getDefault().getSavedSearchService().updateSavedSearches(true);
@@ -955,13 +955,13 @@ public class FolderNewsMarkTest {
     news1.setState(INews.State.NEW);
     news1.setFlagged(true);
     ILabel label = fFactory.createLabel(null, "Foo");
-    DynamicDAO.save(label);
+    OwlDAO.save(label);
     news1.addLabel(label);
     INews news2 = fFactory.createNews(null, feed, new Date());
     news2.setState(INews.State.UNREAD);
     INews news3 = fFactory.createNews(null, feed, new Date());
     news3.setState(INews.State.READ);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     fFactory.createBookMark(null, childFolder, new FeedLinkReference(feed.getLink()), "Mark");
 
@@ -972,19 +972,19 @@ public class FolderNewsMarkTest {
     othernews2.setState(INews.State.UNREAD);
     INews othernews3 = fFactory.createNews(null, otherFeed, new Date());
     othernews3.setState(INews.State.READ);
-    DynamicDAO.save(otherFeed);
+    OwlDAO.save(otherFeed);
 
     fFactory.createBookMark(null, folder, new FeedLinkReference(otherFeed.getLink()), "Other Mark");
 
     INewsBin bin = fFactory.createNewsBin(null, childFolder, "bin");
-    DynamicDAO.save(bin);
+    OwlDAO.save(bin);
     INews copiedNews1 = fFactory.createNews(news1, bin);
     copiedNews1.setState(INews.State.READ);
     INews copiedNews2 = fFactory.createNews(news2, bin);
     INews copiedNews3 = fFactory.createNews(news3, bin);
-    DynamicDAO.save(copiedNews1);
-    DynamicDAO.save(copiedNews2);
-    DynamicDAO.save(copiedNews3);
+    OwlDAO.save(copiedNews1);
+    OwlDAO.save(copiedNews2);
+    OwlDAO.save(copiedNews3);
 
     ISearchField stateField = fFactory.createSearchField(INews.STATE, INews.class.getName());
     ISearchCondition condition1 = fFactory.createSearchCondition(stateField, SearchSpecifier.IS, EnumSet.of(INews.State.NEW));
@@ -1001,7 +1001,7 @@ public class FolderNewsMarkTest {
     search.addSearchCondition(condition2);
     search.addSearchCondition(condition3);
 
-    folder = DynamicDAO.save(folder);
+    folder = OwlDAO.save(folder);
 
     waitForIndexer();
     Controller.getDefault().getSavedSearchService().updateSavedSearches(true);

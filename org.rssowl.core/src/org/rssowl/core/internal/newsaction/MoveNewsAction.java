@@ -30,7 +30,7 @@ import org.rssowl.core.Owl;
 import org.rssowl.core.persist.IEntity;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INewsBin;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.util.CoreUtils;
 
 import java.util.ArrayList;
@@ -88,8 +88,8 @@ public class MoveNewsAction implements INewsAction {
 
       /* Save */
       if (!copiedNews.isEmpty()) {
-        DynamicDAO.saveAll(copiedNews);
-        DynamicDAO.save(bin);
+        OwlDAO.saveAll(copiedNews);
+        OwlDAO.save(bin);
       }
     }
 

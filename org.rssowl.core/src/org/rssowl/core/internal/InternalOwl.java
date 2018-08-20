@@ -64,8 +64,14 @@ import java.util.List;
  */
 public final class InternalOwl {
 
-  /* The Singleton Instance */
   private static final InternalOwl INSTANCE = new InternalOwl();
+
+  /**
+   * @return Singleton Instance.
+   */
+  public static final InternalOwl getInstance() {
+    return INSTANCE;
+  }
 
   /* Extension Point: Factory for Model Types */
   private static final String MODEL_TYPESFACTORY_EXTENSION_POINT = "org.rssowl.core.ModelFactory"; //$NON-NLS-1$
@@ -168,13 +174,6 @@ public final class InternalOwl {
    */
   public StartLevel getStartLevel() {
     return fStartLevel;
-  }
-
-  /**
-   * @return Returns the singleton instance of <code>InternalOwl</code>.
-   */
-  public static InternalOwl getDefault() {
-    return INSTANCE;
   }
 
   /**

@@ -41,7 +41,7 @@ import org.rssowl.core.interpreter.ITypeExporter;
 import org.rssowl.core.persist.IFilterAction;
 import org.rssowl.core.persist.ILabel;
 import org.rssowl.core.persist.ISearchFilter;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.ui.internal.OwlUI;
 
 import java.util.Collection;
@@ -84,7 +84,7 @@ public class ExportOptionsPage extends WizardPage {
     infoText.setText(Messages.ExportOptionsPage_OPTIONS_INFO);
 
     /* Labels */
-    Collection<ILabel> labels = DynamicDAO.loadAll(ILabel.class);
+    Collection<ILabel> labels = OwlDAO.loadAll(ILabel.class);
     fExportLabelsCheck = new Button(container, SWT.CHECK);
     fExportLabelsCheck.setImage(OwlUI.getImage(fExportLabelsCheck, "icons/elcl16/labels.gif")); //$NON-NLS-1$
     if (!labels.isEmpty())
@@ -96,7 +96,7 @@ public class ExportOptionsPage extends WizardPage {
     fExportLabelsCheck.setEnabled(!labels.isEmpty());
 
     /* Filters */
-    Collection<ISearchFilter> filters = DynamicDAO.loadAll(ISearchFilter.class);
+    Collection<ISearchFilter> filters = OwlDAO.loadAll(ISearchFilter.class);
     final boolean filtersUseLabels = filtersUseLabels(filters);
     fExportFiltersCheck = new Button(container, SWT.CHECK);
     fExportFiltersCheck.setImage(OwlUI.getImage(fExportFiltersCheck, OwlUI.FILTER));

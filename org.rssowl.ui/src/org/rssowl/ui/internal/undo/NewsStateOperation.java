@@ -28,7 +28,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.osgi.util.NLS;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INews.State;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
 import org.rssowl.core.persist.reference.NewsReference;
 import org.rssowl.core.util.CoreUtils;
@@ -60,7 +60,7 @@ public class NewsStateOperation implements IUndoOperation {
   private final int fNewsCount;
   private final boolean fOnlyNewNewsAffected;
   private final boolean fAffectEquivalentNews;
-  private final INewsDAO fNewsDao = DynamicDAO.getDAO(INewsDAO.class);
+  private final INewsDAO fNewsDao = OwlDAO.getDAO(INewsDAO.class);
 
   /**
    * @param news

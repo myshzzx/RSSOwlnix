@@ -36,7 +36,7 @@ import org.rssowl.core.interpreter.INamespaceHandler;
 import org.rssowl.core.interpreter.IXMLParser;
 import org.rssowl.core.persist.IModelFactory;
 import org.rssowl.core.persist.dao.DAOService;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
 import org.rssowl.core.persist.pref.IPreferencesInitializer;
 import org.rssowl.core.persist.service.IModelSearch;
@@ -51,7 +51,7 @@ import org.rssowl.core.util.LongOperationMonitor;
  * might be shorter.
  *
  * @author bpasero
- * @see DynamicDAO
+ * @see OwlDAO
  */
 public final class Owl {
 
@@ -73,7 +73,7 @@ public final class Owl {
    * {@link #startup(LongOperationMonitor)} sequence.
    */
   public static StartLevel getStartLevel() {
-    return InternalOwl.getDefault().getStartLevel();
+    return InternalOwl.getInstance().getStartLevel();
   }
 
   /**
@@ -90,8 +90,8 @@ public final class Owl {
    * the persistence layer.
    */
   public static IApplicationService getApplicationService() {
-    Assert.isTrue(InternalOwl.getDefault().isStarted(), "The Owl facade has not yet finished initialization"); //$NON-NLS-1$
-    return InternalOwl.getDefault().getApplicationService();
+    Assert.isTrue(InternalOwl.getInstance().isStarted(), "The Owl facade has not yet finished initialization"); //$NON-NLS-1$
+    return InternalOwl.getInstance().getApplicationService();
   }
 
   /**
@@ -113,8 +113,8 @@ public final class Owl {
    * @see IPreferencesInitializer
    */
   public static IPreferenceService getPreferenceService() {
-    Assert.isTrue(InternalOwl.getDefault().isStarted(), "The Owl facade has not yet finished initialization"); //$NON-NLS-1$
-    return InternalOwl.getDefault().getPreferenceService();
+    Assert.isTrue(InternalOwl.getInstance().isStarted(), "The Owl facade has not yet finished initialization"); //$NON-NLS-1$
+    return InternalOwl.getInstance().getPreferenceService();
   }
 
   /**
@@ -133,8 +133,8 @@ public final class Owl {
    * @see IModelSearch
    */
   public static IPersistenceService getPersistenceService() {
-    Assert.isTrue(InternalOwl.getDefault().isStarted(), "The Owl facade has not yet finished initialization"); //$NON-NLS-1$
-    return InternalOwl.getDefault().getPersistenceService();
+    Assert.isTrue(InternalOwl.getInstance().isStarted(), "The Owl facade has not yet finished initialization"); //$NON-NLS-1$
+    return InternalOwl.getInstance().getPersistenceService();
   }
 
   /**
@@ -152,8 +152,8 @@ public final class Owl {
    * @see ICredentialsProvider
    */
   public static IConnectionService getConnectionService() {
-    Assert.isTrue(InternalOwl.getDefault().isStarted(), "The Owl facade has not yet finished initialization"); //$NON-NLS-1$
-    return InternalOwl.getDefault().getConnectionService();
+    Assert.isTrue(InternalOwl.getInstance().isStarted(), "The Owl facade has not yet finished initialization"); //$NON-NLS-1$
+    return InternalOwl.getInstance().getConnectionService();
   }
 
   /**
@@ -180,8 +180,8 @@ public final class Owl {
    * @see IXMLParser
    */
   public static IInterpreterService getInterpreter() {
-    Assert.isTrue(InternalOwl.getDefault().isStarted(), "The Owl facade has not yet finished initialization"); //$NON-NLS-1$
-    return InternalOwl.getDefault().getInterpreter();
+    Assert.isTrue(InternalOwl.getInstance().isStarted(), "The Owl facade has not yet finished initialization"); //$NON-NLS-1$
+    return InternalOwl.getInstance().getInterpreter();
   }
 
   /**
@@ -192,8 +192,8 @@ public final class Owl {
    * @return Returns the model factory that is used to create model types.
    */
   public static IModelFactory getModelFactory() {
-    Assert.isTrue(InternalOwl.getDefault().isStarted(), "The Owl facade has not yet finished initialization"); //$NON-NLS-1$
-    return InternalOwl.getDefault().getModelFactory();
+    Assert.isTrue(InternalOwl.getInstance().isStarted(), "The Owl facade has not yet finished initialization"); //$NON-NLS-1$
+    return InternalOwl.getInstance().getModelFactory();
   }
 
   /**
@@ -204,8 +204,8 @@ public final class Owl {
    * operations (e.g. migration).
    */
   public static void startup(LongOperationMonitor monitor) {
-    if (!InternalOwl.getDefault().isStarted())
-      InternalOwl.getDefault().startup(monitor, false, false);
+    if (!InternalOwl.getInstance().isStarted())
+      InternalOwl.getInstance().startup(monitor, false, false);
   }
 
   /**
@@ -213,7 +213,7 @@ public final class Owl {
    * been called already and <code>false</code> otherwise.
    */
   public static boolean isStarted() {
-    return InternalOwl.getDefault().isStarted();
+    return InternalOwl.getInstance().isStarted();
   }
 
   /**
@@ -222,7 +222,7 @@ public final class Owl {
    * Shutdown).
    */
   public static void shutdown(boolean emergency) {
-    InternalOwl.getDefault().shutdown(emergency);
+    InternalOwl.getInstance().shutdown(emergency);
   }
 
   /**
@@ -230,6 +230,6 @@ public final class Owl {
    * already and <code>false</code> otherwise.
    */
   public static boolean isShuttingDown() {
-    return InternalOwl.getDefault().isShuttingDown();
+    return InternalOwl.getInstance().isShuttingDown();
   }
 }

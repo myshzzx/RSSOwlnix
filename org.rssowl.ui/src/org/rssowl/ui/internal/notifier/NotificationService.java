@@ -37,7 +37,7 @@ import org.rssowl.core.persist.IFolder;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.event.BookMarkAdapter;
 import org.rssowl.core.persist.event.BookMarkEvent;
 import org.rssowl.core.persist.event.BookMarkListener;
@@ -133,10 +133,10 @@ public class NotificationService {
   /** Shutdown this Service */
   public void stopService() {
     fBatchedBuffer.cancel(false);
-    DynamicDAO.removeEntityListener(INews.class, fNewsListener);
-    DynamicDAO.removeEntityListener(ISearchMark.class, fSearchMarkListener);
-    DynamicDAO.removeEntityListener(IBookMark.class, fBookMarkListener);
-    DynamicDAO.removeEntityListener(IFolder.class, fFolderListener);
+    OwlDAO.removeEntityListener(INews.class, fNewsListener);
+    OwlDAO.removeEntityListener(ISearchMark.class, fSearchMarkListener);
+    OwlDAO.removeEntityListener(IBookMark.class, fBookMarkListener);
+    OwlDAO.removeEntityListener(IFolder.class, fFolderListener);
   }
 
   /**
@@ -216,7 +216,7 @@ public class NotificationService {
       }
     };
 
-    DynamicDAO.addEntityListener(INews.class, listener);
+    OwlDAO.addEntityListener(INews.class, listener);
     return listener;
   }
 
@@ -232,7 +232,7 @@ public class NotificationService {
         }
       }
     };
-    DynamicDAO.addEntityListener(IBookMark.class, listener);
+    OwlDAO.addEntityListener(IBookMark.class, listener);
 
     return listener;
   }
@@ -249,7 +249,7 @@ public class NotificationService {
         }
       }
     };
-    DynamicDAO.addEntityListener(IFolder.class, listener);
+    OwlDAO.addEntityListener(IFolder.class, listener);
 
     return listener;
   }
@@ -264,7 +264,7 @@ public class NotificationService {
       }
     };
 
-    DynamicDAO.addEntityListener(ISearchMark.class, listener);
+    OwlDAO.addEntityListener(ISearchMark.class, listener);
     return listener;
   }
 
@@ -441,7 +441,7 @@ public class NotificationService {
   }
 
   private void updateEnabledFeedCache() {
-    Collection<IBookMark> bookMarks = DynamicDAO.loadAll(IBookMark.class);
+    Collection<IBookMark> bookMarks = OwlDAO.loadAll(IBookMark.class);
     for (IBookMark bookMark : bookMarks) {
       IPreferenceScope prefs = Owl.getPreferenceService().getEntityScope(bookMark);
       fNotifierEnablementCache.put(bookMark.getFeedLinkReference().getLinkAsText(), prefs.getBoolean(DefaultPreferences.ENABLE_NOTIFIER));

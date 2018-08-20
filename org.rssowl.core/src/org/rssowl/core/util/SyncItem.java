@@ -33,7 +33,7 @@ import org.rssowl.core.persist.IFilterAction;
 import org.rssowl.core.persist.ILabel;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.ISearchFilter;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.event.NewsEvent;
 
 import java.io.Serializable;
@@ -213,7 +213,7 @@ public class SyncItem implements Serializable {
         Object data = action.getData();
         if (data != null && data instanceof Long) {
           Long labelId = (Long) data;
-          ILabel label = DynamicDAO.load(ILabel.class, labelId);
+          ILabel label = OwlDAO.load(ILabel.class, labelId);
           if (label != null) {
             syncItem.addLabel(label.getName());
             requiresSync = true;

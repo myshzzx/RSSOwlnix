@@ -46,7 +46,7 @@ import org.rssowl.core.persist.ISearch;
 import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchFilter;
 import org.rssowl.core.persist.ISearchMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IFeedDAO;
 import org.rssowl.core.persist.dao.ISearchMarkDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
@@ -135,7 +135,7 @@ public class ImportUtils {
     List<ISearchMark> locationConditionSavedSearches = getLocationConditionSavedSearches(elements);
 
     /* Look for Feeds in Elements and Save them if required */
-    IFeedDAO feedDao = DynamicDAO.getDAO(IFeedDAO.class);
+    IFeedDAO feedDao = OwlDAO.getDAO(IFeedDAO.class);
     List<URI> feedsCreated = new ArrayList<URI>();
     for (IFolderChild element : elements) {
       saveFeedsOfBookmarks(feedsCreated, element, feedDao, checkExistingFeeds);
@@ -152,7 +152,7 @@ public class ImportUtils {
     /* Fix locations in Search Marks if required and save */
     if (!locationConditionSavedSearches.isEmpty()) {
       updateLocationConditions(mapOldIdToFolderChild, locationConditionSavedSearches);
-      DynamicDAO.getDAO(ISearchMarkDAO.class).saveAll(locationConditionSavedSearches);
+      OwlDAO.getDAO(ISearchMarkDAO.class).saveAll(locationConditionSavedSearches);
     }
 
     /* Import Labels  */
@@ -160,7 +160,7 @@ public class ImportUtils {
     Map<String, ILabel> mapExistingLabelToName = new HashMap<String, ILabel>();
     Map<Long, ILabel> mapOldIdToImportedLabel = new HashMap<Long, ILabel>();
     if (labels != null && !labels.isEmpty()) {
-      Collection<ILabel> existingLabels = DynamicDAO.loadAll(ILabel.class);
+      Collection<ILabel> existingLabels = OwlDAO.loadAll(ILabel.class);
       for (ILabel existingLabel : existingLabels) {
         mapExistingLabelToName.put(existingLabel.getName(), existingLabel);
       }
@@ -180,13 +180,13 @@ public class ImportUtils {
           if (existingLabel.getOrder() != importedLabel.getOrder())
             fixLabelOrder = true;
           existingLabel.setOrder(importedLabel.getOrder());
-          DynamicDAO.save(existingLabel);
+          OwlDAO.save(existingLabel);
         }
 
         /* Save as New */
         else {
           importedLabel.removeProperty(ITypeImporter.ID_KEY);
-          DynamicDAO.save(importedLabel);
+          OwlDAO.save(importedLabel);
           fixLabelOrder = true;
         }
       }
@@ -201,13 +201,13 @@ public class ImportUtils {
           index++;
         }
 
-        DynamicDAO.saveAll(sortedLabels);
+        OwlDAO.saveAll(sortedLabels);
       }
     }
 
     /* Import Filters */
     if (filters != null && !filters.isEmpty()) {
-      int existingFiltersCount = DynamicDAO.loadAll(ISearchFilter.class).size();
+      int existingFiltersCount = OwlDAO.loadAll(ISearchFilter.class).size();
 
       /* Fix locations in Searches if required */
       List<ISearch> locationConditionSearches = getLocationConditionSearchesFromFilters(filters);
@@ -268,7 +268,7 @@ public class ImportUtils {
       }
 
       /* Save */
-      DynamicDAO.saveAll(filters);
+      OwlDAO.saveAll(filters);
     }
 
     /* Import Preferences */
@@ -456,7 +456,7 @@ public class ImportUtils {
     }
 
     /* Save Folders that have changed */
-    DynamicDAO.saveAll(foldersToSave);
+    OwlDAO.saveAll(foldersToSave);
   }
 
   private static void doImportToTarget(IFolder target, List<IFolderChild> elements, Map<Long, IFolderChild> mapOldIdToFolderChild) {
@@ -518,7 +518,7 @@ public class ImportUtils {
     }
 
     /* Save Folders that have changed */
-    DynamicDAO.saveAll(foldersToSave);
+    OwlDAO.saveAll(foldersToSave);
   }
 
   private static void reparent(IFolder from, IFolder to) {

@@ -51,7 +51,7 @@ import org.rssowl.core.persist.IModelFactory;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INewsBin;
 import org.rssowl.core.persist.IPerson;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.event.ModelEvent;
 import org.rssowl.core.persist.event.NewsEvent;
 import org.rssowl.core.persist.reference.FeedLinkReference;
@@ -173,7 +173,7 @@ public class ModelUtilsTest {
   @Test
   public void testRelax() throws Exception {
     IFeed feed = fFactory.createFeed(null, new URI("http://www.link.com"));
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     IFolder root1 = fFactory.createFolder(null, null, "Root 1");
     IFolder subRoot = fFactory.createFolder(null, root1, "Sub Root 1");
@@ -674,7 +674,7 @@ public class ModelUtilsTest {
     INewsBin bin1 = fFactory.createNewsBin(null, root, "A");
     INewsBin bin2 = fFactory.createNewsBin(null, root, "B");
 
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     IFeed feed = new Feed(new URI("http://www.link.com"));
     INews news1 = new News(null, feed, new Date());
@@ -1003,8 +1003,8 @@ public class ModelUtilsTest {
    */
   @Test
   public void testGetLabelsForAll() throws Exception {
-    ILabel label1 = DynamicDAO.save(fFactory.createLabel(null, "Foo"));
-    ILabel label2 = DynamicDAO.save(fFactory.createLabel(null, "Bar"));
+    ILabel label1 = OwlDAO.save(fFactory.createLabel(null, "Foo"));
+    ILabel label2 = OwlDAO.save(fFactory.createLabel(null, "Bar"));
 
     IFeed feed = fFactory.createFeed(null, new URI("feed"));
     INews news1 = fFactory.createNews(null, feed, new Date());
@@ -1056,7 +1056,7 @@ public class ModelUtilsTest {
     news.add(news2);
     news.add(news3);
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     List<Pair<IAttachment, URI>> links = ModelUtils.getAttachmentLinks(new StructuredSelection(news));
     assertEquals(4, links.size());
@@ -1088,11 +1088,11 @@ public class ModelUtilsTest {
     INews readNews = fFactory.createNews(null, feed, new Date());
     readNews.setState(INews.State.READ);
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IFolder folder = fFactory.createFolder(null, null, "Folder");
     IBookMark bm = fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "Bookmark");
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     /* Wait for Indexer */
     waitForIndexer();

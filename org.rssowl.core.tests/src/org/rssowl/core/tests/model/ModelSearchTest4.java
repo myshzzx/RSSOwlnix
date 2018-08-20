@@ -48,7 +48,7 @@ import org.rssowl.core.persist.IPerson;
 import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.reference.FeedLinkReference;
 import org.rssowl.core.persist.reference.NewsReference;
 import org.rssowl.core.persist.service.PersistenceException;
@@ -105,7 +105,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
       attachment.setLink(new URI("http://www.attachment.com/att1news2.file"));
       attachment.setType("Hasselhoff");
 
-      DynamicDAO.save(feed);
+      OwlDAO.save(feed);
 
       /* Wait for Indexer */
       waitForIndexer();
@@ -229,7 +229,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
       attachment.setLink(new URI("http://www.attachment.com/att1news2.file"));
       attachment.setType("Hasselhoff");
 
-      DynamicDAO.save(feed);
+      OwlDAO.save(feed);
 
       /* Wait for Indexer */
       waitForIndexer();
@@ -353,7 +353,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
       attachment.setLink(new URI("http://www.attachment.com/att1news2.file"));
       attachment.setType("Hasselhoff");
 
-      DynamicDAO.save(feed);
+      OwlDAO.save(feed);
 
       /* Wait for Indexer */
       waitForIndexer();
@@ -450,23 +450,23 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
   @Test
   public void testLocationSearch_BINs() throws Exception {
     IFolderChild root = fFactory.createFolder(null, null, "Root");
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     IFolderChild child = fFactory.createFolder(null, (IFolder) root, "Child");
-    DynamicDAO.save(child);
+    OwlDAO.save(child);
 
     IFeed feed = fFactory.createFeed(null, new URI("http://www.feed.com/feed.xml"));
     INews news1 = createNews(feed, "Title", "http://www.news.com/news1.html", State.NEW);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IFolderChild mark = fFactory.createBookMark(null, (IFolder) child, new FeedLinkReference(feed.getLink()), "Mark");
-    DynamicDAO.save(mark);
+    OwlDAO.save(mark);
 
     IFolderChild bin = fFactory.createNewsBin(null, (IFolder) root, "Bin");
-    DynamicDAO.save(bin);
+    OwlDAO.save(bin);
     News copiedNews = new News((News) news1, bin.getId().longValue());
-    DynamicDAO.save(copiedNews);
-    DynamicDAO.save(bin);
+    OwlDAO.save(copiedNews);
+    OwlDAO.save(bin);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -520,7 +520,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     createNews(feed1, "First News of Feed One", "http://www.news.com/news1.html", State.HIDDEN);
     createNews(feed1, "Second News of Feed One", "http://www.news.com/news2.html", State.DELETED);
 
-    DynamicDAO.save(feed1);
+    OwlDAO.save(feed1);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -544,7 +544,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news1 = createNews(feed1, "First News of Feed One", "http://www.news.com/news1.html", State.NEW);
     INews news2 = createNews(feed1, "Second News of Feed One", "http://www.news.com/news2.html", State.READ);
 
-    DynamicDAO.save(feed1);
+    OwlDAO.save(feed1);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -552,7 +552,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     news1.setState(INews.State.HIDDEN);
     news2.setState(INews.State.DELETED);
 
-    DynamicDAO.save(feed1);
+    OwlDAO.save(feed1);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -576,7 +576,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news1 = createNews(feed1, "First News of Feed One", "http://www.news.com/news1.html", State.HIDDEN);
     INews news2 = createNews(feed1, "Second News of Feed One", "http://www.news.com/news2.html", State.HIDDEN);
 
-    DynamicDAO.save(feed1);
+    OwlDAO.save(feed1);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -584,7 +584,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     news1.setState(INews.State.NEW);
     news2.setState(INews.State.READ);
 
-    DynamicDAO.save(feed1);
+    OwlDAO.save(feed1);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -604,13 +604,13 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
 
     /* First add some Types */
     IFolder rootFolder = fFactory.createFolder(null, null, "Root");
-    DynamicDAO.save(rootFolder);
+    OwlDAO.save(rootFolder);
 
     IFolder subFolder1 = fFactory.createFolder(null, rootFolder, "Sub Folder 1");
-    DynamicDAO.save(subFolder1);
+    OwlDAO.save(subFolder1);
 
     IFolder subFolder2 = fFactory.createFolder(null, rootFolder, "Sub Folder 2");
-    DynamicDAO.save(subFolder2);
+    OwlDAO.save(subFolder2);
 
     IFeed feed1 = fFactory.createFeed(null, new URI("http://www.feed.com/feed1.xml"));
     IFeed feed2 = fFactory.createFeed(null, new URI("http://www.feed.com/feed2.xml"));
@@ -621,17 +621,17 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news3 = createNews(feed3, "First News of Feed Three", "http://www.news.com/news3.html", State.READ);
     news3.setFlagged(true);
 
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
-    DynamicDAO.save(feed3);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
+    OwlDAO.save(feed3);
 
     IBookMark bm1 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed1.getLink()), "BM1");
     IBookMark bm2 = fFactory.createBookMark(null, subFolder1, new FeedLinkReference(feed2.getLink()), "BM2");
     IBookMark bm3 = fFactory.createBookMark(null, subFolder2, new FeedLinkReference(feed3.getLink()), "BM3");
 
-    DynamicDAO.save(bm1);
-    DynamicDAO.save(bm2);
-    DynamicDAO.save(bm3);
+    OwlDAO.save(bm1);
+    OwlDAO.save(bm2);
+    OwlDAO.save(bm3);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -954,7 +954,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
       category.setName("Global");
       news.addCategory(category);
 
-      DynamicDAO.save(feed);
+      OwlDAO.save(feed);
 
       /* Wait for Indexer */
       waitForIndexer();
@@ -1018,11 +1018,11 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     category.setName("Global");
     news.addCategory(category);
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IFolder root = fFactory.createFolder(null, null, "Root");
     fFactory.createBookMark(null, root, new FeedLinkReference(feed.getLink()), "Bookmark");
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -1040,12 +1040,12 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
    */
   @Test
   public void testNewsReindexedWhenLabelChanges() throws Exception {
-    ILabel label = DynamicDAO.save(fFactory.createLabel(null, "Foo"));
+    ILabel label = OwlDAO.save(fFactory.createLabel(null, "Foo"));
 
     IFeed feed = fFactory.createFeed(null, new URI("http://www.feed.com/feed.xml"));
     INews news = createNews(feed, "News with Label", "http://www.news.com/news3.html", State.READ);
     news.addLabel(label);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     waitForIndexer();
 
@@ -1058,7 +1058,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     assertEquals("News with Label", result.get(0).getResult().resolve().getTitle());
 
     label.setName("Bar");
-    DynamicDAO.save(label);
+    OwlDAO.save(label);
 
     waitForIndexer();
 
@@ -1078,7 +1078,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
 
     IFeed feed = fFactory.createFeed(null, new URI("http://www.feed.com/feed.xml"));
     createNews(feed, "Foo", "http://www.news.com/news3.html", State.READ);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     waitForIndexer();
 
@@ -1108,15 +1108,15 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     BooleanQuery.setMaxClauseCount(3);
 
     IFolderChild root = fFactory.createFolder(null, null, "Root");
-    IFeed feed1 = DynamicDAO.save(fFactory.createFeed(null, new URI("http://www.feed.com/feed1.xml")));
-    IFeed feed2 = DynamicDAO.save(fFactory.createFeed(null, new URI("http://www.feed.com/feed2.xml")));
-    IFeed feed3 = DynamicDAO.save(fFactory.createFeed(null, new URI("http://www.feed.com/feed3.xml")));
-    IFeed feed4 = DynamicDAO.save(fFactory.createFeed(null, new URI("http://www.feed.com/feed4.xml")));
+    IFeed feed1 = OwlDAO.save(fFactory.createFeed(null, new URI("http://www.feed.com/feed1.xml")));
+    IFeed feed2 = OwlDAO.save(fFactory.createFeed(null, new URI("http://www.feed.com/feed2.xml")));
+    IFeed feed3 = OwlDAO.save(fFactory.createFeed(null, new URI("http://www.feed.com/feed3.xml")));
+    IFeed feed4 = OwlDAO.save(fFactory.createFeed(null, new URI("http://www.feed.com/feed4.xml")));
 
-    DynamicDAO.save(fFactory.createBookMark(null, (IFolder) root, new FeedLinkReference(feed1.getLink()), "BM1"));
-    DynamicDAO.save(fFactory.createBookMark(null, (IFolder) root, new FeedLinkReference(feed2.getLink()), "BM1"));
-    DynamicDAO.save(fFactory.createBookMark(null, (IFolder) root, new FeedLinkReference(feed3.getLink()), "BM1"));
-    DynamicDAO.save(fFactory.createBookMark(null, (IFolder) root, new FeedLinkReference(feed4.getLink()), "BM1"));
+    OwlDAO.save(fFactory.createBookMark(null, (IFolder) root, new FeedLinkReference(feed1.getLink()), "BM1"));
+    OwlDAO.save(fFactory.createBookMark(null, (IFolder) root, new FeedLinkReference(feed2.getLink()), "BM1"));
+    OwlDAO.save(fFactory.createBookMark(null, (IFolder) root, new FeedLinkReference(feed3.getLink()), "BM1"));
+    OwlDAO.save(fFactory.createBookMark(null, (IFolder) root, new FeedLinkReference(feed4.getLink()), "BM1"));
 
     ISearchField field = fFactory.createSearchField(INews.LOCATION, fNewsEntityName);
     List<ISearchCondition> conditions = new ArrayList<ISearchCondition>();
@@ -1135,7 +1135,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
   public void testReindexAll() throws Exception {
     IFeed feed = fFactory.createFeed(null, new URI("http://www.feed.com/feed.xml"));
     createNews(feed, "Foo", "http://www.news.com/news.html", State.NEW);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     waitForIndexer();
 
@@ -1186,7 +1186,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news_2_Days = fFactory.createNews(null, feed, new Date());
     news_2_Days.setPublishDate(new Date(System.currentTimeMillis() - 2 * DAY));
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -1290,7 +1290,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     IFeed feed = fFactory.createFeed(null, new URI("http://www.feed.com/feed.xml"));
     createNews(feed, "Hello World", "http://www.news.com/news1.html", State.READ);
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -1337,7 +1337,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     ICategory category = fFactory.createCategory(null, news);
     category.setName("Apple-Google");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -1399,7 +1399,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     ICategory category = fFactory.createCategory(null, news);
     category.setName("Apple'Google");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -1459,7 +1459,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     ICategory category = fFactory.createCategory(null, news);
     category.setName("Apple\u00f6\u00e4\u00fc\u00dfGoogle");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -1541,7 +1541,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     IPerson author = fFactory.createPerson(null, news);
     author.setName("Jacek Jędruch");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -1575,7 +1575,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     author = fFactory.createPerson(null, news);
     author.setName("Tōkaidōchū Hizakurige");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -1599,7 +1599,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     author = fFactory.createPerson(null, news);
     author.setName("Matija Zmajević");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -1615,7 +1615,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     author = fFactory.createPerson(null, news);
     author.setName("Peter Mötiß");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -1644,7 +1644,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     IPerson author = fFactory.createPerson(null, news);
     author.setName("Benjamin Wilhelm-Tello");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -1730,7 +1730,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     IPerson author = fFactory.createPerson(null, news);
     author.setName("<Benjamin Wilhelm-Tello>");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -1752,7 +1752,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     author = fFactory.createPerson(null, news);
     author.setName("<Benjamin>");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -1784,7 +1784,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     category = fFactory.createCategory(null, news);
     category.setName("<karakas>");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -1834,7 +1834,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     category = fFactory.createCategory(null, news);
     category.setName("IBM-Research");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -1908,7 +1908,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     createNews(feed, "Hello", "http://www.news.com/news2.html", State.READ); //Used to validate count of results == 1
     createNews(feed, "World", "http://www.news.com/news3.html", State.READ); //Used to validate count of results == 1
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -2084,7 +2084,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     createNews(feed, "Hello", "http://www.news.com/news2.html", State.READ); //Used to validate count of results == 1
     createNews(feed, "World", "http://www.news.com/news3.html", State.READ); //Used to validate count of results == 1
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -2226,7 +2226,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     createNews(feed, "Hello", "http://www.news.com/news4.html", State.READ); //Used to validate count of results == 1
     createNews(feed, "World", "http://www.news.com/news5.html", State.READ); //Used to validate count of results == 1
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     Thread.sleep(2000);
 
@@ -2245,7 +2245,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
         feed.getNews().get(0).setDescription("The " + s + "startstart and endend" + s + " of middle" + s + "middle is " + s + "betbetween" + s + " and Para" + s + "Glyde.");
         feed.getNews().get(1).setDescription("This is Para" + s + "Market.");
         feed.getNews().get(2).setDescription("And yes the Para" + s + "Baring!");
-        DynamicDAO.save(feed);
+        OwlDAO.save(feed);
         waitForIndexer();
 
         ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);
@@ -2327,7 +2327,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     attachment2.setType("hello.doc");
     attachment3.setType("foobar.mp3");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);
@@ -2374,7 +2374,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     createNews(feed, "Hello", "http://www.news.com/news4.html", State.READ); //Used to validate count of results == 1
     createNews(feed, "World", "http://www.news.com/news5.html", State.READ); //Used to validate count of results == 1
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);
@@ -2429,7 +2429,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     category = fFactory.createCategory(null, news);
     category.setName("Paris Hilton");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);
@@ -2476,7 +2476,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news4 = createNews(feed, "The OAL-Research #634 On the Mend", "http://www.news.com/news4.html", State.READ);
     createNews(feed, "Anything Else", "http://www.news.com/news5.html", State.READ); //Used to validate count of results
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);
@@ -2598,7 +2598,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     fFactory.createPerson(null, news3).setName("GNC-2011-16-13");
     fFactory.createPerson(null, news4).setName("OAL-Research");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField categoryField = fFactory.createSearchField(INews.CATEGORIES, fNewsEntityName);
@@ -2698,7 +2698,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news3 = createNews(feed, "On 040-800700-30 the Mend", "http://www.news.com/news3.html", State.READ);
     createNews(feed, "Anything Else", "http://www.news.com/news4.html", State.READ); //Used to validate count of results == 1
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);
@@ -2753,7 +2753,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news3 = createNews(feed, "On $700 the Mend", "http://www.news.com/news3.html", State.READ);
     createNews(feed, "Anything Else", "http://www.news.com/news4.html", State.READ); //Used to validate count of results == 1
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);
@@ -2810,7 +2810,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news3 = createNews(feed, "127.5.5.4 On the Mend", "http://www.news.com/news3.html", State.READ);
     createNews(feed, "Anything Else", "http://www.news.com/news4.html", State.READ); //Used to validate count of results == 1
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);
@@ -2896,7 +2896,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     fFactory.createPerson(null, news3).setName("GNC.2011.16.13");
     fFactory.createPerson(null, news4).setName("OAL.Research");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField categoryField = fFactory.createSearchField(INews.CATEGORIES, fNewsEntityName);
@@ -2996,7 +2996,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news3 = createNews(feed, "§6520 On the Mend", "http://www.news.com/news3.html", State.READ);
     createNews(feed, "Anything Else", "http://www.news.com/news4.html", State.READ); //Used to validate count of results == 1
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);
@@ -3055,7 +3055,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news3 = createNews(feed, "#665 On the Mend", "http://www.news.com/news3.html", State.READ);
     createNews(feed, "Anything Else", "http://www.news.com/news4.html", State.READ); //Used to validate count of results == 1
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);
@@ -3126,7 +3126,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     fFactory.createPerson(null, news2).setName("#germanies");
     fFactory.createPerson(null, news3).setName("#665");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField categoryField = fFactory.createSearchField(INews.CATEGORIES, fNewsEntityName);
@@ -3183,7 +3183,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news2 = createNews(feed, "This foo:bar construct On the Mend", "http://www.news.com/news2.html", State.READ);
     createNews(feed, "Anything Else", "http://www.news.com/news4.html", State.READ); //Used to validate count of results == 1
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);
@@ -3247,7 +3247,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     fFactory.createPerson(null, news1).setName("<Foo>");
     fFactory.createPerson(null, news2).setName("<FooBar>");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField categoryField = fFactory.createSearchField(INews.CATEGORIES, fNewsEntityName);
@@ -3290,7 +3290,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news2 = createNews(feed, "Foo|Help On the Mend", "http://www.news.com/news2.html", State.READ);
     createNews(feed, "Anything Else", "http://www.news.com/news4.html", State.READ); //Used to validate count of results == 1
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);
@@ -3344,7 +3344,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news2 = createNews(feed, "This Foo_Help On the Mend", "http://www.news.com/news2.html", State.READ);
     createNews(feed, "Anything Else", "http://www.news.com/news4.html", State.READ); //Used to validate count of results == 1
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);
@@ -3407,7 +3407,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     fFactory.createPerson(null, news2).setName("Foo_Help");
     fFactory.createPerson(null, news3).setName("Bar_Help");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField categoryField = fFactory.createSearchField(INews.CATEGORIES, fNewsEntityName);
@@ -3455,7 +3455,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news3 = createNews(feed, "On Bar+Help the Mend", "http://www.news.com/news3.html", State.READ);
     createNews(feed, "Anything Else", "http://www.news.com/news4.html", State.READ); //Used to validate count of results == 1
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);
@@ -3516,7 +3516,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     fFactory.createPerson(null, news2).setName("Foo+Help");
     fFactory.createPerson(null, news3).setName("Bar+Help");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField categoryField = fFactory.createSearchField(INews.CATEGORIES, fNewsEntityName);
@@ -3563,7 +3563,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news3 = createNews(feed, "On Foo/Fighter/Yes the Mend", "http://www.news.com/news3.html", State.READ);
     createNews(feed, "Anything Else", "http://www.news.com/news4.html", State.READ); //Used to validate count of results == 1
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);
@@ -3624,7 +3624,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     fFactory.createPerson(null, news2).setName("Foo/Help");
     fFactory.createPerson(null, news3).setName("Bar/Help");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField categoryField = fFactory.createSearchField(INews.CATEGORIES, fNewsEntityName);
@@ -3675,7 +3675,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news3 = createNews(feed, "On Foo\\Fighter\\Yes the Mend", "http://www.news.com/news3.html", State.READ);
     createNews(feed, "Anything Else", "http://www.news.com/news4.html", State.READ); //Used to validate count of results == 1
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);
@@ -3736,7 +3736,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     fFactory.createPerson(null, news2).setName("Foo\\Help");
     fFactory.createPerson(null, news3).setName("Bar\\Help");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField categoryField = fFactory.createSearchField(INews.CATEGORIES, fNewsEntityName);
@@ -3788,7 +3788,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news3 = createNews(feed, "On you@me the Mend", "http://www.news.com/news3.html", State.READ);
     createNews(feed, "Anything Else", "http://www.news.com/news4.html", State.READ); //Used to validate count of results == 1
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);
@@ -3859,7 +3859,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     fFactory.createPerson(null, news2).setName("foo@bpasero.de");
     fFactory.createPerson(null, news3).setName("bpasero@foo.de");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField categoryField = fFactory.createSearchField(INews.CATEGORIES, fNewsEntityName);
@@ -3911,7 +3911,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news3 = createNews(feed, "8000% On the Mend", "http://www.news.com/news3.html", State.READ);
     createNews(feed, "Anything Else", "http://www.news.com/news4.html", State.READ); //Used to validate count of results == 1
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);
@@ -3960,7 +3960,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news3 = createNews(feed, "On (Startest) the Mend", "http://www.news.com/news3.html", State.READ);
     createNews(feed, "Anything Else", "http://www.news.com/news4.html", State.READ); //Used to validate count of results == 1
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);
@@ -4017,7 +4017,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news3 = createNews(feed, "On [Startest] the Mend", "http://www.news.com/news3.html", State.READ);
     createNews(feed, "Anything Else", "http://www.news.com/news4.html", State.READ); //Used to validate count of results == 1
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);
@@ -4082,7 +4082,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     fFactory.createPerson(null, news2).setName("[Footest]");
     fFactory.createPerson(null, news3).setName("[Startest]");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField categoryField = fFactory.createSearchField(INews.CATEGORIES, fNewsEntityName);
@@ -4134,7 +4134,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news3 = createNews(feed, "On {Startest} the Mend", "http://www.news.com/news3.html", State.READ);
     createNews(feed, "Anything Else", "http://www.news.com/news4.html", State.READ); //Used to validate count of results == 1
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);
@@ -4192,7 +4192,7 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     INews news4 = createNews(feed, "The OAL-Research #634 On the Mend", "http://www.news.com/news4.html", State.READ);
     INews news5 = createNews(feed, "Anything Else", "http://www.news.com/news5.html", State.UPDATED); //Used to validate count of results
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     waitForIndexer();
 
     ISearchField titleField = fFactory.createSearchField(INews.TITLE, fNewsEntityName);
@@ -4243,21 +4243,21 @@ public class ModelSearchTest4 extends AbstractModelSearchTest {
     news1.setFlagged(true);
     INews news2 = createNews(feed, "This GNC-2010-15-13 #634 On the Mend", "http://www.news.com/news2.html", State.READ);
     news2.setReceiveDate(new Date(0));
-    ILabel label = DynamicDAO.save(fFactory.createLabel(null, "Foo"));
+    ILabel label = OwlDAO.save(fFactory.createLabel(null, "Foo"));
     news2.addLabel(label);
     INews news3 = createNews(feed, "GNC-2011-16-13 #634 On the Mend", "http://www.news.com/news3.html", State.UNREAD);
     news3.setFlagged(true);
     INews news4 = createNews(feed, "The OAL-Research #634 On the Mend", "http://www.news.com/news4.html", State.READ);
-    label = DynamicDAO.save(fFactory.createLabel(null, "Bar"));
+    label = OwlDAO.save(fFactory.createLabel(null, "Bar"));
     news4.addLabel(label);
     createNews(feed, "Anything Else", "http://www.news.com/news5.html", State.UPDATED); //Used to validate count of results
 
     IBookMark mark1 = fFactory.createBookMark(null, child, new FeedLinkReference(feed.getLink()), "Bookmark");
     IBookMark mark2 = fFactory.createBookMark(null, child, new FeedLinkReference(feed2.getLink()), "Bookmark 2");
 
-    DynamicDAO.save(feed);
-    DynamicDAO.save(feed2);
-    DynamicDAO.save(root);
+    OwlDAO.save(feed);
+    OwlDAO.save(feed2);
+    OwlDAO.save(root);
     waitForIndexer();
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, fNewsEntityName);

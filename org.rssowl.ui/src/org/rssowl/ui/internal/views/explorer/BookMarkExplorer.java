@@ -100,7 +100,7 @@ import org.rssowl.core.persist.IMark;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INewsMark;
 import org.rssowl.core.persist.IPreference;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IPreferenceDAO;
 import org.rssowl.core.persist.event.FolderAdapter;
 import org.rssowl.core.persist.event.FolderEvent;
@@ -1408,7 +1408,7 @@ public class BookMarkExplorer extends ViewPart {
         });
       }
     };
-    DynamicDAO.addEntityListener(IFolder.class, fFolderListener);
+    OwlDAO.addEntityListener(IFolder.class, fFolderListener);
 
     /* Listen for Editors activated for the linking Feature */
     fPartListener = new IPartListener2() {
@@ -1487,7 +1487,7 @@ public class BookMarkExplorer extends ViewPart {
   }
 
   private void unregisterListeners() {
-    DynamicDAO.removeEntityListener(IFolder.class, fFolderListener);
+    OwlDAO.removeEntityListener(IFolder.class, fFolderListener);
     fViewSite.getPage().removePartListener(fPartListener);
     PlatformUI.getWorkbench().getThemeManager().removePropertyChangeListener(fPropertyChangeListener);
   }
@@ -1614,7 +1614,7 @@ public class BookMarkExplorer extends ViewPart {
     super.init(site);
     fViewSite = site;
     fGlobalPreferences = Owl.getPreferenceService().getGlobalScope();
-    fPrefDAO = DynamicDAO.getDAO(IPreferenceDAO.class);
+    fPrefDAO = OwlDAO.getDAO(IPreferenceDAO.class);
     fExpandedNodes = new ArrayList<Long>();
 
     /* Sort Root-Folders by ID */

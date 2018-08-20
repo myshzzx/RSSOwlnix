@@ -44,7 +44,7 @@ import org.rssowl.core.persist.ISearch;
 import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchFilter;
 import org.rssowl.core.persist.ISearchMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IFolderDAO;
 import org.rssowl.core.persist.reference.NewsBinReference;
 import org.rssowl.core.util.CoreUtils;
@@ -167,7 +167,7 @@ public class ExportWizard extends Wizard implements IExportWizard {
     Set<Options> options = fExportOptionsPage.getExportOptions();
 
     /* Check if dependent locations need to be added manually */
-    Collection<IFolder> rootFolders = DynamicDAO.getDAO(IFolderDAO.class).loadRoots();
+    Collection<IFolder> rootFolders = OwlDAO.getDAO(IFolderDAO.class).loadRoots();
     if (!selectedElements.containsAll(rootFolders)) {
 
       /* Find Folders and Saved Searches */
@@ -192,7 +192,7 @@ public class ExportWizard extends Wizard implements IExportWizard {
 
       /* Add those Locations required by Filters */
       if (options != null && options.contains(Options.EXPORT_FILTERS)) {
-        Collection<ISearchFilter> filters = DynamicDAO.loadAll(ISearchFilter.class);
+        Collection<ISearchFilter> filters = OwlDAO.loadAll(ISearchFilter.class);
         for (ISearchFilter filter : filters) {
           collectLocations(selectedElements, filter);
         }

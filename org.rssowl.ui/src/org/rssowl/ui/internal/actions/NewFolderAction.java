@@ -50,7 +50,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.rssowl.core.Owl;
 import org.rssowl.core.persist.IFolder;
 import org.rssowl.core.persist.IMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.service.PersistenceException;
 import org.rssowl.ui.internal.OwlUI;
 import org.rssowl.ui.internal.util.FolderChooser;
@@ -244,7 +244,7 @@ public class NewFolderAction implements IWorkbenchWindowActionDelegate, IObjectA
             folder.setProperty(property.getKey(), property.getValue());
         }
 
-        DynamicDAO.save(fRootMode ? folder : parent);
+        OwlDAO.save(fRootMode ? folder : parent);
       }
     }
   }

@@ -25,7 +25,7 @@
 package org.rssowl.core.persist.reference;
 
 import org.rssowl.core.persist.IEntity;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.service.PersistenceException;
 
 /**
@@ -80,7 +80,7 @@ public abstract class ModelReference {
    * persistance layer implementation.
    */
   public IEntity resolve() throws PersistenceException {
-    return DynamicDAO.getDAOFromEntity(fEntityClass).load(fId);
+    return OwlDAO.getDAOFromEntity(fEntityClass).load(fId);
   }
 
   /**

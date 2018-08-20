@@ -46,7 +46,7 @@ import org.rssowl.core.persist.INewsBin.StatesUpdateInfo;
 import org.rssowl.core.persist.IPersistable;
 import org.rssowl.core.persist.NewsCounter;
 import org.rssowl.core.persist.dao.DAOService;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsBinDAO;
 import org.rssowl.core.persist.dao.INewsCounterDAO;
 import org.rssowl.core.persist.event.FeedEvent;
@@ -390,7 +390,7 @@ public final class DBHelper {
   }
 
   public static IDescriptionDAO getDescriptionDAO() {
-    DAOService daoService = InternalOwl.getDefault().getPersistenceService().getDAOService();
+    DAOService daoService = InternalOwl.getInstance().getPersistenceService().getDAOService();
     if (daoService instanceof DAOServiceImpl)
       return ((DAOServiceImpl) daoService).getDescriptionDAO();
 
@@ -404,7 +404,7 @@ public final class DBHelper {
   }
 
   public static EntitiesToBeIndexedDAOImpl getEntitiesToBeIndexedDAO() {
-    DAOService service = InternalOwl.getDefault().getPersistenceService().getDAOService();
+    DAOService service = InternalOwl.getInstance().getPersistenceService().getDAOService();
     if (service instanceof DAOServiceImpl) {
       EntitiesToBeIndexedDAOImpl entitiesToBeIndexedDAO = ((DAOServiceImpl) service).getEntitiesToBeIndexedDAO();
       return entitiesToBeIndexedDAO;
@@ -506,7 +506,7 @@ public final class DBHelper {
 
     if (!statesUpdateInfos.isEmpty()) {
       Set<FeedLinkReference> removedFeedRefs = new HashSet<FeedLinkReference>();
-      INewsBinDAO newsBinDAO = DynamicDAO.getDAO(INewsBinDAO.class);
+      INewsBinDAO newsBinDAO = OwlDAO.getDAO(INewsBinDAO.class);
       for (Map.Entry<Long, List<StatesUpdateInfo>> mapEntry : statesUpdateInfos.entrySet()) {
         INewsBin newsBin = newsBinDAO.load(mapEntry.getKey());
         if (newsBin.updateNewsStates(mapEntry.getValue())) {
@@ -530,7 +530,7 @@ public final class DBHelper {
   }
 
   static void removeFeedsAfterNewsBinUpdate(ObjectContainer db, Set<FeedLinkReference> removedFeedRefs) {
-    NewsCounter newsCounter = DynamicDAO.getDAO(INewsCounterDAO.class).load();
+    NewsCounter newsCounter = OwlDAO.getDAO(INewsCounterDAO.class).load();
     boolean changed = false;
     for (FeedLinkReference feedRef : removedFeedRefs) {
       if ((countBookMarkReference(db, feedRef) == 0) && !feedHasNewsWithCopies(db, feedRef)) {

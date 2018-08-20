@@ -70,7 +70,7 @@ import org.rssowl.core.persist.ISearchMark;
 import org.rssowl.core.persist.NewsCounter;
 import org.rssowl.core.persist.NewsCounterItem;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsCounterDAO;
 import org.rssowl.core.persist.reference.FeedLinkReference;
 
@@ -107,8 +107,8 @@ public class DefragmentTest {
     ILabel label1 = fFactory.createLabel(null, "Label 0");
     ILabel label2 = fFactory.createLabel(null, "Label 1");
     label2.setColor("255,0,0");
-    DynamicDAO.save(label1);
-    DynamicDAO.save(label2);
+    OwlDAO.save(label1);
+    OwlDAO.save(label2);
 
     /* Feeds and News */
     List<IFeed> feeds = saveFeeds();
@@ -116,11 +116,11 @@ public class DefragmentTest {
     INews news = feed.getNews().get(2);
     news.addLabel(label1);
     news.addLabel(label2);
-    DynamicDAO.save(news);
+    OwlDAO.save(news);
 
     INews anotherNews = feeds.get(feeds.size() - 1).getNews().get(0);
     anotherNews.addLabel(label1);
-    DynamicDAO.save(anotherNews);
+    OwlDAO.save(anotherNews);
 
     /* Folder, Bookmark and Searchmark */
     IFolder folder = fFactory.createFolder(null, null, "Folder");
@@ -154,13 +154,13 @@ public class DefragmentTest {
     INews news7 = fFactory.createNews(null, anotherFeed, new Date());
     news7.setState(INews.State.HIDDEN);
 
-    DynamicDAO.save(anotherFeed);
+    OwlDAO.save(anotherFeed);
 
     bm = fFactory.createBookMark(null, folder, new FeedLinkReference(URI.create("http://www.rssowl.org")), "Other BookMark");
-    NewsCounter counter = DynamicDAO.getDAO(INewsCounterDAO.class).load();
+    NewsCounter counter = OwlDAO.getDAO(INewsCounterDAO.class).load();
     NewsCounterItem item = new NewsCounterItem(1, 2, 3);
     counter.put(bm.getFeedLinkReference().getLinkAsText(), item);
-    DynamicDAO.save(counter);
+    OwlDAO.save(counter);
     ((BookMark) bm).setNewsCounter(counter);
 
     ISearchMark sm = fFactory.createSearchMark(null, folder, "SM");
@@ -177,43 +177,43 @@ public class DefragmentTest {
 
     /* News Bin with News */
     INewsBin bin = fFactory.createNewsBin(null, folder, "NewsBin");
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
     INews newsCopy = fFactory.createNews(news, bin);
-    DynamicDAO.save(newsCopy);
-    DynamicDAO.save(bin);
+    OwlDAO.save(newsCopy);
+    OwlDAO.save(bin);
 
     /* Preference */
     Preference pref = new Preference("longs");
     pref.putLongs(2, 3, 4);
-    DynamicDAO.save(pref);
+    OwlDAO.save(pref);
 
     pref = new Preference("strings");
     pref.putStrings("foo", "bar");
-    DynamicDAO.save(pref);
+    OwlDAO.save(pref);
 
     pref = new Preference("booleans");
     pref.putBooleans(false, true);
-    DynamicDAO.save(pref);
+    OwlDAO.save(pref);
 
     pref = new Preference("integers");
     pref.putIntegers(5, 6, 7);
-    DynamicDAO.save(pref);
+    OwlDAO.save(pref);
 
     pref = new Preference("long");
     pref.putLongs(5);
-    DynamicDAO.save(pref);
+    OwlDAO.save(pref);
 
     pref = new Preference("string");
     pref.putStrings("foobar");
-    DynamicDAO.save(pref);
+    OwlDAO.save(pref);
 
     pref = new Preference("boolean");
     pref.putBooleans(true);
-    DynamicDAO.save(pref);
+    OwlDAO.save(pref);
 
     pref = new Preference("integer");
     pref.putIntegers(8);
-    DynamicDAO.save(pref);
+    OwlDAO.save(pref);
 
     /* ISearchFilter with ISearch */
     ISearch search = fFactory.createSearch(null);
@@ -228,12 +228,12 @@ public class DefragmentTest {
     filter.addAction(fFactory.createFilterAction("action1"));
     filter.addAction(fFactory.createFilterAction("action2"));
 
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     IConditionalGet conditionalGet = fFactory.createConditionalGet("2008-10-12-1943", URI.create("http://www.rssowl.org"), "foobar");
-    DynamicDAO.save(conditionalGet);
+    OwlDAO.save(conditionalGet);
     conditionalGet = fFactory.createConditionalGet("2008-10-12-1943", URI.create("http://www.rssowl.de"), "foobar");
-    DynamicDAO.save(conditionalGet);
+    OwlDAO.save(conditionalGet);
   }
 
   /**
@@ -242,9 +242,9 @@ public class DefragmentTest {
   @After
   public void tearDown() throws Exception {
     System.setProperty("rssowl.reindex", "false"); //Clear any set reindex marker
-    DBManager.getDefault().getReIndexFile().delete();
-    DBManager.getDefault().getDefragmentFile().delete();
-    DBManager.getDefault().getCleanUpIndexFile().delete();
+    DBManager.getInstance().getReIndexFile().delete();
+    DBManager.getInstance().getDefragmentFile().delete();
+    DBManager.getInstance().getCleanUpIndexFile().delete();
   }
 
   /**
@@ -267,7 +267,7 @@ public class DefragmentTest {
 
   @SuppressWarnings({ "unchecked", "null" })
   private void internalDefragment(boolean useLargeBlocksize) {
-    DBManager.getDefault().shutdown();
+    DBManager.getInstance().shutdown();
 
     String dbPath = DBManager.getDBFilePath();
 
@@ -536,7 +536,7 @@ public class DefragmentTest {
 
       feeds.add(feed);
     }
-    DynamicDAO.saveAll(feeds);
+    OwlDAO.saveAll(feeds);
     return feeds;
   }
 }

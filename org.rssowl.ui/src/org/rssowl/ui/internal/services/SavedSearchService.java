@@ -37,7 +37,7 @@ import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INews.State;
 import org.rssowl.core.persist.INewsBin;
 import org.rssowl.core.persist.ISearchMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.ISearchMarkDAO;
 import org.rssowl.core.persist.event.BookMarkAdapter;
 import org.rssowl.core.persist.event.BookMarkEvent;
@@ -152,7 +152,7 @@ public class SavedSearchService {
       }
     };
 
-    DynamicDAO.addEntityListener(IBookMark.class, fBookmarkListener);
+    OwlDAO.addEntityListener(IBookMark.class, fBookmarkListener);
 
     /* News Bin Listener: Update on Reparent */
     fNewsBinListener = new NewsBinAdapter() {
@@ -172,7 +172,7 @@ public class SavedSearchService {
       }
     };
 
-    DynamicDAO.addEntityListener(INewsBin.class, fNewsBinListener);
+    OwlDAO.addEntityListener(INewsBin.class, fNewsBinListener);
 
     /* Folder Listener: Update on Reparent */
     fFolderListener = new FolderAdapter() {
@@ -192,7 +192,7 @@ public class SavedSearchService {
       }
     };
 
-    DynamicDAO.addEntityListener(IFolder.class, fFolderListener);
+    OwlDAO.addEntityListener(IFolder.class, fFolderListener);
   }
 
   private void updateSavedSearchesFromEvent(int entitiesCount) {
@@ -206,9 +206,9 @@ public class SavedSearchService {
 
   private void unregisterListeners() {
     Owl.getPersistenceService().getModelSearch().removeIndexListener(fIndexListener);
-    DynamicDAO.removeEntityListener(IBookMark.class, fBookmarkListener);
-    DynamicDAO.removeEntityListener(INewsBin.class, fNewsBinListener);
-    DynamicDAO.removeEntityListener(IFolder.class, fFolderListener);
+    OwlDAO.removeEntityListener(IBookMark.class, fBookmarkListener);
+    OwlDAO.removeEntityListener(INewsBin.class, fNewsBinListener);
+    OwlDAO.removeEntityListener(IFolder.class, fFolderListener);
   }
 
   private void onIndexUpdated(int entitiesCount) {
@@ -239,7 +239,7 @@ public class SavedSearchService {
     if (!force && fUpdatedOnce.get())
       return;
 
-    Collection<ISearchMark> searchMarks = DynamicDAO.loadAll(ISearchMark.class);
+    Collection<ISearchMark> searchMarks = OwlDAO.loadAll(ISearchMark.class);
     updateSavedSearches(searchMarks);
   }
 
@@ -307,7 +307,7 @@ public class SavedSearchService {
 
     /* Notify Listeners */
     if (!events.isEmpty() && !Controller.getDefault().isShuttingDown())
-      DynamicDAO.getDAO(ISearchMarkDAO.class).fireNewsChanged(events);
+      OwlDAO.getDAO(ISearchMarkDAO.class).fireNewsChanged(events);
   }
 
   /** Stops this service and unregisters any listeners added. */

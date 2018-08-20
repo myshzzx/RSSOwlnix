@@ -42,7 +42,7 @@ import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.ISearchMark;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
 import org.rssowl.core.persist.reference.FeedLinkReference;
 import org.rssowl.core.persist.reference.ModelReference;
@@ -108,7 +108,7 @@ public class FolderNewsMark extends Mark implements INewsMark {
     super(folder.getId(), folder, folder.getName());
     fFolder = folder;
     fNewsContainer = new HashSet<Long>();
-    fNewsDao = DynamicDAO.getDAO(INewsDAO.class);
+    fNewsDao = OwlDAO.getDAO(INewsDAO.class);
     fFactory = Owl.getModelFactory();
     fSearch = Owl.getPersistenceService().getModelSearch();
   }

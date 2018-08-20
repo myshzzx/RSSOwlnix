@@ -57,7 +57,7 @@ public final class CachingNewsBinDAO extends CachingDAO<NewsBinDaoImpl, INewsBin
     if (USE_LEGACY_CACHE_ACTIVATION)
       super.onDatabaseOpened(event);
     else {
-      IFolderDAO folderDAO = InternalOwl.getDefault().getPersistenceService().getDAOService().getFolderDAO();
+      IFolderDAO folderDAO = InternalOwl.getInstance().getPersistenceService().getDAOService().getFolderDAO();
       Collection<IFolder> roots = folderDAO.loadRoots();
       Set<INewsBin> newsbins = new HashSet<INewsBin>();
       CoreUtils.fillNewsBins(newsbins, roots);

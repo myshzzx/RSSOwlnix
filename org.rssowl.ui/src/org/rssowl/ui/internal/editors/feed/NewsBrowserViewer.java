@@ -78,7 +78,7 @@ import org.rssowl.core.persist.ISearch;
 import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
 import org.rssowl.core.persist.event.NewsEvent;
 import org.rssowl.core.persist.pref.IPreferenceScope;
@@ -196,7 +196,7 @@ public class NewsBrowserViewer extends ContentViewer implements ILinkHandler {
   private int fPageSize;
   private final IModelFactory fFactory;
   private final IPreferenceScope fPreferences = Owl.getPreferenceService().getGlobalScope();
-  private final INewsDAO fNewsDao = DynamicDAO.getDAO(INewsDAO.class);
+  private final INewsDAO fNewsDao = OwlDAO.getDAO(INewsDAO.class);
   private final JobTracker fUserInteractionTracker = new JobTracker(USER_INTERACTION_DELAY, false, true, Priority.INTERACTIVE);
   private final Set<Long> fMarkedUnreadByUserCache = Collections.synchronizedSet(new HashSet<Long>());
 
@@ -475,7 +475,7 @@ public class NewsBrowserViewer extends ContentViewer implements ILinkHandler {
           manager.add(new Separator("movecopy")); //$NON-NLS-1$
 
           /* Load all news bins and sort by name */
-          List<INewsBin> newsbins = new ArrayList<INewsBin>(DynamicDAO.loadAll(INewsBin.class));
+          List<INewsBin> newsbins = new ArrayList<INewsBin>(OwlDAO.loadAll(INewsBin.class));
 
           Comparator<INewsBin> comparator = new Comparator<INewsBin>() {
             @Override
@@ -834,7 +834,7 @@ public class NewsBrowserViewer extends ContentViewer implements ILinkHandler {
         UndoStack.getInstance().addOperation(new StickyOperation(singleNewsSet, !news.isFlagged()));
         news.setFlagged(!news.isFlagged());
         Controller.getDefault().getSavedSearchService().forceQuickUpdate();
-        DynamicDAO.saveAll(singleNewsSet);
+        OwlDAO.saveAll(singleNewsSet);
       }
     }
 

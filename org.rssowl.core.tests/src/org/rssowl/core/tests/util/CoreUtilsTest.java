@@ -57,7 +57,7 @@ import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.ISearchFilter;
 import org.rssowl.core.persist.ISearchMark;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.event.NewsAdapter;
 import org.rssowl.core.persist.event.NewsEvent;
 import org.rssowl.core.persist.event.NewsListener;
@@ -163,7 +163,7 @@ public class CoreUtilsTest {
    */
   @Test
   public void testGenerateNameForSearch() throws Exception {
-    IFolderChild root = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolderChild root = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     ISearchField field1 = fFactory.createSearchField(IEntity.ALL_FIELDS, INews.class.getName());
     ISearchField field2 = fFactory.createSearchField(INews.LOCATION, INews.class.getName());
@@ -270,7 +270,7 @@ public class CoreUtilsTest {
     IFeed feed = fFactory.createFeed(null, new URI("feed"));
     INews news = fFactory.createNews(null, feed, new Date());
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     final AtomicInteger mode = new AtomicInteger(0);
     final AtomicInteger counter = new AtomicInteger(0);
@@ -305,24 +305,24 @@ public class CoreUtilsTest {
         }
       };
 
-      DynamicDAO.addEntityListener(INews.class, listener);
+      OwlDAO.addEntityListener(INews.class, listener);
 
       mode.set(0);
       news.setFlagged(true);
-      DynamicDAO.save(news);
+      OwlDAO.save(news);
 
       mode.set(1);
       news.setTitle("Foo");
-      DynamicDAO.save(news);
+      OwlDAO.save(news);
 
       mode.set(2);
       news.setFlagged(false);
-      DynamicDAO.save(news);
+      OwlDAO.save(news);
 
       assertEquals(3, counter.get());
     } finally {
       if (listener != null)
-        DynamicDAO.removeEntityListener(INews.class, listener);
+        OwlDAO.removeEntityListener(INews.class, listener);
     }
   }
 
@@ -335,7 +335,7 @@ public class CoreUtilsTest {
     INews news = fFactory.createNews(null, feed, new Date());
     news.setState(INews.State.NEW);
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     final AtomicInteger mode = new AtomicInteger(0);
     final AtomicInteger counter = new AtomicInteger(0);
@@ -367,24 +367,24 @@ public class CoreUtilsTest {
         }
       };
 
-      DynamicDAO.addEntityListener(INews.class, listener);
+      OwlDAO.addEntityListener(INews.class, listener);
 
       mode.set(0);
       news.setState(INews.State.READ);
-      DynamicDAO.save(news);
+      OwlDAO.save(news);
 
       mode.set(1);
       news.setTitle("Foo");
-      DynamicDAO.save(news);
+      OwlDAO.save(news);
 
       mode.set(2);
       news.setState(INews.State.UNREAD);
-      DynamicDAO.save(news);
+      OwlDAO.save(news);
 
       assertEquals(3, counter.get());
     } finally {
       if (listener != null)
-        DynamicDAO.removeEntityListener(INews.class, listener);
+        OwlDAO.removeEntityListener(INews.class, listener);
     }
   }
 
@@ -397,7 +397,7 @@ public class CoreUtilsTest {
     INews news = fFactory.createNews(null, feed, new Date());
     news.setState(INews.State.NEW);
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     final AtomicInteger mode = new AtomicInteger(0);
     final AtomicInteger counter = new AtomicInteger(0);
@@ -421,20 +421,20 @@ public class CoreUtilsTest {
         }
       };
 
-      DynamicDAO.addEntityListener(INews.class, listener);
+      OwlDAO.addEntityListener(INews.class, listener);
 
       mode.set(0);
       news.setState(INews.State.READ);
-      DynamicDAO.save(news);
+      OwlDAO.save(news);
 
       mode.set(1);
       news.setState(INews.State.HIDDEN);
-      DynamicDAO.save(news);
+      OwlDAO.save(news);
 
       assertEquals(2, counter.get());
     } finally {
       if (listener != null)
-        DynamicDAO.removeEntityListener(INews.class, listener);
+        OwlDAO.removeEntityListener(INews.class, listener);
     }
   }
 
@@ -447,7 +447,7 @@ public class CoreUtilsTest {
     INews news = fFactory.createNews(null, feed, new Date());
     news.setState(INews.State.NEW);
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     final AtomicInteger mode = new AtomicInteger(0);
     final AtomicInteger counter = new AtomicInteger(0);
@@ -471,20 +471,20 @@ public class CoreUtilsTest {
         }
       };
 
-      DynamicDAO.addEntityListener(INews.class, listener);
+      OwlDAO.addEntityListener(INews.class, listener);
 
       mode.set(0);
       news.setState(INews.State.HIDDEN);
-      DynamicDAO.save(news);
+      OwlDAO.save(news);
 
       mode.set(1);
       news.setState(INews.State.UNREAD);
-      DynamicDAO.save(news);
+      OwlDAO.save(news);
 
       assertEquals(2, counter.get());
     } finally {
       if (listener != null)
-        DynamicDAO.removeEntityListener(INews.class, listener);
+        OwlDAO.removeEntityListener(INews.class, listener);
     }
   }
 
@@ -497,7 +497,7 @@ public class CoreUtilsTest {
     INews news = fFactory.createNews(null, feed, new Date());
     news.setState(INews.State.NEW);
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     final AtomicInteger mode = new AtomicInteger(0);
     final AtomicInteger counter = new AtomicInteger(0);
@@ -535,25 +535,25 @@ public class CoreUtilsTest {
         }
       };
 
-      DynamicDAO.addEntityListener(INews.class, listener);
+      OwlDAO.addEntityListener(INews.class, listener);
 
       mode.set(0);
-      ILabel label = DynamicDAO.save(fFactory.createLabel(null, "Label"));
+      ILabel label = OwlDAO.save(fFactory.createLabel(null, "Label"));
       news.addLabel(label);
-      DynamicDAO.save(news);
+      OwlDAO.save(news);
 
       mode.set(1);
       news.removeLabel(label);
-      DynamicDAO.save(news);
+      OwlDAO.save(news);
 
       mode.set(2);
       news.setTitle("Foo");
-      DynamicDAO.save(news);
+      OwlDAO.save(news);
 
       assertEquals(3, counter.get());
     } finally {
       if (listener != null)
-        DynamicDAO.removeEntityListener(INews.class, listener);
+        OwlDAO.removeEntityListener(INews.class, listener);
     }
   }
 
@@ -566,7 +566,7 @@ public class CoreUtilsTest {
     INews news = fFactory.createNews(null, feed, new Date());
     news.setState(INews.State.NEW);
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     final AtomicInteger mode = new AtomicInteger(0);
     final AtomicInteger counter = new AtomicInteger(0);
@@ -590,20 +590,20 @@ public class CoreUtilsTest {
         }
       };
 
-      DynamicDAO.addEntityListener(INews.class, listener);
+      OwlDAO.addEntityListener(INews.class, listener);
 
       mode.set(0);
       news.setTitle("Foo");
-      DynamicDAO.save(news);
+      OwlDAO.save(news);
 
       mode.set(1);
       news.setDescription("Bar");
-      DynamicDAO.save(news);
+      OwlDAO.save(news);
 
       assertEquals(2, counter.get());
     } finally {
       if (listener != null)
-        DynamicDAO.removeEntityListener(INews.class, listener);
+        OwlDAO.removeEntityListener(INews.class, listener);
     }
   }
 
@@ -612,15 +612,15 @@ public class CoreUtilsTest {
    */
   @Test
   public void testFeedLinks() throws Exception {
-    IFeed feed1 = DynamicDAO.save(fFactory.createFeed(null, new URI("feed1")));
-    IFeed feed2 = DynamicDAO.save(fFactory.createFeed(null, new URI("feed2")));
-    DynamicDAO.save(fFactory.createFeed(null, new URI("feed3")));
+    IFeed feed1 = OwlDAO.save(fFactory.createFeed(null, new URI("feed1")));
+    IFeed feed2 = OwlDAO.save(fFactory.createFeed(null, new URI("feed2")));
+    OwlDAO.save(fFactory.createFeed(null, new URI("feed3")));
 
     IFolder root = fFactory.createFolder(null, null, "root");
     fFactory.createBookMark(null, root, new FeedLinkReference(feed1.getLink()), "Mark 1");
     fFactory.createBookMark(null, root, new FeedLinkReference(feed2.getLink()), "Mark 2");
 
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     Set<String> feedLinks = CoreUtils.getFeedLinks();
     assertEquals(2, feedLinks.size());
@@ -633,15 +633,15 @@ public class CoreUtilsTest {
    */
   @Test
   public void testGetBookMark() throws Exception {
-    IFeed feed1 = DynamicDAO.save(fFactory.createFeed(null, new URI("feed1")));
-    IFeed feed2 = DynamicDAO.save(fFactory.createFeed(null, new URI("feed2")));
+    IFeed feed1 = OwlDAO.save(fFactory.createFeed(null, new URI("feed1")));
+    IFeed feed2 = OwlDAO.save(fFactory.createFeed(null, new URI("feed2")));
 
     IFolder root = fFactory.createFolder(null, null, "root");
     fFactory.createBookMark(null, root, new FeedLinkReference(feed1.getLink()), "Mark 1");
     fFactory.createBookMark(null, root, new FeedLinkReference(feed2.getLink()), "Mark 2");
     fFactory.createBookMark(null, root, new FeedLinkReference(feed2.getLink()), "Mark 3");
 
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     assertEquals("Mark 1", CoreUtils.getBookMark(new FeedLinkReference(feed1.getLink())).getName());
     assertNotNull(CoreUtils.getBookMark(new FeedLinkReference(feed2.getLink())));
@@ -653,15 +653,15 @@ public class CoreUtilsTest {
    */
   @Test
   public void testGetBookMarkByLinkText() throws Exception {
-    IFeed feed1 = DynamicDAO.save(fFactory.createFeed(null, new URI("feed1")));
-    IFeed feed2 = DynamicDAO.save(fFactory.createFeed(null, new URI("feed2")));
+    IFeed feed1 = OwlDAO.save(fFactory.createFeed(null, new URI("feed1")));
+    IFeed feed2 = OwlDAO.save(fFactory.createFeed(null, new URI("feed2")));
 
     IFolder root = fFactory.createFolder(null, null, "root");
     fFactory.createBookMark(null, root, new FeedLinkReference(feed1.getLink()), "Mark 1");
     fFactory.createBookMark(null, root, new FeedLinkReference(feed2.getLink()), "Mark 2");
     fFactory.createBookMark(null, root, new FeedLinkReference(feed2.getLink()), "Mark 3");
 
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     assertEquals("Mark 1", CoreUtils.getBookMark(feed1.getLink().toString()).getName());
     assertNotNull(CoreUtils.getBookMark(feed2.getLink().toString()));
@@ -741,7 +741,7 @@ public class CoreUtilsTest {
     fFactory.createSearchMark(null, root, "A Search");
     fFactory.createSearchMark(null, root, "B Search");
 
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     Set<ISearchMark> searches = CoreUtils.loadSortedSearchMarks();
     Iterator<ISearchMark> iterator = searches.iterator();
@@ -755,9 +755,9 @@ public class CoreUtilsTest {
    */
   @Test
   public void loadSortedFilters() throws Exception {
-    DynamicDAO.save(fFactory.createSearchFilter(null, null, "C Filter"));
-    DynamicDAO.save(fFactory.createSearchFilter(null, null, "A Filter"));
-    DynamicDAO.save(fFactory.createSearchFilter(null, null, "B Filter"));
+    OwlDAO.save(fFactory.createSearchFilter(null, null, "C Filter"));
+    OwlDAO.save(fFactory.createSearchFilter(null, null, "A Filter"));
+    OwlDAO.save(fFactory.createSearchFilter(null, null, "B Filter"));
 
     Set<ISearchFilter> filters = CoreUtils.loadSortedNewsFilters();
     Iterator<ISearchFilter> iterator = filters.iterator();
@@ -775,7 +775,7 @@ public class CoreUtilsTest {
     INews news = fFactory.createNews(null, feed, new Date());
     news.setState(INews.State.NEW);
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     final AtomicInteger mode = new AtomicInteger(0);
     final AtomicInteger counter = new AtomicInteger(0);
@@ -801,20 +801,20 @@ public class CoreUtilsTest {
         }
       };
 
-      DynamicDAO.addEntityListener(INews.class, listener);
+      OwlDAO.addEntityListener(INews.class, listener);
 
       mode.set(0);
       news.setTitle("Foo");
-      DynamicDAO.save(news);
+      OwlDAO.save(news);
 
       mode.set(1);
       news.setState(INews.State.READ);
-      DynamicDAO.save(news);
+      OwlDAO.save(news);
 
       assertEquals(2, counter.get());
     } finally {
       if (listener != null)
-        DynamicDAO.removeEntityListener(INews.class, listener);
+        OwlDAO.removeEntityListener(INews.class, listener);
     }
   }
 
@@ -823,7 +823,7 @@ public class CoreUtilsTest {
    */
   @Test
   public void testSplitScope() throws Exception {
-    IFolderChild root = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolderChild root = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     List<ISearchCondition> conditions = new ArrayList<ISearchCondition>();
 
@@ -841,7 +841,7 @@ public class CoreUtilsTest {
    */
   @Test
   public void testIsLocationConflict() throws Exception {
-    IFolderChild root = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolderChild root = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     List<ISearchCondition> conditions = new ArrayList<ISearchCondition>();
 
@@ -870,7 +870,7 @@ public class CoreUtilsTest {
     child2.setProperty("foo", "bar");
     IFolder child3 = fFactory.createFolder(null, child2, "Child 3");
 
-    root = DynamicDAO.save(root);
+    root = OwlDAO.save(root);
 
     ReparentInfo<IFolderChild, IFolder> info = ReparentInfo.create((IFolderChild) child1, child2, child3, true);
 
@@ -925,7 +925,7 @@ public class CoreUtilsTest {
     ISearchMark smFolderA = createSimpleSearchMark(folderA, "SM Folder A");
     ISearchMark smFolderALocation = createLocationSearchMark(folderA, "SM Folder A Location");
 
-    rootA = DynamicDAO.save(rootA);
+    rootA = OwlDAO.save(rootA);
 
     IFolder rootB = fFactory.createFolder(null, null, "Root B");
     IFolder folderB = fFactory.createFolder(null, rootB, "Folder B");
@@ -941,7 +941,7 @@ public class CoreUtilsTest {
     ISearchMark smFolderB = createSimpleSearchMark(folderB, "SM Folder B");
     ISearchMark smFolderBAuthor = createAuthorSearchMark(folderB, "SM Folder B Author");
 
-    rootB = DynamicDAO.save(rootB);
+    rootB = OwlDAO.save(rootB);
 
     /* Start Testing */
     IFolder rootACopy = fFactory.createFolder(null, null, "Root A");
@@ -1045,7 +1045,7 @@ public class CoreUtilsTest {
     createSimpleSearchMark(rootA, "SM Root A");
     createSimpleSearchMark(folderA, "SM Folder A");
 
-    rootA = DynamicDAO.save(rootA);
+    rootA = OwlDAO.save(rootA);
 
     IFolder rootB = fFactory.createFolder(null, null, "Root B");
     IFolder folderB = fFactory.createFolder(null, rootB, "Folder B");
@@ -1059,7 +1059,7 @@ public class CoreUtilsTest {
     createSimpleSearchMark(rootB, "SM Root B");
     createSimpleSearchMark(folderB, "SM Folder B");
 
-    rootB = DynamicDAO.save(rootB);
+    rootB = OwlDAO.save(rootB);
 
     /* Start Testing */
     IFolder rootACopy = fFactory.createFolder(null, null, "Root A");
@@ -1128,7 +1128,7 @@ public class CoreUtilsTest {
     createSimpleSearchMark(rootA, "SM Root A");
     createSimpleSearchMark(folderA, "SM Folder A");
 
-    rootA = DynamicDAO.save(rootA);
+    rootA = OwlDAO.save(rootA);
 
     IFolder rootB = fFactory.createFolder(null, null, "Root B");
     IFolder folderB = fFactory.createFolder(null, rootB, "Folder B");
@@ -1142,7 +1142,7 @@ public class CoreUtilsTest {
     createSimpleSearchMark(rootB, "SM Root B");
     createSimpleSearchMark(folderB, "SM Folder B");
 
-    rootB = DynamicDAO.save(rootB);
+    rootB = OwlDAO.save(rootB);
 
     /* Start Testing */
     IFolder rootACopy = fFactory.createFolder(null, null, "Root A");
@@ -1386,16 +1386,16 @@ public class CoreUtilsTest {
     IFolderChild bm1 = fFactory.createBookMark(null, root, new FeedLinkReference(feed1.getLink()), "BM 1");
     IFolderChild bm2 = fFactory.createBookMark(null, (IFolder) folder, new FeedLinkReference(feed2.getLink()), "BM 2");
 
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
-    DynamicDAO.save(root);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
+    OwlDAO.save(root);
 
     /* 1 Filter Matches All */
     {
       Set<ISearchFilter> filterSet = new HashSet<ISearchFilter>();
       ISearchFilter filter = fFactory.createSearchFilter(null, null, "Foo");
       filter.setMatchAllNews(true);
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
       CoreUtils.removeFiltersByScope(filterSet, ((IBookMark) bm1).getFeedLinkReference().getLinkAsText());
       assertTrue(!filterSet.isEmpty());
@@ -1412,7 +1412,7 @@ public class CoreUtilsTest {
       search.addSearchCondition(condition);
 
       ISearchFilter filter = fFactory.createSearchFilter(null, search, "Foo");
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
       CoreUtils.removeFiltersByScope(filterSet, ((IBookMark) bm1).getFeedLinkReference().getLinkAsText());
       assertTrue(!filterSet.isEmpty());
@@ -1430,7 +1430,7 @@ public class CoreUtilsTest {
       search.setMatchAllConditions(true);
 
       ISearchFilter filter = fFactory.createSearchFilter(null, search, "Foo");
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
       CoreUtils.removeFiltersByScope(filterSet, ((IBookMark) bm1).getFeedLinkReference().getLinkAsText());
       assertTrue(!filterSet.isEmpty());
@@ -1447,7 +1447,7 @@ public class CoreUtilsTest {
       search.addSearchCondition(condition);
 
       ISearchFilter filter = fFactory.createSearchFilter(null, search, "Foo");
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
       CoreUtils.removeFiltersByScope(filterSet, ((IBookMark) bm1).getFeedLinkReference().getLinkAsText());
       assertTrue(!filterSet.isEmpty());
@@ -1467,7 +1467,7 @@ public class CoreUtilsTest {
       search.addSearchCondition(condition);
 
       ISearchFilter filter = fFactory.createSearchFilter(null, search, "Foo");
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
       CoreUtils.removeFiltersByScope(filterSet, ((IBookMark) bm1).getFeedLinkReference().getLinkAsText());
       assertTrue(!filterSet.isEmpty());
@@ -1482,7 +1482,7 @@ public class CoreUtilsTest {
 
       ISearchFilter filter = fFactory.createSearchFilter(null, null, "Foo");
       filter.setMatchAllNews(true);
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
 
       Long[][] scope = ModelUtils.toPrimitive(Collections.singletonList(bm1));
@@ -1492,7 +1492,7 @@ public class CoreUtilsTest {
       search.addSearchCondition(condition);
 
       filter = fFactory.createSearchFilter(null, search, "Foo");
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
 
       CoreUtils.removeFiltersByScope(filterSet, ((IBookMark) bm1).getFeedLinkReference().getLinkAsText());
@@ -1508,7 +1508,7 @@ public class CoreUtilsTest {
 
       ISearchFilter filter = fFactory.createSearchFilter(null, null, "Foo");
       filter.setMatchAllNews(true);
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
 
       Long[][] scope = ModelUtils.toPrimitive(Collections.singletonList(bm1));
@@ -1518,7 +1518,7 @@ public class CoreUtilsTest {
       search.addSearchCondition(condition);
 
       filter = fFactory.createSearchFilter(null, search, "Foo");
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
 
       CoreUtils.removeFiltersByScope(filterSet, ((IBookMark) bm1).getFeedLinkReference().getLinkAsText());
@@ -1539,12 +1539,12 @@ public class CoreUtilsTest {
       search.addSearchCondition(condition);
 
       ISearchFilter filter = fFactory.createSearchFilter(null, search, "Foo");
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
 
       ISearchFilter filter2 = fFactory.createSearchFilter(null, null, "Foo");
       filter2.setMatchAllNews(true);
-      DynamicDAO.save(filter2);
+      OwlDAO.save(filter2);
       filterSet.add(filter2);
 
       CoreUtils.removeFiltersByScope(filterSet, ((IBookMark) bm1).getFeedLinkReference().getLinkAsText());
@@ -1568,12 +1568,12 @@ public class CoreUtilsTest {
       search.addSearchCondition(condition);
 
       ISearchFilter filter = fFactory.createSearchFilter(null, search, "Foo");
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
 
       ISearchFilter filter2 = fFactory.createSearchFilter(null, null, "Foo");
       filter2.setMatchAllNews(true);
-      DynamicDAO.save(filter2);
+      OwlDAO.save(filter2);
       filterSet.add(filter2);
 
       CoreUtils.removeFiltersByScope(filterSet, ((IBookMark) bm1).getFeedLinkReference().getLinkAsText());
@@ -1597,7 +1597,7 @@ public class CoreUtilsTest {
       search.addSearchCondition(condition);
 
       ISearchFilter filter = fFactory.createSearchFilter(null, search, "Foo");
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
       CoreUtils.removeFiltersByScope(filterSet, ((IBookMark) bm1).getFeedLinkReference().getLinkAsText());
       assertTrue(!filterSet.isEmpty());
@@ -1617,7 +1617,7 @@ public class CoreUtilsTest {
       search.addSearchCondition(condition);
 
       ISearchFilter filter = fFactory.createSearchFilter(null, search, "Foo");
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
       CoreUtils.removeFiltersByScope(filterSet, ((IBookMark) bm1).getFeedLinkReference().getLinkAsText());
       assertTrue(!filterSet.isEmpty());
@@ -1637,7 +1637,7 @@ public class CoreUtilsTest {
       search.addSearchCondition(condition);
 
       ISearchFilter filter = fFactory.createSearchFilter(null, search, "Foo");
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
       CoreUtils.removeFiltersByScope(filterSet, ((IBookMark) bm1).getFeedLinkReference().getLinkAsText());
       assertTrue(!filterSet.isEmpty());
@@ -1657,7 +1657,7 @@ public class CoreUtilsTest {
       search.addSearchCondition(condition);
 
       ISearchFilter filter = fFactory.createSearchFilter(null, search, "Foo");
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
       CoreUtils.removeFiltersByScope(filterSet, ((IBookMark) bm1).getFeedLinkReference().getLinkAsText());
       assertTrue(!filterSet.isEmpty());
@@ -1677,10 +1677,10 @@ public class CoreUtilsTest {
       search.addSearchCondition(condition);
 
       ISearchFilter filter = fFactory.createSearchFilter(null, search, "Foo");
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
 
-      DynamicDAO.delete(bm1);
+      OwlDAO.delete(bm1);
 
       assertTrue(CoreUtils.toEntities(scope).isEmpty());
 
@@ -1702,10 +1702,10 @@ public class CoreUtilsTest {
       search.addSearchCondition(condition);
 
       ISearchFilter filter = fFactory.createSearchFilter(null, search, "Foo");
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
 
-      DynamicDAO.delete(bm1);
+      OwlDAO.delete(bm1);
 
       assertTrue(CoreUtils.toEntities(scope).isEmpty());
 
@@ -1731,10 +1731,10 @@ public class CoreUtilsTest {
       search.setMatchAllConditions(false);
 
       ISearchFilter filter = fFactory.createSearchFilter(null, search, "Foo");
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
 
-      DynamicDAO.delete(bm1);
+      OwlDAO.delete(bm1);
 
       assertTrue(CoreUtils.toEntities(scope).isEmpty());
 
@@ -1760,10 +1760,10 @@ public class CoreUtilsTest {
       search.setMatchAllConditions(true);
 
       ISearchFilter filter = fFactory.createSearchFilter(null, search, "Foo");
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
 
-      DynamicDAO.delete(bm1);
+      OwlDAO.delete(bm1);
 
       assertTrue(CoreUtils.toEntities(scope).isEmpty());
 
@@ -1788,10 +1788,10 @@ public class CoreUtilsTest {
       search.setMatchAllConditions(true);
 
       ISearchFilter filter = fFactory.createSearchFilter(null, search, "Foo");
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
 
-      DynamicDAO.delete(bm1);
+      OwlDAO.delete(bm1);
 
       assertTrue(CoreUtils.toEntities(scope).isEmpty());
 
@@ -1816,10 +1816,10 @@ public class CoreUtilsTest {
       search.setMatchAllConditions(true);
 
       ISearchFilter filter = fFactory.createSearchFilter(null, search, "Foo");
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
 
-      DynamicDAO.delete(bm1);
+      OwlDAO.delete(bm1);
 
       assertTrue(CoreUtils.toEntities(scope).isEmpty());
 
@@ -1844,10 +1844,10 @@ public class CoreUtilsTest {
       search.setMatchAllConditions(false);
 
       ISearchFilter filter = fFactory.createSearchFilter(null, search, "Foo");
-      DynamicDAO.save(filter);
+      OwlDAO.save(filter);
       filterSet.add(filter);
 
-      DynamicDAO.delete(bm1);
+      OwlDAO.delete(bm1);
 
       assertTrue(CoreUtils.toEntities(scope).isEmpty());
 
@@ -1870,7 +1870,7 @@ public class CoreUtilsTest {
     Owl.getPreferenceService().getEntityScope(bin1).putBoolean(DefaultPreferences.ARCHIVE_BIN_MARKER, true);
     fFactory.createNewsBin(null, root, "B");
 
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     assertEquals(bin1, CoreUtils.findArchive());
   }
@@ -1910,23 +1910,23 @@ public class CoreUtilsTest {
     IFolderChild root = fFactory.createFolder(null, null, "Root");
 
     IFeed feed = fFactory.createFeed(null, new URI("http://www.rssowl.org"));
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IFolderChild bm1 = fFactory.createBookMark(null, (IFolder) root, new FeedLinkReference(feed.getLink()), "Bookmark 1");
 
     IFolderChild bin1 = fFactory.createNewsBin(null, (IFolder) root, "Bin 1");
 
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     ISearchField locationField = fFactory.createSearchField(INews.LOCATION, INews.class.getName());
     ISearchCondition condition = fFactory.createSearchCondition(locationField, SearchSpecifier.SCOPE, ModelUtils.toPrimitive(Arrays.asList(bin1)));
     ISearch search = fFactory.createSearch(null);
     search.addSearchCondition(condition);
-    DynamicDAO.save(search);
+    OwlDAO.save(search);
 
     /* Filter 1: With Search */
     ISearchFilter filter1 = fFactory.createSearchFilter(null, search, "Filter 1");
-    DynamicDAO.save(filter1);
+    OwlDAO.save(filter1);
     assertTrue(!CoreUtils.isOrphaned(filter1));
 
     /* Filter 2: With Move Action */
@@ -1934,7 +1934,7 @@ public class CoreUtilsTest {
     IFilterAction action2 = fFactory.createFilterAction(MoveNewsAction.ID);
     action2.setData(ModelUtils.toPrimitive(Arrays.asList(bm1, bin1)));
     filter2.addAction(action2);
-    DynamicDAO.save(filter2);
+    OwlDAO.save(filter2);
     assertTrue(!CoreUtils.isOrphaned(filter2));
 
     /* Filter 3: With Move and Label Action */
@@ -1943,15 +1943,15 @@ public class CoreUtilsTest {
     action3.setData(ModelUtils.toPrimitive(Arrays.asList(bm1, bin1)));
     filter3.addAction(action3);
     filter3.addAction(fFactory.createFilterAction(LabelNewsAction.ID));
-    DynamicDAO.save(filter3);
+    OwlDAO.save(filter3);
     assertTrue(!CoreUtils.isOrphaned(filter3));
 
-    DynamicDAO.delete(bin1);
+    OwlDAO.delete(bin1);
     assertTrue(CoreUtils.isOrphaned(filter1));
     assertTrue(!CoreUtils.isOrphaned(filter2));
     assertTrue(!CoreUtils.isOrphaned(filter3));
 
-    DynamicDAO.delete(bm1);
+    OwlDAO.delete(bm1);
     assertTrue(CoreUtils.isOrphaned(filter1));
     assertTrue(CoreUtils.isOrphaned(filter2));
     assertTrue(!CoreUtils.isOrphaned(filter3));
@@ -1966,13 +1966,13 @@ public class CoreUtilsTest {
     IFolderChild subfolder = fFactory.createFolder(null, (IFolder) root, "Sub Folder");
 
     IFeed feed = fFactory.createFeed(null, new URI("http://www.rssowl.org"));
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IFolderChild bm1 = fFactory.createBookMark(null, (IFolder) root, new FeedLinkReference(feed.getLink()), "Bookmark 1");
 
     IFolderChild bin1 = fFactory.createNewsBin(null, (IFolder) root, "Bin 1");
 
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     ISearchField locationField = fFactory.createSearchField(INews.LOCATION, INews.class.getName());
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, INews.class.getName());
@@ -1981,35 +1981,35 @@ public class CoreUtilsTest {
     ISearchCondition condition1 = fFactory.createSearchCondition(locationField, SearchSpecifier.SCOPE, ModelUtils.toPrimitive(Arrays.asList(root)));
     ISearch search1 = fFactory.createSearch(null);
     search1.addSearchCondition(condition1);
-    DynamicDAO.save(search1);
+    OwlDAO.save(search1);
     assertTrue(!CoreUtils.isOrphaned(search1));
 
     /* SM with Scope (Sub Folder) */
     ISearchCondition condition2 = fFactory.createSearchCondition(locationField, SearchSpecifier.SCOPE, ModelUtils.toPrimitive(Arrays.asList(subfolder)));
     ISearch search2 = fFactory.createSearch(null);
     search2.addSearchCondition(condition2);
-    DynamicDAO.save(search2);
+    OwlDAO.save(search2);
     assertTrue(!CoreUtils.isOrphaned(search2));
 
     /* SM with Scope (Bookmark) */
     ISearchCondition condition3 = fFactory.createSearchCondition(locationField, SearchSpecifier.SCOPE, ModelUtils.toPrimitive(Arrays.asList(bm1)));
     ISearch search3 = fFactory.createSearch(null);
     search3.addSearchCondition(condition3);
-    DynamicDAO.save(search3);
+    OwlDAO.save(search3);
     assertTrue(!CoreUtils.isOrphaned(search3));
 
     /* SM with Scope (Bin) */
     ISearchCondition condition4 = fFactory.createSearchCondition(locationField, SearchSpecifier.SCOPE, ModelUtils.toPrimitive(Arrays.asList(bin1)));
     ISearch search4 = fFactory.createSearch(null);
     search4.addSearchCondition(condition4);
-    DynamicDAO.save(search4);
+    OwlDAO.save(search4);
     assertTrue(!CoreUtils.isOrphaned(search4));
 
     /* SM with Scope (Folder, Bookmark, Bin) */
     ISearchCondition condition5 = fFactory.createSearchCondition(locationField, SearchSpecifier.SCOPE, ModelUtils.toPrimitive(Arrays.asList(subfolder, bm1, bin1)));
     ISearch search5 = fFactory.createSearch(null);
     search5.addSearchCondition(condition5);
-    DynamicDAO.save(search5);
+    OwlDAO.save(search5);
     assertTrue(!CoreUtils.isOrphaned(search5));
 
     /* SM with Location - Match Any - (Folder, Bookmark, Bin) */
@@ -2017,7 +2017,7 @@ public class CoreUtilsTest {
     ISearch search6 = fFactory.createSearch(null);
     search6.addSearchCondition(condition6);
     search6.setMatchAllConditions(false);
-    DynamicDAO.save(search6);
+    OwlDAO.save(search6);
     assertTrue(!CoreUtils.isOrphaned(search6));
 
     /* SM with Location - Match All - (Folder, Bookmark, Bin) */
@@ -2025,7 +2025,7 @@ public class CoreUtilsTest {
     ISearch search7 = fFactory.createSearch(null);
     search7.addSearchCondition(condition7);
     search7.setMatchAllConditions(true);
-    DynamicDAO.save(search7);
+    OwlDAO.save(search7);
     assertTrue(!CoreUtils.isOrphaned(search7));
 
     /* SM with Location (Match All) */
@@ -2034,7 +2034,7 @@ public class CoreUtilsTest {
     search8.addSearchCondition(condition8);
     search8.addSearchCondition(fFactory.createSearchCondition(allField, SearchSpecifier.CONTAINS, "foo"));
     search8.setMatchAllConditions(true);
-    DynamicDAO.save(search8);
+    OwlDAO.save(search8);
     assertTrue(!CoreUtils.isOrphaned(search8));
 
     /* SM with Location (Match Any) */
@@ -2043,10 +2043,10 @@ public class CoreUtilsTest {
     search9.addSearchCondition(condition9);
     search9.addSearchCondition(fFactory.createSearchCondition(allField, SearchSpecifier.CONTAINS, "foo"));
     search9.setMatchAllConditions(false);
-    DynamicDAO.save(search9);
+    OwlDAO.save(search9);
     assertTrue(!CoreUtils.isOrphaned(search9));
 
-    DynamicDAO.delete(bm1);
+    OwlDAO.delete(bm1);
     assertTrue(!CoreUtils.isOrphaned(search1));
     assertTrue(!CoreUtils.isOrphaned(search2));
     assertTrue(CoreUtils.isOrphaned(search3));
@@ -2057,7 +2057,7 @@ public class CoreUtilsTest {
     assertTrue(!CoreUtils.isOrphaned(search8));
     assertTrue(!CoreUtils.isOrphaned(search9));
 
-    DynamicDAO.delete(bin1);
+    OwlDAO.delete(bin1);
     assertTrue(!CoreUtils.isOrphaned(search1));
     assertTrue(!CoreUtils.isOrphaned(search2));
     assertTrue(CoreUtils.isOrphaned(search3));
@@ -2068,7 +2068,7 @@ public class CoreUtilsTest {
     assertTrue(!CoreUtils.isOrphaned(search8));
     assertTrue(!CoreUtils.isOrphaned(search9));
 
-    DynamicDAO.delete(subfolder);
+    OwlDAO.delete(subfolder);
     assertTrue(!CoreUtils.isOrphaned(search1));
     assertTrue(CoreUtils.isOrphaned(search2));
     assertTrue(CoreUtils.isOrphaned(search3));
@@ -2079,7 +2079,7 @@ public class CoreUtilsTest {
     assertTrue(CoreUtils.isOrphaned(search8));
     assertTrue(!CoreUtils.isOrphaned(search9));
 
-    DynamicDAO.delete(root);
+    OwlDAO.delete(root);
     assertTrue(CoreUtils.isOrphaned(search1));
     assertTrue(CoreUtils.isOrphaned(search2));
     assertTrue(CoreUtils.isOrphaned(search3));

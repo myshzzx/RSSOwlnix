@@ -53,7 +53,7 @@ import org.rssowl.core.persist.IPreference;
 import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchFilter;
 import org.rssowl.core.persist.ISearchMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IFolderDAO;
 import org.rssowl.core.util.CoreUtils;
 import org.rssowl.core.util.URIUtils;
@@ -109,8 +109,8 @@ public class FileImportTest {
     IFolder root = Owl.getModelFactory().createFolder(null, null, "Root");
     IFolder target = Owl.getModelFactory().createFolder(null, root, "Target");
     IFolder otherRoot = Owl.getModelFactory().createFolder(null, null, "Other Root");
-    DynamicDAO.save(root);
-    DynamicDAO.save(otherRoot);
+    OwlDAO.save(root);
+    OwlDAO.save(otherRoot);
 
     ImportUtils.doImport(root, elements, true);
     assertTrue(root.getMarks().isEmpty());
@@ -145,8 +145,8 @@ public class FileImportTest {
     IFolder root = Owl.getModelFactory().createFolder(null, null, "Root");
     IFolder target = Owl.getModelFactory().createFolder(null, root, "Target");
     IFolder otherRoot = Owl.getModelFactory().createFolder(null, null, "Other Root");
-    DynamicDAO.save(root);
-    DynamicDAO.save(otherRoot);
+    OwlDAO.save(root);
+    OwlDAO.save(otherRoot);
 
     ImportUtils.doImport(root, elements, true);
     Set<IFolder> roots = CoreUtils.loadRootFolders();
@@ -177,8 +177,8 @@ public class FileImportTest {
     IFolder root = Owl.getModelFactory().createFolder(null, null, "Root");
     IFolder target = Owl.getModelFactory().createFolder(null, root, "Target");
     IFolder otherRoot = Owl.getModelFactory().createFolder(null, null, "Other Root");
-    DynamicDAO.save(root);
-    DynamicDAO.save(otherRoot);
+    OwlDAO.save(root);
+    OwlDAO.save(otherRoot);
 
     ImportUtils.doImport(target, elements, true);
     assertTrue(root.getMarks().isEmpty());
@@ -197,8 +197,8 @@ public class FileImportTest {
     IFolder root = Owl.getModelFactory().createFolder(null, null, "Root");
     IFolder target = Owl.getModelFactory().createFolder(null, root, "Target");
     IFolder otherRoot = Owl.getModelFactory().createFolder(null, null, "Other Root");
-    DynamicDAO.save(root);
-    DynamicDAO.save(otherRoot);
+    OwlDAO.save(root);
+    OwlDAO.save(otherRoot);
 
     ImportUtils.doImport(otherRoot, elements, true);
     assertTrue(otherRoot.getMarks().isEmpty());
@@ -217,7 +217,7 @@ public class FileImportTest {
     ImportUtils.doImport(null, elements, true);
 
     /* Validate */
-    Collection<IFolder> roots = DynamicDAO.getDAO(IFolderDAO.class).loadRoots();
+    Collection<IFolder> roots = OwlDAO.getDAO(IFolderDAO.class).loadRoots();
     assertEquals(2, roots.size());
     validate_Complex(roots, elements);
   }
@@ -243,11 +243,11 @@ public class FileImportTest {
         elementsToImport.add(element);
     }
 
-    IFolder root = DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
+    IFolder root = OwlDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
     ImportUtils.doImport(root, elementsToImport, true);
 
     /* Validate */
-    Collection<IFolder> roots = DynamicDAO.getDAO(IFolderDAO.class).loadRoots();
+    Collection<IFolder> roots = OwlDAO.getDAO(IFolderDAO.class).loadRoots();
     assertEquals(1, roots.size());
     assertEquals("Root", roots.iterator().next().getName());
     root = roots.iterator().next();
@@ -281,11 +281,11 @@ public class FileImportTest {
         elementsToImport.add(element);
     }
 
-    IFolder root = DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
+    IFolder root = OwlDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
     ImportUtils.doImport(root, elementsToImport, true);
 
     /* Validate */
-    Collection<IFolder> roots = DynamicDAO.getDAO(IFolderDAO.class).loadRoots();
+    Collection<IFolder> roots = OwlDAO.getDAO(IFolderDAO.class).loadRoots();
     assertEquals(1, roots.size());
     assertEquals("Root", roots.iterator().next().getName());
     root = roots.iterator().next();
@@ -319,11 +319,11 @@ public class FileImportTest {
         elementsToImport.add(element);
     }
 
-    IFolder root = DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
+    IFolder root = OwlDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
     ImportUtils.doImport(root, elementsToImport, true);
 
     /* Validate */
-    Collection<IFolder> roots = DynamicDAO.getDAO(IFolderDAO.class).loadRoots();
+    Collection<IFolder> roots = OwlDAO.getDAO(IFolderDAO.class).loadRoots();
     assertEquals(1, roots.size());
     assertEquals("Root", roots.iterator().next().getName());
     root = roots.iterator().next();
@@ -359,12 +359,12 @@ public class FileImportTest {
 
     IFolder root = Owl.getModelFactory().createFolder(null, null, "Root");
     IFolder target = Owl.getModelFactory().createFolder(null, root, "Target");
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     ImportUtils.doImport(target, elementsToImport, true);
 
     /* Validate */
-    Collection<IFolder> roots = DynamicDAO.getDAO(IFolderDAO.class).loadRoots();
+    Collection<IFolder> roots = OwlDAO.getDAO(IFolderDAO.class).loadRoots();
     assertEquals(1, roots.size());
     assertEquals("Root", roots.iterator().next().getName());
     root = roots.iterator().next();
@@ -604,14 +604,14 @@ public class FileImportTest {
   @Test
   @SuppressWarnings( { "nls", "null", "unused", "unchecked" })
   public void testImport_Filter_Order() throws Exception {
-    IFolder root = DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
+    IFolder root = OwlDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
 
     ISearchFilter filter = Owl.getModelFactory().createSearchFilter(null, null, "Filter 1");
     filter.setMatchAllNews(true);
     filter.setEnabled(true);
     filter.setOrder(0);
     filter.addAction(Owl.getModelFactory().createFilterAction("org.rssowl.core.MarkReadNewsAction"));
-    DynamicDAO.save(filter);
+    OwlDAO.save(filter);
 
     /* Import */
     List<? extends IEntity> elements = Owl.getInterpreter().importFrom(getClass().getResourceAsStream("/data/importer/filter.opml"));
@@ -620,7 +620,7 @@ public class FileImportTest {
 
     ImportUtils.doImport(null, elements, false);
 
-    Collection<ISearchFilter> filters = DynamicDAO.loadAll(ISearchFilter.class);
+    Collection<ISearchFilter> filters = OwlDAO.loadAll(ISearchFilter.class);
     for (ISearchFilter item : filters) {
       if ("Filter 1".equals(item.getName()))
         assertEquals(0, item.getOrder());
@@ -648,7 +648,7 @@ public class FileImportTest {
   @Test
   @SuppressWarnings( { "nls", "null", "unused", "unchecked" })
   public void testImport_Labels_Order_NoLabels() throws Exception {
-    IFolder root = DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
+    IFolder root = OwlDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
 
     /* Import */
     List<? extends IEntity> elements = Owl.getInterpreter().importFrom(getClass().getResourceAsStream("/data/importer/labels.opml"));
@@ -678,7 +678,7 @@ public class FileImportTest {
   @Test
   @SuppressWarnings( { "nls", "null", "unused", "unchecked" })
   public void testImport_Labels_Order_ExistingLabels() throws Exception {
-    IFolder root = DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
+    IFolder root = OwlDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
 
     ILabel fooLabel = Owl.getModelFactory().createLabel(null, "Foo");
     fooLabel.setOrder(0);
@@ -686,8 +686,8 @@ public class FileImportTest {
     ILabel barLabel = Owl.getModelFactory().createLabel(null, "Bar");
     barLabel.setOrder(1);
 
-    DynamicDAO.save(fooLabel);
-    DynamicDAO.save(barLabel);
+    OwlDAO.save(fooLabel);
+    OwlDAO.save(barLabel);
 
     /* Import */
     List<? extends IEntity> elements = Owl.getInterpreter().importFrom(getClass().getResourceAsStream("/data/importer/labels.opml"));
@@ -697,7 +697,7 @@ public class FileImportTest {
     ImportUtils.doImport(null, elements, false);
 
     int orderSum = 0;
-    Collection<ILabel> allLabels = DynamicDAO.loadAll(ILabel.class);
+    Collection<ILabel> allLabels = OwlDAO.loadAll(ILabel.class);
     for (ILabel label : allLabels) {
       orderSum += label.getOrder();
     }
@@ -712,7 +712,7 @@ public class FileImportTest {
   @Test
   @SuppressWarnings( { "nls", "null", "unused", "unchecked" })
   public void testImport_Labels_Order_ExistingLabels_Merge() throws Exception {
-    IFolder root = DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
+    IFolder root = OwlDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
 
     ILabel laterLabel = Owl.getModelFactory().createLabel(null, "Later");
     laterLabel.setOrder(1);
@@ -720,8 +720,8 @@ public class FileImportTest {
     ILabel personalLabel = Owl.getModelFactory().createLabel(null, "Personal");
     personalLabel.setOrder(0);
 
-    DynamicDAO.save(laterLabel);
-    DynamicDAO.save(personalLabel);
+    OwlDAO.save(laterLabel);
+    OwlDAO.save(personalLabel);
 
     /* Import */
     List<? extends IEntity> elements = Owl.getInterpreter().importFrom(getClass().getResourceAsStream("/data/importer/labels.opml"));
@@ -779,7 +779,7 @@ public class FileImportTest {
   @Test
   @SuppressWarnings( { "nls", "null", "unused", "unchecked" })
   public void testImport_Marks_All_DirectImport() throws Exception {
-    IFolder root = DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
+    IFolder root = OwlDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
 
     /* Import */
     List<? extends IEntity> elements = Owl.getInterpreter().importFrom(getClass().getResourceAsStream("/data/importer/marks.opml"));
@@ -816,7 +816,7 @@ public class FileImportTest {
   @Test
   @SuppressWarnings( { "nls", "null", "unused", "unchecked" })
   public void testImport_Marks_All_Target() throws Exception {
-    IFolder root = DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
+    IFolder root = OwlDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
 
     /* Import */
     List<? extends IEntity> elements = Owl.getInterpreter().importFrom(getClass().getResourceAsStream("/data/importer/marks.opml"));
@@ -835,8 +835,8 @@ public class FileImportTest {
   @Test
   @SuppressWarnings( { "nls", "null", "unused", "unchecked" })
   public void testImport_Marks_All_SecondSet() throws Exception {
-    IFolder root = DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
-    IFolder otherRoot = DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, "Other Root"));
+    IFolder root = OwlDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
+    IFolder otherRoot = OwlDAO.save(Owl.getModelFactory().createFolder(null, null, "Other Root"));
 
     /* Import */
     List<? extends IEntity> elements = Owl.getInterpreter().importFrom(getClass().getResourceAsStream("/data/importer/marks.opml"));
@@ -855,7 +855,7 @@ public class FileImportTest {
   @Test
   @SuppressWarnings( { "nls", "null", "unused", "unchecked" })
   public void testImport_Folders_All_DirectImport() throws Exception {
-    IFolder root = DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
+    IFolder root = OwlDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
 
     /* Import */
     List<? extends IEntity> elements = Owl.getInterpreter().importFrom(getClass().getResourceAsStream("/data/importer/folders.opml"));
@@ -892,7 +892,7 @@ public class FileImportTest {
   @Test
   @SuppressWarnings( { "nls", "null", "unused", "unchecked" })
   public void testImport_Folders_All_Target() throws Exception {
-    IFolder root = DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
+    IFolder root = OwlDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
 
     /* Import */
     List<? extends IEntity> elements = Owl.getInterpreter().importFrom(getClass().getResourceAsStream("/data/importer/folders.opml"));
@@ -911,8 +911,8 @@ public class FileImportTest {
   @Test
   @SuppressWarnings( { "nls", "null", "unused", "unchecked" })
   public void testImport_Folders_All_SecondSet() throws Exception {
-    IFolder root = DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
-    IFolder otherRoot = DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, "Other Root"));
+    IFolder root = OwlDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
+    IFolder otherRoot = OwlDAO.save(Owl.getModelFactory().createFolder(null, null, "Other Root"));
 
     /* Import */
     List<? extends IEntity> elements = Owl.getInterpreter().importFrom(getClass().getResourceAsStream("/data/importer/folders.opml"));
@@ -961,7 +961,7 @@ public class FileImportTest {
   @Test
   @SuppressWarnings( { "nls", "null", "unused", "unchecked" })
   public void testImport_Marks_DescriptionHomepage() throws Exception {
-    IFolder root = DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
+    IFolder root = OwlDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
 
     /* Import */
     List<? extends IEntity> elements = Owl.getInterpreter().importFrom(getClass().getResourceAsStream("/data/importer/marks.opml"));
@@ -984,8 +984,8 @@ public class FileImportTest {
   @Test
   @SuppressWarnings( { "nls", "null", "unused", "unchecked" })
   public void testImport_AvoidDuplicateFeeds() throws Exception {
-    IFolder root = DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
-    IFeed feed = DynamicDAO.save(Owl.getModelFactory().createFeed(null, new URI("http://www.rssowl.org/newsfeed")));
+    IFolder root = OwlDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
+    IFeed feed = OwlDAO.save(Owl.getModelFactory().createFeed(null, new URI("http://www.rssowl.org/newsfeed")));
 
     /* Import */
     List<? extends IEntity> elements = Owl.getInterpreter().importFrom(getClass().getResourceAsStream("/data/importer/marks.opml"));
@@ -1031,7 +1031,7 @@ public class FileImportTest {
   @Test
   @SuppressWarnings( { "nls", "null", "unused", "unchecked" })
   public void testImport_Order_Target() throws Exception {
-    IFolder root = DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
+    IFolder root = OwlDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
 
     /* Import */
     List<? extends IEntity> elements = Owl.getInterpreter().importFrom(getClass().getResourceAsStream("/data/importer/order.opml"));
@@ -1058,7 +1058,7 @@ public class FileImportTest {
   @Test
   @SuppressWarnings( { "nls", "null", "unused", "unchecked" })
   public void testImport_DuplicateMarks_CheckExisting() throws Exception {
-    IFolder root = DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
+    IFolder root = OwlDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
 
     /* Import */
     List<? extends IEntity> elements = Owl.getInterpreter().importFrom(getClass().getResourceAsStream("/data/importer/duplicates.opml"));
@@ -1077,7 +1077,7 @@ public class FileImportTest {
   @Test
   @SuppressWarnings( { "nls", "null", "unused", "unchecked" })
   public void testImport_DuplicateMarks_DoNotCheckExisting() throws Exception {
-    IFolder root = DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
+    IFolder root = OwlDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
 
     /* Import */
     List<? extends IEntity> elements = Owl.getInterpreter().importFrom(getClass().getResourceAsStream("/data/importer/duplicates.opml"));

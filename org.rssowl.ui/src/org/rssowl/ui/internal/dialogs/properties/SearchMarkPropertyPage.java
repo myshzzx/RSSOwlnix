@@ -48,7 +48,7 @@ import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.ISearchMark;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.util.CoreUtils;
 import org.rssowl.core.util.Pair;
 import org.rssowl.core.util.ReparentInfo;
@@ -384,7 +384,7 @@ public class SearchMarkPropertyPage implements IEntityPropertyPage {
       }
 
       /* Delete from DB */
-      DynamicDAO.deleteAll(oldConditions);
+      OwlDAO.deleteAll(oldConditions);
 
       /* Add New Conditions */
       fSearchConditionList.createConditions(mark);

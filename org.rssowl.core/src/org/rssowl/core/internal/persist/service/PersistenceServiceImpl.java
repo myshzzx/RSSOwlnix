@@ -57,13 +57,13 @@ public class PersistenceServiceImpl extends AbstractPersistenceService {
     super.startup(monitor, emergency, forRestore);
 
     /* Startup DB */
-    DBManager.getDefault().startup(monitor, emergency, forRestore);
-    InternalOwl.getDefault().setStartLevel(StartLevel.DB_OPENED);
+    DBManager.getInstance().startup(monitor, emergency, forRestore);
+    InternalOwl.getInstance().setStartLevel(StartLevel.DB_OPENED);
 
     /* Startup Model Search (not in case of emergency) */
     if (!emergency) {
       getModelSearch().startup();
-      InternalOwl.getDefault().setStartLevel(StartLevel.SEARCH_INDEX_OPENED);
+      InternalOwl.getInstance().setStartLevel(StartLevel.SEARCH_INDEX_OPENED);
     }
   }
 
@@ -91,7 +91,7 @@ public class PersistenceServiceImpl extends AbstractPersistenceService {
       }
 
       /* DB */
-      DBManager.getDefault().shutdown();
+      DBManager.getInstance().shutdown();
     }
 
     /* Emergent Exit: Shutdown DB and Search */
@@ -99,7 +99,7 @@ public class PersistenceServiceImpl extends AbstractPersistenceService {
 
       /* DB (safely) */
       try {
-        DBManager.getDefault().shutdown();
+        DBManager.getInstance().shutdown();
       } catch (Exception e) {
         Activator.safeLogError(e.getMessage(), e);
       }
@@ -122,7 +122,7 @@ public class PersistenceServiceImpl extends AbstractPersistenceService {
   @Override
   public void defragmentOnNextStartup() throws PersistenceException {
     try {
-      DBManager.getDefault().getDefragmentFile().createNewFile();
+      DBManager.getInstance().getDefragmentFile().createNewFile();
     } catch (IOException e) {
       throw new PersistenceException(e);
     }
@@ -136,7 +136,7 @@ public class PersistenceServiceImpl extends AbstractPersistenceService {
    * last successfully used.
    */
   public Pair<File, Long> getProfile() {
-    return DBManager.getDefault().getProfile();
+    return DBManager.getInstance().getProfile();
   }
 
   /**
@@ -147,7 +147,7 @@ public class PersistenceServiceImpl extends AbstractPersistenceService {
    * an unrecoverable error.
    */
   public List<File> getProfileBackups() {
-    return DBManager.getDefault().getProfileBackups();
+    return DBManager.getInstance().getProfileBackups();
   }
 
   /**
@@ -159,7 +159,7 @@ public class PersistenceServiceImpl extends AbstractPersistenceService {
    * execute this operation.
    */
   public void restoreProfile(File backup) throws PersistenceException {
-    DBManager.getDefault().restoreProfile(backup);
+    DBManager.getInstance().restoreProfile(backup);
   }
 
   /**
@@ -186,18 +186,18 @@ public class PersistenceServiceImpl extends AbstractPersistenceService {
       largeBlockSizeMarkerFile.delete();
 
     /* Communicate shutdown to listeners (mandatory before reopening for restore) */
-    DBManager.getDefault().shutdown();
+    DBManager.getInstance().shutdown();
 
     /* Open new empty DB for restore */
     if (!needsEmergencyStartup)
-      DBManager.getDefault().startup(new LongOperationMonitor(new NullProgressMonitor()) {}, true, true);
+      DBManager.getInstance().startup(new LongOperationMonitor(new NullProgressMonitor()) {}, true, true);
 
     /* Otherwise if startup is needed, startup with empty DB */
     else
-      InternalOwl.getDefault().startup(new LongOperationMonitor(new NullProgressMonitor()) {}, true, true);
+      InternalOwl.getInstance().startup(new LongOperationMonitor(new NullProgressMonitor()) {}, true, true);
 
     /* Reindex on next startup */
-    InternalOwl.getDefault().getPersistenceService().getModelSearch().reIndexOnNextStartup();
+    InternalOwl.getInstance().getPersistenceService().getModelSearch().reIndexOnNextStartup();
 
     Activator.safeLogInfo(needsEmergencyStartup ? "End: Recreate Profile with OPML Import" : "End: Start Over with Fresh Profile"); //$NON-NLS-1$ //$NON-NLS-2$
   }
@@ -208,8 +208,8 @@ public class PersistenceServiceImpl extends AbstractPersistenceService {
    * @throws PersistenceException
    */
   public void recreateSchemaForTests() throws PersistenceException {
-    DBManager.getDefault().dropDatabaseForTests();
-    DBManager.getDefault().startup(new LongOperationMonitor(new NullProgressMonitor()) {}, true, false);
+    DBManager.getInstance().dropDatabaseForTests();
+    DBManager.getInstance().startup(new LongOperationMonitor(new NullProgressMonitor()) {}, true, false);
 
     getModelSearch().clearIndex();
   }

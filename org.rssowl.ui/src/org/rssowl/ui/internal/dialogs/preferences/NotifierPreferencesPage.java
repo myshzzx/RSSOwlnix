@@ -57,7 +57,7 @@ import org.rssowl.core.internal.persist.pref.DefaultPreferences;
 import org.rssowl.core.persist.IFolder;
 import org.rssowl.core.persist.IFolderChild;
 import org.rssowl.core.persist.INewsBin;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IFolderDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
 import org.rssowl.core.util.CoreUtils;
@@ -291,7 +291,7 @@ public class NotifierPreferencesPage extends PreferencePage implements IWorkbenc
     fViewer.setInput(new Object());
 
     /* Set Checked Elements */
-    Collection<IFolder> rootFolders = DynamicDAO.getDAO(IFolderDAO.class).loadRoots();
+    Collection<IFolder> rootFolders = OwlDAO.getDAO(IFolderDAO.class).loadRoots();
     for (IFolder folder : rootFolders) {
       setCheckedElements(folder, false);
     }
@@ -560,7 +560,7 @@ public class NotifierPreferencesPage extends PreferencePage implements IWorkbenc
 
     /* Entity Scopes from Selected Elements */
     if (fLimitNotifierToSelectionCheck.getSelection()) {
-      Collection<IFolder> rootFolders = DynamicDAO.getDAO(IFolderDAO.class).loadRoots();
+      Collection<IFolder> rootFolders = OwlDAO.getDAO(IFolderDAO.class).loadRoots();
       List<?> checkedElements = Arrays.asList(fViewer.getCheckedElements());
       final Set<IFolderChild> entitiesToSave = new HashSet<IFolderChild>();
 
@@ -575,7 +575,7 @@ public class NotifierPreferencesPage extends PreferencePage implements IWorkbenc
         public void run() {
 
           /* Save Entities */
-          DynamicDAO.saveAll(entitiesToSave);
+          OwlDAO.saveAll(entitiesToSave);
 
           /* Inform Notification Service */
           if (!entitiesToSave.isEmpty())

@@ -41,7 +41,7 @@ import org.rssowl.core.persist.IModelFactory;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INewsBin;
 import org.rssowl.core.persist.NewsCounter;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsCounterDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
 import org.rssowl.core.persist.reference.BookMarkReference;
@@ -79,7 +79,7 @@ public class ControllerTestNetwork {
   public void testReloadFeed() throws Exception {
     BookMarkLoadListener listener = null;
     try {
-      final IFeed feed = DynamicDAO.save(new Feed(new URI("http://www.rssowl.org/rssowl2dg/tests/manager/rss_2_0.xml"))); //$NON-NLS-1$
+      final IFeed feed = OwlDAO.save(new Feed(new URI("http://www.rssowl.org/rssowl2dg/tests/manager/rss_2_0.xml"))); //$NON-NLS-1$
       IBookMark bookmark = createBookMark(feed);
 
       final AtomicBoolean bool1 = new AtomicBoolean(false);
@@ -137,24 +137,24 @@ public class ControllerTestNetwork {
 
     IFeed feed = factory.createFeed(null, new URI("http://www.rssowl.org/rssowl2dg/tests/manager/rss_2_0.xml"));
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IBookMark mark = factory.createBookMark(null, childFolder, new FeedLinkReference(feed.getLink()), "Bookmark");
     INewsBin bin = factory.createNewsBin(null, folder, "Bin");
 
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     Controller.getDefault().reload(mark, null, new NullProgressMonitor());
 
     /* Move News to Bin */
     INews copiedNews = factory.createNews(feed.getNews().get(0), bin);
-    DynamicDAO.save(copiedNews);
-    DynamicDAO.save(bin);
+    OwlDAO.save(copiedNews);
+    OwlDAO.save(bin);
 
-    DynamicDAO.getDAO(INewsDAO.class).setState(Collections.singletonList(feed.getNews().get(0)), INews.State.HIDDEN, false, false);
+    OwlDAO.getDAO(INewsDAO.class).setState(Collections.singletonList(feed.getNews().get(0)), INews.State.HIDDEN, false, false);
 
     /* Delete Folder */
-    DynamicDAO.deleteAll(Collections.singleton(folder));
+    OwlDAO.deleteAll(Collections.singleton(folder));
 
     assertNull(Owl.getPersistenceService().getDAOService().getNewsCounterDAO().load().get(feed.getLink().toString()));
   }
@@ -167,7 +167,7 @@ public class ControllerTestNetwork {
   @Test
   public void testReloadLargeFeedWithInvalidEncoding() throws Exception {
     IFeed feed = new Feed(new URI("http://www.rssowl.org/rssowl2dg/tests/manager/invalid_utf8_large.xml")); //$NON-NLS-1$
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
     Controller.getDefault().reload(createBookMark(feed), null, new NullProgressMonitor());
 
     assertEquals("RDF", new FeedReference(feed.getId()).resolve().getFormat()); //$NON-NLS-1$
@@ -181,7 +181,7 @@ public class ControllerTestNetwork {
   @Test
   public void testReloadSmallFeedWithInvalidEncoding() throws Exception {
     IFeed feed = new Feed(new URI("http://www.rssowl.org/rssowl2dg/tests/manager/invalid_utf8_small.xml")); //$NON-NLS-1$
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
     Controller.getDefault().reload(createBookMark(feed), null, new NullProgressMonitor());
 
     assertEquals("RDF", new FeedReference(feed.getId()).resolve().getFormat()); //$NON-NLS-1$
@@ -196,10 +196,10 @@ public class ControllerTestNetwork {
   @Test
   public void testReloadBookMark() throws Exception {
     IFeed feed = new Feed(new URI("http://www.rssowl.org/rssowl2dg/tests/manager/rss_2_0.xml"));
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     IFolder folder = Owl.getModelFactory().createFolder(null, null, "Folder");
-    folder = DynamicDAO.save(folder);
+    folder = OwlDAO.save(folder);
     IBookMark bookmark = Owl.getModelFactory().createBookMark(1L, folder, new FeedLinkReference(feed.getLink()), "BookMark");
 
     Controller.getDefault().reload(bookmark, null, new NullProgressMonitor());
@@ -216,10 +216,10 @@ public class ControllerTestNetwork {
   @Test
   public void testReloadBookMarkWithError() throws Exception {
     IFeed feed = new Feed(new URI("http://www.rssowl.org/rssowl2dg/tests/not_existing.xml"));
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     IFolder folder = Owl.getModelFactory().createFolder(null, null, "Folder");
-    folder = DynamicDAO.save(folder);
+    folder = OwlDAO.save(folder);
     IBookMark bookmark = Owl.getModelFactory().createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark");
 
     Controller.getDefault().reload(bookmark, null, new NullProgressMonitor());
@@ -228,7 +228,7 @@ public class ControllerTestNetwork {
   }
 
   private NewsCounter loadNewsCounter() {
-    return DynamicDAO.getDAO(INewsCounterDAO.class).load();
+    return OwlDAO.getDAO(INewsCounterDAO.class).load();
   }
 
   private int getNewCount(IFeed feed) {
@@ -252,16 +252,16 @@ public class ControllerTestNetwork {
   @Test
   public void testNewsServiceWithReloadBookMark() throws Exception {
     IFeed feed = new Feed(new URI("http://www.rssowl.org/rssowl2dg/tests/manager/rss_2_0.xml"));
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     IFolder folder = Owl.getModelFactory().createFolder(null, null, "Folder");
-    folder = DynamicDAO.save(folder);
+    folder = OwlDAO.save(folder);
     IBookMark bookmark = Owl.getModelFactory().createBookMark(1L, folder, new FeedLinkReference(feed.getLink()), "BookMark");
 
     Controller.getDefault().reload(bookmark, null, new NullProgressMonitor());
 
     feed.getNews().get(0).setFlagged(true);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     int unreadCounter = getUnreadCount(feed);
     int newCounter = getNewCount(feed);
@@ -275,8 +275,8 @@ public class ControllerTestNetwork {
   }
 
   private IBookMark createBookMark(IFeed feed) throws PersistenceException {
-    IFolder folder = DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(Owl.getModelFactory().createFolder(null, null, "Root"));
 
-    return DynamicDAO.save(Owl.getModelFactory().createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark"));
+    return OwlDAO.save(Owl.getModelFactory().createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark"));
   }
 }

@@ -48,7 +48,7 @@ import org.rssowl.core.persist.IMark;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INewsBin;
 import org.rssowl.core.persist.ISearchMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
 import org.rssowl.core.util.CoreUtils;
 import org.rssowl.ui.internal.Activator;
@@ -102,7 +102,7 @@ public class DeleteTypesAction extends Action implements IObjectActionDelegate {
   public DeleteTypesAction(Shell shell, IStructuredSelection selection) {
     fShell = shell;
     fSelection = selection;
-    fNewsDAO = DynamicDAO.getDAO(INewsDAO.class);
+    fNewsDAO = OwlDAO.getDAO(INewsDAO.class);
   }
 
   /*
@@ -282,7 +282,7 @@ public class DeleteTypesAction extends Action implements IObjectActionDelegate {
         Controller.getDefault().getSavedSearchService().forceQuickUpdate();
 
         /* Delete Folders and Marks in single Transaction */
-        DynamicDAO.deleteAll(entities);
+        OwlDAO.deleteAll(entities);
 
         /* Delete News in single Transaction */
         if (!newsToDelete.isEmpty()) {

@@ -645,7 +645,7 @@ public class ModelSearchImpl implements IModelSearch {
   @Override
   public void reIndexOnNextStartup() throws PersistenceException {
     try {
-      DBManager.getDefault().getReIndexFile().createNewFile();
+      DBManager.getInstance().getReIndexFile().createNewFile();
     } catch (IOException e) {
       throw new PersistenceException(e);
     }
@@ -660,7 +660,7 @@ public class ModelSearchImpl implements IModelSearch {
   public void reindexAll(IProgressMonitor monitor) throws PersistenceException {
 
     /* May be used before Owl is completely set-up */
-    Collection<INews> newsList = InternalOwl.getDefault().getPersistenceService().getDAOService().getNewsDAO().loadAll();
+    Collection<INews> newsList = InternalOwl.getInstance().getPersistenceService().getDAOService().getNewsDAO().loadAll();
 
     /* User might have cancelled the operation */
     if (monitor.isCanceled())
@@ -761,7 +761,7 @@ public class ModelSearchImpl implements IModelSearch {
 
     /* Find News to delete */
     Set<NewsReference> newsToDelete = new HashSet<NewsReference>();
-    INewsDAO newsDao = InternalOwl.getDefault().getPersistenceService().getDAOService().getNewsDAO();
+    INewsDAO newsDao = InternalOwl.getInstance().getPersistenceService().getDAOService().getNewsDAO();
     for (NewsReference newsRef : results) {
 
       /* User might have cancelled the operation */
@@ -802,7 +802,7 @@ public class ModelSearchImpl implements IModelSearch {
   @Override
   public void cleanUpOnNextStartup() throws PersistenceException {
     try {
-      DBManager.getDefault().getCleanUpIndexFile().createNewFile();
+      DBManager.getInstance().getCleanUpIndexFile().createNewFile();
     } catch (IOException e) {
       throw new PersistenceException(e);
     }

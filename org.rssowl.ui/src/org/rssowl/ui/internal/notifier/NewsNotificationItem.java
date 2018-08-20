@@ -32,7 +32,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.rssowl.core.persist.IBookMark;
 import org.rssowl.core.persist.ILabel;
 import org.rssowl.core.persist.INews;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.reference.FeedLinkReference;
 import org.rssowl.core.persist.reference.NewsReference;
 import org.rssowl.core.util.CoreUtils;
@@ -236,7 +236,7 @@ public class NewsNotificationItem extends NotificationItem {
     INews news = fNewsReference.resolve();
     if (news != null && news.isVisible()) {
       news.setFlagged(sticky);
-      DynamicDAO.save(news);
+      OwlDAO.save(news);
     }
   }
 
@@ -258,7 +258,7 @@ public class NewsNotificationItem extends NotificationItem {
     INews news = fNewsReference.resolve();
     if (news != null && news.isVisible()) {
       news.setState(read ? INews.State.READ : INews.State.NEW);
-      DynamicDAO.save(news);
+      OwlDAO.save(news);
     }
   }
 

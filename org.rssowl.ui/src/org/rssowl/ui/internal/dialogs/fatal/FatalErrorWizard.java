@@ -77,8 +77,8 @@ public class FatalErrorWizard extends Wizard {
 
     boolean isOOMError = (fErrorStatus.getException() instanceof OutOfMemoryError);
     boolean isProfileLockedError = (fErrorStatus.getException() instanceof ProfileLockedException);
-    boolean canUsePersistenceService = (InternalOwl.getDefault().getPersistenceService() != null);
-    StartLevel startLevel = InternalOwl.getDefault().getStartLevel();
+    boolean canUsePersistenceService = (InternalOwl.getInstance().getPersistenceService() != null);
+    StartLevel startLevel = InternalOwl.getInstance().getStartLevel();
     fOfferRestorePages = !isOOMError && !isProfileLockedError && canUsePersistenceService && startLevel != StartLevel.STARTED && startLevel != StartLevel.SEARCH_INDEX_OPENED;
 
     /* Log State */
@@ -99,7 +99,7 @@ public class FatalErrorWizard extends Wizard {
   private void findBackups() {
 
     /* Collect Profile Backups */
-    fProfileBackups.addAll(InternalOwl.getDefault().getProfileBackups());
+    fProfileBackups.addAll(InternalOwl.getInstance().getProfileBackups());
 
     /* Collect OPML Backups if no profile backups can be found */
     if (fProfileBackups.isEmpty()) {
@@ -197,12 +197,12 @@ public class FatalErrorWizard extends Wizard {
 
     /* Recreate Search Index */
     if (fReindexSearchPage != null) {
-      InternalOwl.getDefault().getPersistenceService().getModelSearch().reIndexOnNextStartup();
+      InternalOwl.getInstance().getPersistenceService().getModelSearch().reIndexOnNextStartup();
     }
 
     /* Restore Profile from Backup */
     else if (fRestoreBackupPage != null && fRestoreBackupPage.getSelectedBackup() != null) {
-      InternalOwl.getDefault().restoreProfile(fRestoreBackupPage.getSelectedBackup());
+      InternalOwl.getInstance().restoreProfile(fRestoreBackupPage.getSelectedBackup());
     }
 
     /* Clean Profile */
@@ -210,7 +210,7 @@ public class FatalErrorWizard extends Wizard {
 
       /* Recreate the Profile */
       boolean needsEmergencyStartup = !fOPMLBackups.isEmpty();
-      InternalOwl.getDefault().recreateProfile(needsEmergencyStartup);
+      InternalOwl.getInstance().recreateProfile(needsEmergencyStartup);
 
       /* Try to Import from OPML backups if present */
       if (!fOPMLBackups.isEmpty()) {

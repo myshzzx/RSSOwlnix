@@ -153,7 +153,7 @@ public final class IndexingTask implements ITask {
   private List<INews> getNewsFromRefs(Collection<NewsReference> newsRefs) {
     List<INews> newsList = new ArrayList<INews>(newsRefs.size());
     List<NewsReference> removedNewsRefs = new ArrayList<NewsReference>(1);
-    INewsDAO newsDAO = InternalOwl.getDefault().getPersistenceService().getDAOService().getNewsDAO();
+    INewsDAO newsDAO = InternalOwl.getInstance().getPersistenceService().getDAOService().getNewsDAO();
     for (NewsReference newsRef : newsRefs) {
       INews news = newsDAO.load(newsRef.getId());
       if (news == null)

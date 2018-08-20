@@ -39,7 +39,7 @@ import org.rssowl.core.Owl;
 import org.rssowl.core.connection.ConnectionException;
 import org.rssowl.core.internal.InternalOwl;
 import org.rssowl.core.persist.IBookMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IBookMarkDAO;
 import org.rssowl.core.persist.reference.FeedLinkReference;
 import org.rssowl.core.util.StringUtils;
@@ -251,7 +251,7 @@ public class Application implements IApplication {
     }
 
     /* Check if a BookMark exists for the Link */
-    Collection<IBookMark> existingBookmarks = DynamicDAO.getDAO(IBookMarkDAO.class).loadAll(new FeedLinkReference(linkAsURI));
+    Collection<IBookMark> existingBookmarks = OwlDAO.getDAO(IBookMarkDAO.class).loadAll(new FeedLinkReference(linkAsURI));
     if (existingBookmarks.size() > 0)
       return existingBookmarks.iterator().next();
 
@@ -268,7 +268,7 @@ public class Application implements IApplication {
         return null;
       }
 
-      existingBookmarks = DynamicDAO.getDAO(IBookMarkDAO.class).loadAll(new FeedLinkReference(linkAsURI));
+      existingBookmarks = OwlDAO.getDAO(IBookMarkDAO.class).loadAll(new FeedLinkReference(linkAsURI));
       if (existingBookmarks.size() > 0)
         return existingBookmarks.iterator().next();
     }

@@ -36,7 +36,7 @@ import org.rssowl.core.persist.IBookMark;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.ISearchFilter;
 import org.rssowl.core.persist.ISearchMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
 import org.rssowl.core.persist.reference.NewsReference;
@@ -88,7 +88,7 @@ public class CleanUpWizard extends Wizard {
    */
   @Override
   public boolean performFinish() {
-    final INewsDAO newsDao = DynamicDAO.getDAO(INewsDAO.class);
+    final INewsDAO newsDao = OwlDAO.getDAO(INewsDAO.class);
     final CleanUpOperations operations = fCleanUpOptionsPage.getOperations();
     final AtomicBoolean askForRestart = new AtomicBoolean(false);
 
@@ -176,7 +176,7 @@ public class CleanUpWizard extends Wizard {
           /* Delete Orphaned Searches */
           else if (task instanceof DeleteOrphanedSearchMarkTask) {
             List<ISearchMark> searches = ((DeleteOrphanedSearchMarkTask) task).getSearchMarks();
-            DynamicDAO.deleteAll(searches);
+            OwlDAO.deleteAll(searches);
           }
 
           /* Disable Orphaned News Filters */
@@ -185,7 +185,7 @@ public class CleanUpWizard extends Wizard {
             for (ISearchFilter filter : filters) {
               filter.setEnabled(false);
             }
-            DynamicDAO.saveAll(filters);
+            OwlDAO.saveAll(filters);
           }
 
           /* Optimize Lucene Index */
@@ -208,7 +208,7 @@ public class CleanUpWizard extends Wizard {
 
         /* Delete BookMarks */
         Controller.getDefault().getSavedSearchService().forceQuickUpdate();
-        DynamicDAO.deleteAll(bookmarks);
+        OwlDAO.deleteAll(bookmarks);
 
         /* Optimize Search */
         if (optimizeSearch)

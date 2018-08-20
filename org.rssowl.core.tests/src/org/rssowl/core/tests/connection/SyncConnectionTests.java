@@ -47,7 +47,7 @@ import org.rssowl.core.persist.IFolder;
 import org.rssowl.core.persist.IGuid;
 import org.rssowl.core.persist.ILabel;
 import org.rssowl.core.persist.INews;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.event.NewsAdapter;
 import org.rssowl.core.persist.event.NewsEvent;
 import org.rssowl.core.persist.event.NewsListener;
@@ -236,10 +236,10 @@ public class SyncConnectionTests {
 
     URI feedUrl = new URI("reader://www.spiegel.de/schlagzeilen/index.rss");
     IFeed feed = Owl.getModelFactory().createFeed(null, feedUrl);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IBookMark bm = Owl.getModelFactory().createBookMark(null, root, new FeedLinkReference(feedUrl), "BM");
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     /* Initial Load of Feed */
     Controller.getDefault().reload(bm, null, null);
@@ -364,10 +364,10 @@ public class SyncConnectionTests {
 
     URI feedUrl = new URI("reader://www.spiegel.de/schlagzeilen/index.rss");
     IFeed feed = Owl.getModelFactory().createFeed(null, feedUrl);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IBookMark bm = Owl.getModelFactory().createBookMark(null, root, new FeedLinkReference(feedUrl), "BM");
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     /* Initial Load of Feed */
     Controller.getDefault().reload(bm, null, null);
@@ -478,16 +478,16 @@ public class SyncConnectionTests {
   @SuppressWarnings("nls")
   public void testSpiegelFeedIncomingExistingLabel() throws Exception {
     ILabel label = Owl.getModelFactory().createLabel(null, "Super Label");
-    DynamicDAO.save(label);
+    OwlDAO.save(label);
 
     IFolder root = Owl.getModelFactory().createFolder(null, null, "Root");
 
     URI feedUrl = new URI("reader://www.spiegel.de/schlagzeilen/index.rss");
     IFeed feed = Owl.getModelFactory().createFeed(null, feedUrl);
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IBookMark bm = Owl.getModelFactory().createBookMark(null, root, new FeedLinkReference(feedUrl), "BM");
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     /* Initial Load of Feed */
     Controller.getDefault().reload(bm, null, null);
@@ -542,21 +542,21 @@ public class SyncConnectionTests {
     IFolder root = Owl.getModelFactory().createFolder(null, null, "Root");
 
     IFeed sternFeed = Owl.getModelFactory().createFeed(null, new URI("reader://www.stern.de/feed/standard/all/"));
-    DynamicDAO.save(sternFeed);
+    OwlDAO.save(sternFeed);
 
     IBookMark sternBm = Owl.getModelFactory().createBookMark(null, root, new FeedLinkReference(sternFeed.getLink()), "Stern");
 
     IFeed heiseFeed = Owl.getModelFactory().createFeed(null, new URI("reader://www.heise.de/newsticker/heise-atom.xml"));
-    DynamicDAO.save(heiseFeed);
+    OwlDAO.save(heiseFeed);
 
     IBookMark heiseBm = Owl.getModelFactory().createBookMark(null, root, new FeedLinkReference(heiseFeed.getLink()), "Heise");
 
     IFeed golemFeed = Owl.getModelFactory().createFeed(null, new URI("reader://rss.golem.de/rss.php?feed=RSS1.0"));
-    DynamicDAO.save(golemFeed);
+    OwlDAO.save(golemFeed);
 
     IBookMark golemBm = Owl.getModelFactory().createBookMark(null, root, new FeedLinkReference(golemFeed.getLink()), "Golem");
 
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     Controller.getDefault().reload(sternBm, null, null);
     Controller.getDefault().reload(heiseBm, null, null);
@@ -756,11 +756,11 @@ public class SyncConnectionTests {
     IFolder root = Owl.getModelFactory().createFolder(null, null, "Root");
 
     IFeed bildFeed = Owl.getModelFactory().createFeed(null, new URI("reader://www.bild.de/rss-feeds/rss-16725492,feed=home.bild.html"));
-    DynamicDAO.save(bildFeed);
+    OwlDAO.save(bildFeed);
 
     IBookMark bildBm = Owl.getModelFactory().createBookMark(null, root, new FeedLinkReference(bildFeed.getLink()), "Bild");
 
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     Controller.getDefault().reload(bildBm, null, null);
 
@@ -791,13 +791,13 @@ public class SyncConnectionTests {
         listenerCalled.set(true);
       }
     };
-    DynamicDAO.addEntityListener(INews.class, listener);
+    OwlDAO.addEntityListener(INews.class, listener);
 
     try {
       Controller.getDefault().reload(bildBm, null, null);
       assertFalse(listenerCalled.get());
     } finally {
-      DynamicDAO.removeEntityListener(INews.class, listener);
+      OwlDAO.removeEntityListener(INews.class, listener);
     }
 
     /* Clean Up */
@@ -824,11 +824,11 @@ public class SyncConnectionTests {
     IFolder root = Owl.getModelFactory().createFolder(null, null, "Root");
 
     IFeed testFeed = Owl.getModelFactory().createFeed(null, new URI("reader://www.test.de/rss/themen/alle/alles/"));
-    DynamicDAO.save(testFeed);
+    OwlDAO.save(testFeed);
 
     IBookMark testBm = Owl.getModelFactory().createBookMark(null, root, new FeedLinkReference(testFeed.getLink()), "Test");
 
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     Controller.getDefault().reload(testBm, null, null);
 
@@ -858,7 +858,7 @@ public class SyncConnectionTests {
     assertEquals(5, testNews.getLabels().size());
 
     testNews.removeLabel(testNews.getLabels().iterator().next());
-    DynamicDAO.save(testFeed);
+    OwlDAO.save(testFeed);
 
     assertEquals(4, testNews.getLabels().size());
 
@@ -895,14 +895,14 @@ public class SyncConnectionTests {
     IFolder root = Owl.getModelFactory().createFolder(null, null, "Root");
 
     IFeed slashdotFeed = Owl.getModelFactory().createFeed(null, new URI("reader://rss.slashdot.org/Slashdot/slashdot"));
-    DynamicDAO.save(slashdotFeed);
+    OwlDAO.save(slashdotFeed);
 
     IBookMark slashdotBm = Owl.getModelFactory().createBookMark(null, root, new FeedLinkReference(slashdotFeed.getLink()), "Slashdot");
     IPreferenceScope prefs = Owl.getPreferenceService().getEntityScope(slashdotBm);
     prefs.putBoolean(DefaultPreferences.DEL_NEWS_BY_COUNT_STATE, true);
     prefs.putInteger(DefaultPreferences.DEL_NEWS_BY_COUNT_VALUE, 800);
 
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     Controller.getDefault().reload(slashdotBm, null, null);
 
@@ -960,7 +960,7 @@ public class SyncConnectionTests {
     IFolder root = Owl.getModelFactory().createFolder(null, null, "Root");
 
     IFeed slashdotFeed = Owl.getModelFactory().createFeed(null, new URI("reader://rss.slashdot.org/Slashdot/slashdot"));
-    DynamicDAO.save(slashdotFeed);
+    OwlDAO.save(slashdotFeed);
 
     IBookMark slashdotBm = Owl.getModelFactory().createBookMark(null, root, new FeedLinkReference(slashdotFeed.getLink()), "Slashdot");
     IPreferenceScope prefs = Owl.getPreferenceService().getEntityScope(slashdotBm);
@@ -970,7 +970,7 @@ public class SyncConnectionTests {
     long ageLimit = DateUtils.getToday().getTimeInMillis() - (2 * DateUtils.DAY);
     ageLimit -= 1000 * 60 * 60; //Tolerate some invariance
 
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     Controller.getDefault().reload(slashdotBm, null, null);
 
@@ -1037,15 +1037,15 @@ public class SyncConnectionTests {
     IFolder root = Owl.getModelFactory().createFolder(null, null, "Root");
 
     IFeed bbcFeed = Owl.getModelFactory().createFeed(null, new URI("reader://feeds.bbci.co.uk/news/rss.xml"));
-    DynamicDAO.save(bbcFeed);
+    OwlDAO.save(bbcFeed);
 
     IBookMark bbcBM = Owl.getModelFactory().createBookMark(null, root, new FeedLinkReference(bbcFeed.getLink()), "Slashdot");
 
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     Controller.getDefault().reload(bbcBM, null, null);
 
-    Collection<ILabel> labels = DynamicDAO.loadAll(ILabel.class);
+    Collection<ILabel> labels = OwlDAO.loadAll(ILabel.class);
     boolean bbcLabelFound = false;
     ILabel bbcLabel = null;
     for (ILabel label : labels) {
@@ -1058,7 +1058,7 @@ public class SyncConnectionTests {
 
     assertTrue(bbcLabelFound);
 
-    DynamicDAO.delete(bbcLabel);
+    OwlDAO.delete(bbcLabel);
 
     for (INews news : bbcFeed.getNews()) {
       assertTrue(news.getLabels().isEmpty());
@@ -1066,7 +1066,7 @@ public class SyncConnectionTests {
 
     Controller.getDefault().reload(bbcBM, null, null);
 
-    labels = DynamicDAO.loadAll(ILabel.class);
+    labels = OwlDAO.loadAll(ILabel.class);
     bbcLabelFound = false;
     for (ILabel label : labels) {
       if ("BBC".equals(label.getName())) {
@@ -1082,7 +1082,7 @@ public class SyncConnectionTests {
     }
 
     bbcLabel = Owl.getModelFactory().createLabel(null, "BBC");
-    DynamicDAO.save(bbcLabel);
+    OwlDAO.save(bbcLabel);
 
     Controller.getDefault().reload(bbcBM, null, null);
     bbcLabelFound = false;
@@ -1095,7 +1095,7 @@ public class SyncConnectionTests {
 
     assertTrue(bbcLabelFound);
 
-    DynamicDAO.delete(bbcLabel);
+    OwlDAO.delete(bbcLabel);
 
     for (INews news : bbcFeed.getNews()) {
       assertTrue(news.getLabels().isEmpty());
@@ -1103,7 +1103,7 @@ public class SyncConnectionTests {
 
     Controller.getDefault().reload(bbcBM, null, null);
 
-    labels = DynamicDAO.loadAll(ILabel.class);
+    labels = OwlDAO.loadAll(ILabel.class);
     bbcLabelFound = false;
     for (ILabel label : labels) {
       if ("BBC".equals(label.getName())) {
@@ -1119,10 +1119,10 @@ public class SyncConnectionTests {
     }
 
     bbcLabel = Owl.getModelFactory().createLabel(null, "BBC Other");
-    DynamicDAO.save(bbcLabel);
+    OwlDAO.save(bbcLabel);
 
     bbcLabel.setName("BBC");
-    DynamicDAO.save(bbcLabel);
+    OwlDAO.save(bbcLabel);
 
     Controller.getDefault().reload(bbcBM, null, null);
     bbcLabelFound = false;

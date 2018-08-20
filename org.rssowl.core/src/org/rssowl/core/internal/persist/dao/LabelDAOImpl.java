@@ -28,7 +28,7 @@ import org.rssowl.core.internal.persist.Label;
 import org.rssowl.core.internal.persist.News;
 import org.rssowl.core.persist.ILabel;
 import org.rssowl.core.persist.INews;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.ILabelDAO;
 import org.rssowl.core.persist.event.LabelEvent;
 import org.rssowl.core.persist.event.LabelListener;
@@ -75,7 +75,7 @@ public final class LabelDAOImpl extends AbstractEntityDAO<ILabel, LabelListener,
       for (INews newsItem : news) {
         newsItem.removeLabel(entity);
       }
-      DynamicDAO.saveAll(news);
+      OwlDAO.saveAll(news);
     }
 
     super.doDelete(entity);

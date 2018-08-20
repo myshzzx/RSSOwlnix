@@ -56,7 +56,7 @@ import org.rssowl.core.connection.ICredentialsProvider;
 import org.rssowl.core.connection.PlatformCredentialsProvider;
 import org.rssowl.core.internal.persist.pref.DefaultPreferences;
 import org.rssowl.core.persist.IBookMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
 import org.rssowl.core.util.Pair;
 import org.rssowl.core.util.StringUtils;
@@ -538,7 +538,7 @@ public class CredentialsPreferencesPage extends PreferencePage implements IWorkb
 
     /* Remove all other stored Credentials matching normalized link and realm if set */
     if (all) {
-      Collection<IBookMark> bookmarks = DynamicDAO.loadAll(IBookMark.class);
+      Collection<IBookMark> bookmarks = OwlDAO.loadAll(IBookMark.class);
       for (IBookMark bookmark : bookmarks) {
         String realm = (String) bookmark.getProperty(Controller.BM_REALM_PROPERTY);
 
@@ -571,7 +571,7 @@ public class CredentialsPreferencesPage extends PreferencePage implements IWorkb
 
     /* Add all Feeds */
     List<Pair<URI, String>> pairs = new ArrayList<Pair<URI, String>>();
-    Collection<IBookMark> bookmarks = DynamicDAO.loadAll(IBookMark.class);
+    Collection<IBookMark> bookmarks = OwlDAO.loadAll(IBookMark.class);
     for (IBookMark bookmark : bookmarks) {
       String realm = (String) bookmark.getProperty(Controller.BM_REALM_PROPERTY);
       URI feedLink = bookmark.getFeedLinkReference().getLink();

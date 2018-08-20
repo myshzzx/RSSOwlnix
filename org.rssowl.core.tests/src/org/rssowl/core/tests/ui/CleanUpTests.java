@@ -38,7 +38,7 @@ import org.rssowl.core.persist.IFolder;
 import org.rssowl.core.persist.ILabel;
 import org.rssowl.core.persist.IModelFactory;
 import org.rssowl.core.persist.INews;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.reference.FeedLinkReference;
 import org.rssowl.core.util.DateUtils;
 import org.rssowl.ui.internal.dialogs.cleanup.BookMarkTask;
@@ -84,23 +84,23 @@ public class CleanUpTests {
   @Test
   public void testCleanUpBookmarksByLastVisitDate() throws Exception {
     IFolder rootFolder = fFactory.createFolder(null, null, "Root");
-    DynamicDAO.save(rootFolder);
+    OwlDAO.save(rootFolder);
 
     IFeed feed1 = fFactory.createFeed(null, new URI("http://www.feed1.com"));
     IFeed feed2 = fFactory.createFeed(null, new URI("http://www.feed2.com"));
     IFeed feed3 = fFactory.createFeed(null, new URI("http://www.feed3.com"));
 
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
-    DynamicDAO.save(feed3);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
+    OwlDAO.save(feed3);
 
     IBookMark bm1 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed1.getLink()), "BM1");
     IBookMark bm2 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed2.getLink()), "BM2");
     IBookMark bm3 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed3.getLink()), "BM3");
 
-    DynamicDAO.save(bm1);
-    DynamicDAO.save(bm2);
-    DynamicDAO.save(bm3);
+    OwlDAO.save(bm1);
+    OwlDAO.save(bm2);
+    OwlDAO.save(bm3);
 
     List<IBookMark> marks = new ArrayList<IBookMark>();
     marks.add(bm1);
@@ -204,7 +204,7 @@ public class CleanUpTests {
   @Test
   public void testCleanUpBookmarksByLastUpdateDate() throws Exception {
     IFolder rootFolder = fFactory.createFolder(null, null, "Root");
-    DynamicDAO.save(rootFolder);
+    OwlDAO.save(rootFolder);
 
     IFeed feed1 = fFactory.createFeed(null, new URI("http://www.feed1.com"));
     IFeed feed2 = fFactory.createFeed(null, new URI("http://www.feed2.com"));
@@ -219,9 +219,9 @@ public class CleanUpTests {
     INews news3 = fFactory.createNews(null, feed3, new Date());
     news3.setPublishDate(new Date(System.currentTimeMillis() - 2 * DAY));
 
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
-    DynamicDAO.save(feed3);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
+    OwlDAO.save(feed3);
 
     IBookMark bm1 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed1.getLink()), "BM1");
     bm1.setMostRecentNewsDate(DateUtils.getRecentDate(news1));
@@ -232,9 +232,9 @@ public class CleanUpTests {
     IBookMark bm3 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed3.getLink()), "BM3");
     bm3.setMostRecentNewsDate(DateUtils.getRecentDate(news3));
 
-    DynamicDAO.save(bm1);
-    DynamicDAO.save(bm2);
-    DynamicDAO.save(bm3);
+    OwlDAO.save(bm1);
+    OwlDAO.save(bm2);
+    OwlDAO.save(bm3);
 
     List<IBookMark> marks = new ArrayList<IBookMark>();
     marks.add(bm1);
@@ -270,24 +270,24 @@ public class CleanUpTests {
   @Test
   public void testCleanUpBookmarksByConnectionError() throws Exception {
     IFolder rootFolder = fFactory.createFolder(null, null, "Root");
-    DynamicDAO.save(rootFolder);
+    OwlDAO.save(rootFolder);
 
     IFeed feed1 = fFactory.createFeed(null, new URI("http://www.feed1.com"));
     IFeed feed2 = fFactory.createFeed(null, new URI("http://www.feed2.com"));
     IFeed feed3 = fFactory.createFeed(null, new URI("http://www.feed3.com"));
 
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
-    DynamicDAO.save(feed3);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
+    OwlDAO.save(feed3);
 
     IBookMark bm1 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed1.getLink()), "BM1");
     IBookMark bm2 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed2.getLink()), "BM2");
     IBookMark bm3 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed3.getLink()), "BM3");
     bm3.setErrorLoading(true);
 
-    DynamicDAO.save(bm1);
-    DynamicDAO.save(bm2);
-    DynamicDAO.save(bm3);
+    OwlDAO.save(bm1);
+    OwlDAO.save(bm2);
+    OwlDAO.save(bm3);
 
     List<IBookMark> marks = new ArrayList<IBookMark>();
     marks.add(bm1);
@@ -321,15 +321,15 @@ public class CleanUpTests {
   @Test
   public void testCleanUpBookmarksByDuplicates() throws Exception {
     IFolder rootFolder = fFactory.createFolder(null, null, "Root");
-    DynamicDAO.save(rootFolder);
+    OwlDAO.save(rootFolder);
 
     IFeed feed1 = fFactory.createFeed(null, new URI("http://www.feed1.com"));
     IFeed feed2 = fFactory.createFeed(null, new URI("http://www.feed2.com"));
     IFeed feed3 = fFactory.createFeed(null, new URI("http://www.feed3.com"));
 
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
-    DynamicDAO.save(feed3);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
+    OwlDAO.save(feed3);
 
     Calendar cal = Calendar.getInstance();
 
@@ -348,11 +348,11 @@ public class CleanUpTests {
     IBookMark bm2 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed2.getLink()), "BM2");
     IBookMark bm3 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed3.getLink()), "BM3");
 
-    DynamicDAO.save(bm1);
-    DynamicDAO.save(bmMostRecentDuplicate);
-    DynamicDAO.save(bmOldestDuplicate);
-    DynamicDAO.save(bm2);
-    DynamicDAO.save(bm3);
+    OwlDAO.save(bm1);
+    OwlDAO.save(bmMostRecentDuplicate);
+    OwlDAO.save(bmOldestDuplicate);
+    OwlDAO.save(bm2);
+    OwlDAO.save(bm3);
 
     List<IBookMark> marks = new ArrayList<IBookMark>();
     marks.add(bm1);
@@ -390,7 +390,7 @@ public class CleanUpTests {
   @Test
   public void testCleanUpBookmarksByLastUpdateAndLastVisit() throws Exception {
     IFolder rootFolder = fFactory.createFolder(null, null, "Root");
-    DynamicDAO.save(rootFolder);
+    OwlDAO.save(rootFolder);
 
     IFeed feed1 = fFactory.createFeed(null, new URI("http://www.feed1.com"));
     IFeed feed2 = fFactory.createFeed(null, new URI("http://www.feed2.com"));
@@ -405,9 +405,9 @@ public class CleanUpTests {
     INews news3 = fFactory.createNews(null, feed3, new Date());
     news3.setPublishDate(new Date(System.currentTimeMillis() - 2 * DAY));
 
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
-    DynamicDAO.save(feed3);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
+    OwlDAO.save(feed3);
 
     IBookMark bm1 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed1.getLink()), "BM1");
     bm1.setMostRecentNewsDate(news1.getPublishDate());
@@ -418,9 +418,9 @@ public class CleanUpTests {
     IBookMark bm3 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed3.getLink()), "BM3");
     bm3.setMostRecentNewsDate(news3.getPublishDate());
 
-    DynamicDAO.save(bm1);
-    DynamicDAO.save(bm2);
-    DynamicDAO.save(bm3);
+    OwlDAO.save(bm1);
+    OwlDAO.save(bm2);
+    OwlDAO.save(bm3);
 
     List<IBookMark> marks = new ArrayList<IBookMark>();
     marks.add(bm1);
@@ -480,7 +480,7 @@ public class CleanUpTests {
   @Test
   public void testCleanUpNewsByCount() throws Exception {
     IFolder rootFolder = fFactory.createFolder(null, null, "Root");
-    DynamicDAO.save(rootFolder);
+    OwlDAO.save(rootFolder);
 
     IFeed feed1 = fFactory.createFeed(null, new URI("http://www.feed1.com"));
     IFeed feed2 = fFactory.createFeed(null, new URI("http://www.feed2.com"));
@@ -494,17 +494,17 @@ public class CleanUpTests {
     fFactory.createNews(null, feed3, new Date());
     INews news = fFactory.createNews(null, feed3, new Date(0));
 
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
-    DynamicDAO.save(feed3);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
+    OwlDAO.save(feed3);
 
     IBookMark bm1 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed1.getLink()), "BM1");
     IBookMark bm2 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed2.getLink()), "BM2");
     IBookMark bm3 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed3.getLink()), "BM3");
 
-    DynamicDAO.save(bm1);
-    DynamicDAO.save(bm2);
-    DynamicDAO.save(bm3);
+    OwlDAO.save(bm1);
+    OwlDAO.save(bm2);
+    OwlDAO.save(bm3);
 
     List<IBookMark> marks = new ArrayList<IBookMark>();
     marks.add(bm1);
@@ -550,7 +550,7 @@ public class CleanUpTests {
   @Test
   public void testCleanUpNewsByAge() throws Exception {
     IFolder rootFolder = fFactory.createFolder(null, null, "Root");
-    DynamicDAO.save(rootFolder);
+    OwlDAO.save(rootFolder);
 
     IFeed feed1 = fFactory.createFeed(null, new URI("http://www.feed1.com"));
     IFeed feed2 = fFactory.createFeed(null, new URI("http://www.feed2.com"));
@@ -565,17 +565,17 @@ public class CleanUpTests {
     INews news3 = fFactory.createNews(null, feed3, new Date());
     news3.setPublishDate(new Date(System.currentTimeMillis() - 2 * DAY));
 
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
-    DynamicDAO.save(feed3);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
+    OwlDAO.save(feed3);
 
     IBookMark bm1 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed1.getLink()), "BM1");
     IBookMark bm2 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed2.getLink()), "BM2");
     IBookMark bm3 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed3.getLink()), "BM3");
 
-    DynamicDAO.save(bm1);
-    DynamicDAO.save(bm2);
-    DynamicDAO.save(bm3);
+    OwlDAO.save(bm1);
+    OwlDAO.save(bm2);
+    OwlDAO.save(bm3);
 
     List<IBookMark> marks = new ArrayList<IBookMark>();
     marks.add(bm1);
@@ -627,7 +627,7 @@ public class CleanUpTests {
   @Test
   public void testCleanUpNewsByAgeButKeepUnread() throws Exception {
     IFolder rootFolder = fFactory.createFolder(null, null, "Root");
-    DynamicDAO.save(rootFolder);
+    OwlDAO.save(rootFolder);
 
     IFeed feed1 = fFactory.createFeed(null, new URI("http://www.feed1.com"));
     IFeed feed2 = fFactory.createFeed(null, new URI("http://www.feed2.com"));
@@ -642,17 +642,17 @@ public class CleanUpTests {
     INews news3 = fFactory.createNews(null, feed3, new Date());
     news3.setPublishDate(new Date(System.currentTimeMillis() - 2 * DAY));
 
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
-    DynamicDAO.save(feed3);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
+    OwlDAO.save(feed3);
 
     IBookMark bm1 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed1.getLink()), "BM1");
     IBookMark bm2 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed2.getLink()), "BM2");
     IBookMark bm3 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed3.getLink()), "BM3");
 
-    DynamicDAO.save(bm1);
-    DynamicDAO.save(bm2);
-    DynamicDAO.save(bm3);
+    OwlDAO.save(bm1);
+    OwlDAO.save(bm2);
+    OwlDAO.save(bm3);
 
     List<IBookMark> marks = new ArrayList<IBookMark>();
     marks.add(bm1);
@@ -672,7 +672,7 @@ public class CleanUpTests {
     }
 
     news1.setState(INews.State.READ);
-    DynamicDAO.save(news1);
+    OwlDAO.save(news1);
 
     {
       CleanUpModel model = new CleanUpModel(ops, marks);
@@ -698,9 +698,9 @@ public class CleanUpTests {
   @Test
   public void testCleanUpNewsByAgeButKeepLabeled() throws Exception {
     IFolder rootFolder = fFactory.createFolder(null, null, "Root");
-    DynamicDAO.save(rootFolder);
+    OwlDAO.save(rootFolder);
 
-    ILabel label = DynamicDAO.save(fFactory.createLabel(null, "Label"));
+    ILabel label = OwlDAO.save(fFactory.createLabel(null, "Label"));
 
     IFeed feed1 = fFactory.createFeed(null, new URI("http://www.feed1.com"));
     IFeed feed2 = fFactory.createFeed(null, new URI("http://www.feed2.com"));
@@ -714,17 +714,17 @@ public class CleanUpTests {
     news2.setPublishDate(new Date(System.currentTimeMillis() - 3 * DAY));
     news2.addLabel(label);
 
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
-    DynamicDAO.save(feed3);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
+    OwlDAO.save(feed3);
 
     IBookMark bm1 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed1.getLink()), "BM1");
     IBookMark bm2 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed2.getLink()), "BM2");
     IBookMark bm3 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed3.getLink()), "BM3");
 
-    DynamicDAO.save(bm1);
-    DynamicDAO.save(bm2);
-    DynamicDAO.save(bm3);
+    OwlDAO.save(bm1);
+    OwlDAO.save(bm2);
+    OwlDAO.save(bm3);
 
     List<IBookMark> marks = new ArrayList<IBookMark>();
     marks.add(bm1);
@@ -745,8 +745,8 @@ public class CleanUpTests {
 
     news1.removeLabel(label);
     news2.removeLabel(label);
-    DynamicDAO.save(news1);
-    DynamicDAO.save(news2);
+    OwlDAO.save(news1);
+    OwlDAO.save(news2);
 
     {
       CleanUpModel model = new CleanUpModel(ops, marks);
@@ -772,9 +772,9 @@ public class CleanUpTests {
   @Test
   public void testCleanUpNewsByAgeButKeepLabeledAndUnread() throws Exception {
     IFolder rootFolder = fFactory.createFolder(null, null, "Root");
-    DynamicDAO.save(rootFolder);
+    OwlDAO.save(rootFolder);
 
-    ILabel label = DynamicDAO.save(fFactory.createLabel(null, "Label"));
+    ILabel label = OwlDAO.save(fFactory.createLabel(null, "Label"));
 
     IFeed feed1 = fFactory.createFeed(null, new URI("http://www.feed1.com"));
     IFeed feed2 = fFactory.createFeed(null, new URI("http://www.feed2.com"));
@@ -787,17 +787,17 @@ public class CleanUpTests {
     INews news2 = fFactory.createNews(null, feed2, new Date());
     news2.setPublishDate(new Date(System.currentTimeMillis() - 3 * DAY));
 
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
-    DynamicDAO.save(feed3);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
+    OwlDAO.save(feed3);
 
     IBookMark bm1 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed1.getLink()), "BM1");
     IBookMark bm2 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed2.getLink()), "BM2");
     IBookMark bm3 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed3.getLink()), "BM3");
 
-    DynamicDAO.save(bm1);
-    DynamicDAO.save(bm2);
-    DynamicDAO.save(bm3);
+    OwlDAO.save(bm1);
+    OwlDAO.save(bm2);
+    OwlDAO.save(bm3);
 
     List<IBookMark> marks = new ArrayList<IBookMark>();
     marks.add(bm1);
@@ -818,8 +818,8 @@ public class CleanUpTests {
 
     news1.removeLabel(label);
     news2.setState(INews.State.READ);
-    DynamicDAO.save(news1);
-    DynamicDAO.save(news2);
+    OwlDAO.save(news1);
+    OwlDAO.save(news2);
 
     {
       CleanUpModel model = new CleanUpModel(ops, marks);
@@ -846,7 +846,7 @@ public class CleanUpTests {
   @Test
   public void testCleanUpBookMarksByLastVisitAndNewsByAge() throws Exception {
     IFolder rootFolder = fFactory.createFolder(null, null, "Root");
-    DynamicDAO.save(rootFolder);
+    OwlDAO.save(rootFolder);
 
     IFeed feed1 = fFactory.createFeed(null, new URI("http://www.feed1.com"));
     IFeed feed2 = fFactory.createFeed(null, new URI("http://www.feed2.com"));
@@ -861,9 +861,9 @@ public class CleanUpTests {
     INews news3 = fFactory.createNews(null, feed3, new Date());
     news3.setPublishDate(new Date(System.currentTimeMillis() - 2 * DAY));
 
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
-    DynamicDAO.save(feed3);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
+    OwlDAO.save(feed3);
 
     IBookMark bm1 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed1.getLink()), "BM1");
     bm1.setLastVisitDate(new Date(System.currentTimeMillis() - 5 * DAY));
@@ -874,9 +874,9 @@ public class CleanUpTests {
     IBookMark bm3 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed3.getLink()), "BM3");
     bm3.setLastVisitDate(new Date(System.currentTimeMillis() - 2 * DAY));
 
-    DynamicDAO.save(bm1);
-    DynamicDAO.save(bm2);
-    DynamicDAO.save(bm3);
+    OwlDAO.save(bm1);
+    OwlDAO.save(bm2);
+    OwlDAO.save(bm3);
 
     List<IBookMark> marks = new ArrayList<IBookMark>();
     marks.add(bm1);
@@ -912,7 +912,7 @@ public class CleanUpTests {
   @Test
   public void testCleanUpNewsByAgeAndCount() throws Exception {
     IFolder rootFolder = fFactory.createFolder(null, null, "Root");
-    DynamicDAO.save(rootFolder);
+    OwlDAO.save(rootFolder);
 
     IFeed feed1 = fFactory.createFeed(null, new URI("http://www.feed1.com"));
     IFeed feed2 = fFactory.createFeed(null, new URI("http://www.feed2.com"));
@@ -930,17 +930,17 @@ public class CleanUpTests {
     INews news4 = fFactory.createNews(null, feed3, new Date());
     news4.setPublishDate(new Date(System.currentTimeMillis() - 3 * DAY));
 
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
-    DynamicDAO.save(feed3);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
+    OwlDAO.save(feed3);
 
     IBookMark bm1 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed1.getLink()), "BM1");
     IBookMark bm2 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed2.getLink()), "BM2");
     IBookMark bm3 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed3.getLink()), "BM3");
 
-    DynamicDAO.save(bm1);
-    DynamicDAO.save(bm2);
-    DynamicDAO.save(bm3);
+    OwlDAO.save(bm1);
+    OwlDAO.save(bm2);
+    OwlDAO.save(bm3);
 
     List<IBookMark> marks = new ArrayList<IBookMark>();
     marks.add(bm1);
@@ -978,23 +978,23 @@ public class CleanUpTests {
   @Ignore
   public void testCleanUpBookmarksBySynchronization() throws Exception {
     IFolder rootFolder = fFactory.createFolder(null, null, "Root");
-    DynamicDAO.save(rootFolder);
+    OwlDAO.save(rootFolder);
 
     IFeed feed1 = fFactory.createFeed(null, new URI("reader://www.feed1.com"));
     IFeed feed2 = fFactory.createFeed(null, new URI("reader://www.feed2.com"));
     IFeed feed3 = fFactory.createFeed(null, new URI("reader://www.rssowl.org/node/feed"));
 
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
-    DynamicDAO.save(feed3);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
+    OwlDAO.save(feed3);
 
     IBookMark bm1 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed1.getLink()), "BM1");
     IBookMark bm2 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed2.getLink()), "BM2");
     IBookMark bm3 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed3.getLink()), "BM3");
 
-    DynamicDAO.save(bm1);
-    DynamicDAO.save(bm2);
-    DynamicDAO.save(bm3);
+    OwlDAO.save(bm1);
+    OwlDAO.save(bm2);
+    OwlDAO.save(bm3);
 
     List<IBookMark> marks = new ArrayList<IBookMark>();
     marks.add(bm1);

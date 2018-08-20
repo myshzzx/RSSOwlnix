@@ -58,7 +58,7 @@ import org.rssowl.core.interpreter.EncodingException;
 import org.rssowl.core.persist.IConditionalGet;
 import org.rssowl.core.persist.IEntity;
 import org.rssowl.core.persist.IFeed;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.reference.FeedLinkReference;
 import org.rssowl.core.util.RegExUtils;
 import org.rssowl.core.util.StringUtils;
@@ -175,8 +175,8 @@ public class ConnectionTests {
     IFeed feed2 = new Feed(feedUrl2);
     AuthenticationRequiredException e = null;
 
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
 
     try {
       Owl.getConnectionService().getHandler(feed1.getLink()).openStream(feed1.getLink(), null, null);
@@ -232,8 +232,8 @@ public class ConnectionTests {
     Owl.getInterpreter().interpret(inS, feed2, null);
     assertEquals("RSS 2.0", feed2.getFormat());
 
-    DynamicDAO.delete(feed1);
-    DynamicDAO.delete(feed2);
+    OwlDAO.delete(feed1);
+    OwlDAO.delete(feed2);
 
     assertNull(conManager.getAuthCredentials(feed1.getLink(), null));
     assertNull(conManager.getAuthCredentials(feed2.getLink(), null));
@@ -258,8 +258,8 @@ public class ConnectionTests {
     IFeed feed2 = new Feed(feedUrl2);
     AuthenticationRequiredException e = null;
 
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
 
     try {
       Owl.getConnectionService().getHandler(feed1.getLink()).openStream(feed1.getLink(), null, null);
@@ -318,8 +318,8 @@ public class ConnectionTests {
     assertNull(conManager.getCredentialsProvider(feed1.getLink()).getPersistedAuthCredentials(feed1.getLink(), null));
     assertNull(conManager.getCredentialsProvider(feed2.getLink()).getPersistedAuthCredentials(feed2.getLink(), null));
 
-    DynamicDAO.delete(feed1);
-    DynamicDAO.delete(feed2);
+    OwlDAO.delete(feed1);
+    OwlDAO.delete(feed2);
 
     assertNull(conManager.getAuthCredentials(feed1.getLink(), null));
     assertNull(conManager.getAuthCredentials(feed2.getLink(), null));
@@ -453,7 +453,7 @@ public class ConnectionTests {
     URI feedUrl = new URI("https://127.0.0.1:8443/auth/some_feed.xml");
     IFeed feed = new Feed(feedUrl);
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     ICredentials authCreds = new ICredentials() {
       @Override
@@ -476,7 +476,7 @@ public class ConnectionTests {
 
     assertNotNull(conManager.getAuthCredentials(feedUrl, null));
 
-    DynamicDAO.delete(new FeedLinkReference(feedUrl).resolve());
+    OwlDAO.delete(new FeedLinkReference(feedUrl).resolve());
 
     assertNull(conManager.getAuthCredentials(feedUrl, null));
     assertNull(conManager.getCredentialsProvider(feedUrl).getPersistedAuthCredentials(feedUrl, null));
@@ -493,7 +493,7 @@ public class ConnectionTests {
     URI feedUrl = new URI("http://www.rssowl.org/rssowl2dg/tests/connection/authrequired/feed_rdf.xml");
     IFeed feed = new Feed(feedUrl);
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     ICredentials authCreds = new ICredentials() {
       @Override
@@ -517,7 +517,7 @@ public class ConnectionTests {
     assertNotNull(conManager.getAuthCredentials(feedUrl, null));
     assertNull(conManager.getCredentialsProvider(feedUrl).getPersistedAuthCredentials(feedUrl, null));
 
-    DynamicDAO.delete(new FeedLinkReference(feedUrl).resolve());
+    OwlDAO.delete(new FeedLinkReference(feedUrl).resolve());
 
     assertNull(conManager.getAuthCredentials(feedUrl, null));
     assertNull(conManager.getCredentialsProvider(feedUrl).getPersistedAuthCredentials(feedUrl, null));

@@ -35,7 +35,7 @@ import org.rssowl.core.internal.persist.service.PersistenceServiceImpl;
 import org.rssowl.core.persist.IFeed;
 import org.rssowl.core.persist.IModelFactory;
 import org.rssowl.core.persist.INews;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.util.Pair;
 import org.rssowl.ui.internal.EntityGroup;
 import org.rssowl.ui.internal.editors.feed.NewsBrowserViewModel;
@@ -227,7 +227,7 @@ public class NewsBrowserViewModelTests {
     news2.setState(INews.State.READ);
     INews news3 = fFactory.createNews(3L, feed, new Date());
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     Object[] elements = new Object[] { news1, news2, news3, feed };
     NewsBrowserViewModel model = new NewsBrowserViewModel(null);
@@ -346,7 +346,7 @@ public class NewsBrowserViewModelTests {
     news2.setState(INews.State.READ);
     INews news3 = fFactory.createNews(3L, feed, new Date());
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     Object[] elements = new Object[] { news1, news2, news3, feed };
     NewsBrowserViewModel model = new NewsBrowserViewModel(null);
@@ -465,7 +465,7 @@ public class NewsBrowserViewModelTests {
     news2.setState(INews.State.READ);
     INews news3 = fFactory.createNews(3L, feed, new Date());
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     Object[] elements = new Object[] { news1, news2, news3, feed };
     NewsBrowserViewModel model = new NewsBrowserViewModel(null);
@@ -572,7 +572,7 @@ public class NewsBrowserViewModelTests {
     news2.setState(INews.State.READ);
     INews news3 = fFactory.createNews(3L, feed, new Date());
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     EntityGroup group1 = new EntityGroup(100, "foo");
     EntityGroup group2 = new EntityGroup(101, "foo");
@@ -677,7 +677,7 @@ public class NewsBrowserViewModelTests {
     news2.setState(INews.State.READ);
     INews news3 = fFactory.createNews(3L, feed, new Date());
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     EntityGroup group1 = new EntityGroup(100, "foo");
     EntityGroup group2 = new EntityGroup(101, "foo");
@@ -782,7 +782,7 @@ public class NewsBrowserViewModelTests {
     news2.setState(INews.State.READ);
     INews news3 = fFactory.createNews(3L, feed, new Date());
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     EntityGroup group1 = new EntityGroup(100, "foo");
     EntityGroup group2 = new EntityGroup(101, "foo");
@@ -881,7 +881,7 @@ public class NewsBrowserViewModelTests {
     INews news4 = fFactory.createNews(4L, feed, new Date());
     INews news5 = fFactory.createNews(5L, feed, new Date());
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     Object[] elements = new Object[] { news1, news2, news3, news4, news5 };
     NewsBrowserViewModel model = new NewsBrowserViewModel(null);
@@ -911,7 +911,7 @@ public class NewsBrowserViewModelTests {
     INews news4 = fFactory.createNews(4L, feed, new Date());
     INews news5 = fFactory.createNews(5L, feed, new Date());
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     EntityGroup group1 = new EntityGroup(100, "foo");
     EntityGroup group2 = new EntityGroup(101, "foo");

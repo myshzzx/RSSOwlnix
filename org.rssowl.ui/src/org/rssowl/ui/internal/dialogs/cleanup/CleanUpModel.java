@@ -45,7 +45,7 @@ import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.ISearchFilter;
 import org.rssowl.core.persist.ISearchMark;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.ILabelDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
@@ -107,7 +107,7 @@ public class CleanUpModel {
     fTasks = new ArrayList<CleanUpGroup>();
     fFactory = Owl.getModelFactory();
     fModelSearch = Owl.getPersistenceService().getModelSearch();
-    fNewsDao = DynamicDAO.getDAO(INewsDAO.class);
+    fNewsDao = OwlDAO.getDAO(INewsDAO.class);
     fPreferences = Owl.getPreferenceService().getGlobalScope();
 
     String newsName = INews.class.getName();
@@ -148,7 +148,7 @@ public class CleanUpModel {
     /* Look for orphaned saved searches */
     {
       List<ISearchMark> orphanedSearches = new ArrayList<ISearchMark>();
-      Collection<ISearchMark> searches = DynamicDAO.loadAll(ISearchMark.class);
+      Collection<ISearchMark> searches = OwlDAO.loadAll(ISearchMark.class);
       for (ISearchMark search : searches) {
         if (CoreUtils.isOrphaned(search))
           orphanedSearches.add(search);
@@ -161,7 +161,7 @@ public class CleanUpModel {
     /* Look for orphaned news filters */
     {
       List<ISearchFilter> orphanedFilters = new ArrayList<ISearchFilter>();
-      Collection<ISearchFilter> filters = DynamicDAO.loadAll(ISearchFilter.class);
+      Collection<ISearchFilter> filters = OwlDAO.loadAll(ISearchFilter.class);
       for (ISearchFilter filter : filters) {
         if (filter.isEnabled() && CoreUtils.isOrphaned(filter))
           orphanedFilters.add(filter);
@@ -341,7 +341,7 @@ public class CleanUpModel {
     ISearchCondition stickyCondition = fFactory.createSearchCondition(stickyField, SearchSpecifier.IS_NOT, true);
 
     /* Reusable Label Condition */
-    Collection<ILabel> labels = DynamicDAO.getDAO(ILabelDAO.class).loadAll();
+    Collection<ILabel> labels = OwlDAO.getDAO(ILabelDAO.class).loadAll();
     ISearchField labelField = fFactory.createSearchField(INews.LABEL, fNewsName);
     List<ISearchCondition> labelConditions = new ArrayList<ISearchCondition>(labels.size());
     for (ILabel label : labels) {

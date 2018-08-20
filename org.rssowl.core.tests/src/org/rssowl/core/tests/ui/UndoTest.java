@@ -37,7 +37,7 @@ import org.rssowl.core.persist.IFolder;
 import org.rssowl.core.persist.IModelFactory;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INewsBin;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
 import org.rssowl.core.persist.reference.FeedLinkReference;
 import org.rssowl.ui.internal.undo.CopyOperation;
@@ -77,16 +77,16 @@ public class UndoTest {
     INews news = fFactory.createNews(null, feed, new Date());
     news.setLink(new URI("http://www.news.com"));
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IFolder folder = fFactory.createFolder(null, null, "Root");
     INewsBin bin = fFactory.createNewsBin(null, folder, "Bin");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     INews copiedNews = fFactory.createNews(news, bin);
-    DynamicDAO.save(copiedNews);
-    DynamicDAO.save(bin);
+    OwlDAO.save(copiedNews);
+    OwlDAO.save(bin);
 
     UndoStack.getInstance().addOperation(new CopyOperation(Collections.singletonList(copiedNews)));
 
@@ -110,22 +110,22 @@ public class UndoTest {
     INews news = fFactory.createNews(null, feed, new Date());
     news.setLink(new URI("http://www.news.com"));
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IFolder folder = fFactory.createFolder(null, null, "Root");
     IBookMark bookmark = fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "Bookmark");
     INewsBin bin = fFactory.createNewsBin(null, folder, "Bin");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     INews copiedNews = fFactory.createNews(news, bin);
-    DynamicDAO.save(copiedNews);
-    DynamicDAO.save(bin);
+    OwlDAO.save(copiedNews);
+    OwlDAO.save(bin);
 
     UndoStack.getInstance().addOperation(new MoveOperation(Collections.singletonList(news), Collections.singletonList(copiedNews), false));
 
     /* Remove (it's a move!) */
-    DynamicDAO.getDAO(INewsDAO.class).setState(Collections.singletonList(news), INews.State.HIDDEN, false, false);
+    OwlDAO.getDAO(INewsDAO.class).setState(Collections.singletonList(news), INews.State.HIDDEN, false, false);
 
     assertTrue(bin.containsNews(copiedNews));
     assertTrue(bookmark.getNewsCount(INews.State.getVisible()) == 0);
@@ -152,11 +152,11 @@ public class UndoTest {
     INews news = fFactory.createNews(null, feed, new Date());
     news.setLink(new URI("http://www.news.com"));
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     UndoStack.getInstance().addOperation(new NewsStateOperation(Collections.singletonList(news), INews.State.READ, false));
 
-    DynamicDAO.getDAO(INewsDAO.class).setState(Collections.singletonList(news), INews.State.READ, false, false);
+    OwlDAO.getDAO(INewsDAO.class).setState(Collections.singletonList(news), INews.State.READ, false, false);
 
     assertEquals(INews.State.READ, news.getState());
 
@@ -167,7 +167,7 @@ public class UndoTest {
     assertEquals(INews.State.READ, news.getState());
 
     UndoStack.getInstance().addOperation(new NewsStateOperation(Collections.singletonList(news), INews.State.HIDDEN, false));
-    DynamicDAO.getDAO(INewsDAO.class).setState(Collections.singletonList(news), INews.State.HIDDEN, false, false);
+    OwlDAO.getDAO(INewsDAO.class).setState(Collections.singletonList(news), INews.State.HIDDEN, false, false);
 
     assertEquals(INews.State.HIDDEN, news.getState());
 
@@ -191,12 +191,12 @@ public class UndoTest {
     INews news2 = fFactory.createNews(null, feed2, new Date());
     news2.setLink(new URI("http://www.news.com"));
 
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
 
     UndoStack.getInstance().addOperation(new NewsStateOperation(Collections.singletonList(news1), INews.State.READ, true));
 
-    DynamicDAO.getDAO(INewsDAO.class).setState(Collections.singletonList(news1), INews.State.READ, true, false);
+    OwlDAO.getDAO(INewsDAO.class).setState(Collections.singletonList(news1), INews.State.READ, true, false);
 
     assertEquals(INews.State.READ, news1.getState());
     assertEquals(INews.State.READ, news2.getState());
@@ -219,11 +219,11 @@ public class UndoTest {
     INews news = fFactory.createNews(null, feed, new Date());
     news.setLink(new URI("http://www.news.com"));
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     UndoStack.getInstance().addOperation(new StickyOperation(Collections.singletonList(news), true));
 
     news.setFlagged(true);
-    DynamicDAO.save(news);
+    OwlDAO.save(news);
 
     UndoStack.getInstance().undo();
 
@@ -246,16 +246,16 @@ public class UndoTest {
     news.setLink(new URI("http://www.news.com"));
     news.setFlagged(true);
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IBookMark bookmark = fFactory.createBookMark(null, root, new FeedLinkReference(feed.getLink()), "Bookmark");
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     assertEquals(1, bookmark.getStickyNewsCount());
     assertEquals(1, bookmark.getNewsCount(INews.State.getVisible()));
 
     UndoStack.getInstance().addOperation(new NewsStateOperation(Collections.singleton(news), INews.State.HIDDEN, false));
-    DynamicDAO.getDAO(INewsDAO.class).setState(Collections.singleton(news), INews.State.HIDDEN, false, false);
+    OwlDAO.getDAO(INewsDAO.class).setState(Collections.singleton(news), INews.State.HIDDEN, false, false);
 
     assertEquals(0, bookmark.getStickyNewsCount());
     assertEquals(0, bookmark.getNewsCount(INews.State.getVisible()));
@@ -280,11 +280,11 @@ public class UndoTest {
     INews news = fFactory.createNews(null, feed, new Date());
     news.setLink(new URI("http://www.news.com"));
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
     UndoStack.getInstance().addOperation(new StickyOperation(Collections.singletonList(news), true));
 
     news.setFlagged(true);
-    DynamicDAO.save(news);
+    OwlDAO.save(news);
 
     UndoStack.getInstance().undo();
 
@@ -306,14 +306,14 @@ public class UndoTest {
     news.setLink(new URI("http://www.news.com"));
     news.setState(INews.State.READ);
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     UndoStack.getInstance().addOperation(new NewsStateOperation(Collections.singletonList(news), INews.State.UNREAD, false));
-    DynamicDAO.getDAO(INewsDAO.class).setState(Collections.singletonList(news), INews.State.UNREAD, false, false);
+    OwlDAO.getDAO(INewsDAO.class).setState(Collections.singletonList(news), INews.State.UNREAD, false, false);
     assertEquals(INews.State.UNREAD, news.getState());
 
     UndoStack.getInstance().addOperation(new NewsStateOperation(Collections.singletonList(news), INews.State.READ, false));
-    DynamicDAO.getDAO(INewsDAO.class).setState(Collections.singletonList(news), INews.State.READ, false, false);
+    OwlDAO.getDAO(INewsDAO.class).setState(Collections.singletonList(news), INews.State.READ, false, false);
     assertEquals(INews.State.READ, news.getState());
 
     UndoStack.getInstance().undo();
@@ -321,11 +321,11 @@ public class UndoTest {
     assertEquals(INews.State.READ, news.getState());
 
     UndoStack.getInstance().addOperation(new NewsStateOperation(Collections.singletonList(news), INews.State.UNREAD, false));
-    DynamicDAO.getDAO(INewsDAO.class).setState(Collections.singletonList(news), INews.State.UNREAD, false, false);
+    OwlDAO.getDAO(INewsDAO.class).setState(Collections.singletonList(news), INews.State.UNREAD, false, false);
     assertEquals(INews.State.UNREAD, news.getState());
 
     UndoStack.getInstance().addOperation(new NewsStateOperation(Collections.singletonList(news), INews.State.READ, false));
-    DynamicDAO.getDAO(INewsDAO.class).setState(Collections.singletonList(news), INews.State.READ, false, false);
+    OwlDAO.getDAO(INewsDAO.class).setState(Collections.singletonList(news), INews.State.READ, false, false);
     assertEquals(INews.State.READ, news.getState());
 
     UndoStack.getInstance().undo();
@@ -344,15 +344,15 @@ public class UndoTest {
     news.setLink(new URI("http://www.news.com"));
     news.setState(INews.State.READ);
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     UndoStack.getInstance().addOperation(new StickyOperation(Collections.singletonList(news), true));
     news.setFlagged(true);
-    DynamicDAO.save(news);
+    OwlDAO.save(news);
 
     for (int i = 0; i < 20; i++) {
       UndoStack.getInstance().addOperation(new NewsStateOperation(Collections.singletonList(news), i % 2 == 0 ? INews.State.UNREAD : INews.State.READ, false));
-      DynamicDAO.getDAO(INewsDAO.class).setState(Collections.singletonList(news), i % 2 == 0 ? INews.State.UNREAD : INews.State.READ, false, false);
+      OwlDAO.getDAO(INewsDAO.class).setState(Collections.singletonList(news), i % 2 == 0 ? INews.State.UNREAD : INews.State.READ, false, false);
     }
 
     int undos = 0;
@@ -380,7 +380,7 @@ public class UndoTest {
 
     UndoStack.getInstance().addOperation(new StickyOperation(Collections.singletonList(news), false));
     news.setFlagged(false);
-    DynamicDAO.save(news);
+    OwlDAO.save(news);
 
     undos = 0;
     while (UndoStack.getInstance().isUndoSupported()) {

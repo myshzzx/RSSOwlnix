@@ -60,7 +60,7 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.rssowl.core.Owl;
 import org.rssowl.core.internal.persist.pref.DefaultPreferences;
 import org.rssowl.core.persist.IFolder;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.event.FolderAdapter;
 import org.rssowl.core.persist.event.FolderEvent;
 import org.rssowl.core.util.CoreUtils;
@@ -213,7 +213,7 @@ public class FolderChooser extends Composite implements DisposeListener {
       }
     };
 
-    DynamicDAO.addEntityListener(IFolder.class, fFolderListener);
+    OwlDAO.addEntityListener(IFolder.class, fFolderListener);
   }
 
   private void expand(IFolder folder) {
@@ -225,7 +225,7 @@ public class FolderChooser extends Composite implements DisposeListener {
   }
 
   private void unregisterListeners() {
-    DynamicDAO.removeEntityListener(IFolder.class, fFolderListener);
+    OwlDAO.removeEntityListener(IFolder.class, fFolderListener);
   }
 
   private void initComponents() {

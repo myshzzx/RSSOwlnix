@@ -45,7 +45,7 @@ import org.rssowl.core.persist.ILabel;
 import org.rssowl.core.persist.IModelFactory;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.ISearchFilter;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.event.NewsEvent;
 import org.rssowl.core.util.SyncItem;
 import org.rssowl.core.util.SyncUtils;
@@ -226,8 +226,8 @@ public class SyncServiceTest {
     ILabel label1 = fFactory.createLabel(null, "Foo");
     ILabel label2 = fFactory.createLabel(null, "Bar");
 
-    DynamicDAO.save(label1);
-    DynamicDAO.save(label2);
+    OwlDAO.save(label1);
+    OwlDAO.save(label2);
 
     IFeed feed = fFactory.createFeed(null, URI.create("rssowl.org"));
     ISearchFilter filter = fFactory.createSearchFilter(null, fFactory.createSearch(null), "Filter");

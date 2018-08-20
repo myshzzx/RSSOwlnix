@@ -75,7 +75,7 @@ import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INewsMark;
 import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IBookMarkDAO;
 import org.rssowl.core.persist.dao.IConditionalGetDAO;
 import org.rssowl.core.persist.dao.ILabelDAO;
@@ -371,10 +371,10 @@ public class Controller {
     fSaveFeedQueue = new JobQueue(Messages.Controller_UPDATING_FEEDS, MAX_CONCURRENT_SAVE_JOBS, MAX_SAVE_QUEUE_SIZE, false, 0);
     fSaveFeedQueue.setUnknownProgress(true);
     fEntityPropertyPages = loadEntityPropertyPages();
-    fBookMarkDAO = DynamicDAO.getDAO(IBookMarkDAO.class);
-    fSearchMarkDAO = DynamicDAO.getDAO(ISearchMarkDAO.class);
-    fConditionalGetDAO = DynamicDAO.getDAO(IConditionalGetDAO.class);
-    fLabelDao = DynamicDAO.getDAO(ILabelDAO.class);
+    fBookMarkDAO = OwlDAO.getDAO(IBookMarkDAO.class);
+    fSearchMarkDAO = OwlDAO.getDAO(ISearchMarkDAO.class);
+    fConditionalGetDAO = OwlDAO.getDAO(IConditionalGetDAO.class);
+    fLabelDao = OwlDAO.getDAO(ILabelDAO.class);
     fAppService = Owl.getApplicationService();
     fFactory = Owl.getModelFactory();
     fConnectionTimeout = getSystemProperty(FEED_CON_TIMEOUT_PROPERTY, DEFAULT_FEED_CON_TIMEOUT, DEFAULT_FEED_CON_TIMEOUT);
@@ -421,7 +421,7 @@ public class Controller {
       }
     };
 
-    DynamicDAO.addEntityListener(IBookMark.class, fBookMarkListener);
+    OwlDAO.addEntityListener(IBookMark.class, fBookMarkListener);
 
     /* Update Label conditions when Label name changes */
     fLabelListener = new LabelListener() {
@@ -469,7 +469,7 @@ public class Controller {
       }
     };
 
-    DynamicDAO.addEntityListener(ILabel.class, fLabelListener);
+    OwlDAO.addEntityListener(ILabel.class, fLabelListener);
   }
 
   private void onLabelsChange(Set<LabelEvent> events, EventType type) {
@@ -547,12 +547,12 @@ public class Controller {
       }
     }
 
-    DynamicDAO.getDAO(ISearchMarkDAO.class).saveAll(searchMarksToUpdate);
+    OwlDAO.getDAO(ISearchMarkDAO.class).saveAll(searchMarksToUpdate);
   }
 
   private void unregisterListeners() {
-    DynamicDAO.removeEntityListener(IBookMark.class, fBookMarkListener);
-    DynamicDAO.removeEntityListener(ILabel.class, fLabelListener);
+    OwlDAO.removeEntityListener(IBookMark.class, fBookMarkListener);
+    OwlDAO.removeEntityListener(ILabel.class, fLabelListener);
   }
 
   private List<EntityPropertyPageWrapper> loadEntityPropertyPages() {
@@ -1058,7 +1058,7 @@ public class Controller {
 
       /* This will trigger an update to the viewer to show the favicon */
       if (faviconBytes != null)
-        DynamicDAO.save(bookmark);
+        OwlDAO.save(bookmark);
     } catch (UnknownProtocolException e) {
       Activator.getDefault().getLog().log(e.getStatus());
     } catch (ConnectionException e) {
@@ -1203,7 +1203,7 @@ public class Controller {
     SafeRunner.run(new LoggingSafeRunnable() {
       @Override
       public void run() throws Exception {
-        DynamicDAO.getDAO(INewsDAO.class).setState(EnumSet.of(INews.State.HIDDEN), INews.State.DELETED, false);
+        OwlDAO.getDAO(INewsDAO.class).setState(EnumSet.of(INews.State.HIDDEN), INews.State.DELETED, false);
       }
     });
 
@@ -1749,7 +1749,7 @@ public class Controller {
       globalPreferences.putBoolean(DefaultPreferences.ALWAYS_REUSE_FEEDVIEW, true);
 
       /* Initial Bookmark Set */
-      DynamicDAO.save(Owl.getModelFactory().createFolder(null, null, Messages.Controller_MY_BOOKMARKS));
+      OwlDAO.save(Owl.getModelFactory().createFolder(null, null, Messages.Controller_MY_BOOKMARKS));
     }
   }
 

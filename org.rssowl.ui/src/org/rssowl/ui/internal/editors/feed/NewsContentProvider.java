@@ -48,7 +48,7 @@ import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.ISearchMark;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
 import org.rssowl.core.persist.event.NewsAdapter;
 import org.rssowl.core.persist.event.NewsEvent;
@@ -150,7 +150,7 @@ public class NewsContentProvider implements ITreeContentProvider {
     fGrouping = feedView.getGrouper();
     fFilter = feedView.getFilter();
     fCachedNews = new HashMap<Long, INews>();
-    fNewsDao = DynamicDAO.getDAO(INewsDAO.class);
+    fNewsDao = OwlDAO.getDAO(INewsDAO.class);
     fFactory = Owl.getModelFactory();
     fSearch = Owl.getPersistenceService().getModelSearch();
     fNoFolderLimit = System.getProperty(NO_FOLDER_LIMIT_PROPERTY) != null;
@@ -932,7 +932,7 @@ public class NewsContentProvider implements ITreeContentProvider {
       }
     };
 
-    DynamicDAO.addEntityListener(ISearchMark.class, fSearchMarkListener);
+    OwlDAO.addEntityListener(ISearchMark.class, fSearchMarkListener);
 
     /* News Listener */
     fNewsListener = new NewsAdapter() {
@@ -1123,7 +1123,7 @@ public class NewsContentProvider implements ITreeContentProvider {
       }
     };
 
-    DynamicDAO.addEntityListener(INews.class, fNewsListener);
+    OwlDAO.addEntityListener(INews.class, fNewsListener);
   }
 
   private boolean gotRestored(NewsEvent event, NewsFilter.Type filter) {
@@ -1405,8 +1405,8 @@ public class NewsContentProvider implements ITreeContentProvider {
   }
 
   private void unregisterListeners() {
-    DynamicDAO.removeEntityListener(INews.class, fNewsListener);
-    DynamicDAO.removeEntityListener(ISearchMark.class, fSearchMarkListener);
+    OwlDAO.removeEntityListener(INews.class, fNewsListener);
+    OwlDAO.removeEntityListener(ISearchMark.class, fSearchMarkListener);
   }
 
   private boolean isInputRelatedTo(NewsEvent event, NewsEventType type) {

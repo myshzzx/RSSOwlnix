@@ -56,7 +56,7 @@ public class GlobalScope implements IPreferenceScope {
   public GlobalScope(IPreferenceScope parent) {
     fParent = parent;
     fCache = new HashMap<String, IPreference>();
-    fPreferenceDAO = InternalOwl.getDefault().getPersistenceService().getDAOService().getPreferencesDAO();
+    fPreferenceDAO = InternalOwl.getInstance().getPersistenceService().getDAOService().getPreferencesDAO();
     registerListeners();
   }
 

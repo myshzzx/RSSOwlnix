@@ -51,7 +51,7 @@ import org.rssowl.core.Owl;
 import org.rssowl.core.internal.persist.pref.DefaultPreferences;
 import org.rssowl.core.persist.IBookMark;
 import org.rssowl.core.persist.ILabel;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.ICategoryDAO;
 import org.rssowl.core.persist.dao.ILabelDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
@@ -93,7 +93,7 @@ public class FeedDefinitionPage extends WizardPage {
     setMessage(Messages.FeedDefinitionPage_CREATE_BOOKMARK);
     fInitialLink = initialLink;
 
-    Collection<IBookMark> bookmarks = DynamicDAO.loadAll(IBookMark.class);
+    Collection<IBookMark> bookmarks = OwlDAO.loadAll(IBookMark.class);
     for (IBookMark bookMark : bookmarks) {
       fExistingFeeds.put(bookMark.getFeedLinkReference().getLinkAsText(), bookMark);
     }
@@ -323,9 +323,9 @@ public class FeedDefinitionPage extends WizardPage {
             }
           });
 
-          values.addAll(DynamicDAO.getDAO(ICategoryDAO.class).loadAllNames());
+          values.addAll(OwlDAO.getDAO(ICategoryDAO.class).loadAllNames());
 
-          Collection<ILabel> labels = DynamicDAO.getDAO(ILabelDAO.class).loadAll();
+          Collection<ILabel> labels = OwlDAO.getDAO(ILabelDAO.class).loadAll();
           for (ILabel label : labels) {
             values.add(label.getName());
           }

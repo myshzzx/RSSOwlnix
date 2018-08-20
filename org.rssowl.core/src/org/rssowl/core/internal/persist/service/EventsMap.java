@@ -39,7 +39,15 @@ import java.util.Map;
  * A {@link Map} of {@link ModelEvent} pointing to {@link EventRunnable}.
  */
 public class EventsMap {
+  
   private static final EventsMap INSTANCE = new EventsMap();
+
+  /**
+   * @return Singleton Instance.
+   */
+  public static final EventsMap getInstance() {
+    return INSTANCE;
+  }
 
   private static class InternalMap extends HashMap<Class<? extends ModelEvent>, EventRunnable<? extends ModelEvent>> {
     InternalMap() {
@@ -52,10 +60,6 @@ public class EventsMap {
 
   private EventsMap() {
     // Enforce singleton pattern
-  }
-
-  public final static EventsMap getInstance() {
-    return INSTANCE;
   }
 
   public final void putPersistEvent(ModelEvent event) {

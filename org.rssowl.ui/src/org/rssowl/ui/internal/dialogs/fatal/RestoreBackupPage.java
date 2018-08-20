@@ -104,7 +104,7 @@ public class RestoreBackupPage extends WizardPage {
     }
 
     /* Current Profile Info */
-    Pair<File, Long> pair = InternalOwl.getDefault().getProfile();
+    Pair<File, Long> pair = InternalOwl.getInstance().getProfile();
     File profile = pair.getFirst();
     if (profile != null && profile.exists()) {
       Label currentProfileLabel = new Label(container, SWT.NONE);

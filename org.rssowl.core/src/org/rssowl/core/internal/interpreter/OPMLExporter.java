@@ -47,7 +47,7 @@ import org.rssowl.core.persist.ISearch;
 import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchFilter;
 import org.rssowl.core.persist.ISearchMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
 import org.rssowl.core.persist.pref.IPreferenceScope.Kind;
 import org.rssowl.core.persist.pref.IPreferenceType;
@@ -358,7 +358,7 @@ public class OPMLExporter implements ITypeExporter {
   }
 
   private void exportFilters(Element body, DateFormat df) {
-    Collection<ISearchFilter> filters = DynamicDAO.loadAll(ISearchFilter.class);
+    Collection<ISearchFilter> filters = OwlDAO.loadAll(ISearchFilter.class);
     for (ISearchFilter filter : filters) {
       String name = filter.getName();
       int order = filter.getOrder();
@@ -516,7 +516,7 @@ public class OPMLExporter implements ITypeExporter {
   }
 
   private void exportLabels(Element body) {
-    Collection<ILabel> labels = DynamicDAO.loadAll(ILabel.class);
+    Collection<ILabel> labels = OwlDAO.loadAll(ILabel.class);
     for (ILabel label : labels) {
       Long id = label.getId();
       String name = label.getName();

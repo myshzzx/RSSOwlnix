@@ -46,7 +46,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.rssowl.core.Owl;
 import org.rssowl.core.internal.persist.pref.DefaultPreferences;
 import org.rssowl.core.persist.ILabel;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.ICategoryDAO;
 import org.rssowl.core.persist.dao.ILabelDAO;
 import org.rssowl.core.persist.dao.IPersonDAO;
@@ -559,13 +559,13 @@ public class ImportSourcePage extends WizardPage {
           });
 
           /* Add all Categories */
-          values.addAll(DynamicDAO.getDAO(ICategoryDAO.class).loadAllNames());
+          values.addAll(OwlDAO.getDAO(ICategoryDAO.class).loadAllNames());
 
           /* Add all Authors */
-          values.addAll(DynamicDAO.getDAO(IPersonDAO.class).loadAllNames());
+          values.addAll(OwlDAO.getDAO(IPersonDAO.class).loadAllNames());
 
           /* Add all Labels */
-          Collection<ILabel> labels = DynamicDAO.getDAO(ILabelDAO.class).loadAll();
+          Collection<ILabel> labels = OwlDAO.getDAO(ILabelDAO.class).loadAll();
           for (ILabel label : labels) {
             values.add(label.getName());
           }

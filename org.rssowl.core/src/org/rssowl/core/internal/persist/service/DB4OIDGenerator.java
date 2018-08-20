@@ -45,7 +45,7 @@ public class DB4OIDGenerator implements IDGenerator, DatabaseListener {
    * Creates an instance of this class.
    */
   public DB4OIDGenerator() {
-    DBManager.getDefault().addEntityStoreListener(this);
+    DBManager.getInstance().addEntityStoreListener(this);
   }
 
   /*

@@ -32,7 +32,7 @@ import org.rssowl.core.persist.ICategory;
 import org.rssowl.core.persist.ILabel;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.IPerson;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IBookMarkDAO;
 import org.rssowl.core.persist.event.NewsEvent;
 import org.rssowl.core.persist.reference.FeedLinkReference;
@@ -388,7 +388,7 @@ public class NewsGrouping {
 
   private Collection<EntityGroup> createFeedGroups(Collection<INews> input) {
     Map<Long, EntityGroup> groupCache = new HashMap<Long, EntityGroup>();
-    IBookMarkDAO bookmarkDao = DynamicDAO.getDAO(IBookMarkDAO.class);
+    IBookMarkDAO bookmarkDao = OwlDAO.getDAO(IBookMarkDAO.class);
     Map<FeedLinkReference, IBookMark> feedToBookMarkCache = new HashMap<FeedLinkReference, IBookMark>();
 
     /* Group Input */

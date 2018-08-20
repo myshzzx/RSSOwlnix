@@ -28,7 +28,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.osgi.util.NLS;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INews.State;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
 import org.rssowl.core.persist.reference.NewsReference;
 import org.rssowl.core.util.CoreUtils;
@@ -116,6 +116,6 @@ public class MoveOperation extends CopyOperation {
     Controller.getDefault().getSavedSearchService().forceQuickUpdate();
 
     /* Delete News in single Transaction */
-    DynamicDAO.getDAO(INewsDAO.class).setState(CoreUtils.resolveAll(fOriginalNews), INews.State.HIDDEN, false, false);
+    OwlDAO.getDAO(INewsDAO.class).setState(CoreUtils.resolveAll(fOriginalNews), INews.State.HIDDEN, false, false);
   }
 }

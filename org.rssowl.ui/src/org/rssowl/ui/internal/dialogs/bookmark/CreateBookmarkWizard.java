@@ -44,7 +44,7 @@ import org.rssowl.core.persist.IFeed;
 import org.rssowl.core.persist.IFolder;
 import org.rssowl.core.persist.IFolderChild;
 import org.rssowl.core.persist.IMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IFeedDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
 import org.rssowl.core.persist.reference.FeedLinkReference;
@@ -367,7 +367,7 @@ public class CreateBookmarkWizard extends Wizard implements INewWizard {
         title[0] = fKeywordPage.getSelectedEngine().getLabel(fFeedDefinitionPage.getKeyword());
     }
 
-    IFeedDAO feedDAO = DynamicDAO.getDAO(IFeedDAO.class);
+    IFeedDAO feedDAO = OwlDAO.getDAO(IFeedDAO.class);
 
     /* Create a new Feed */
     if (!feedDAO.exists(uriObj[0])) {
@@ -390,7 +390,7 @@ public class CreateBookmarkWizard extends Wizard implements INewWizard {
     if (StringUtils.isSet(fLastRealm))
       bookmark.setProperty(Controller.BM_REALM_PROPERTY, fLastRealm);
 
-    parent = DynamicDAO.save(parent);
+    parent = OwlDAO.save(parent);
 
     /* Auto-Reload added BookMark */
     for (IMark mark : parent.getMarks()) {

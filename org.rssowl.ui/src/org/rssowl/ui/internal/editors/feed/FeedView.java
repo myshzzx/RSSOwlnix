@@ -82,7 +82,7 @@ import org.rssowl.core.persist.INewsBin;
 import org.rssowl.core.persist.INewsMark;
 import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IBookMarkDAO;
 import org.rssowl.core.persist.dao.INewsBinDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
@@ -670,7 +670,7 @@ public class FeedView extends EditorPart implements IReusableEditor {
         onNewsMarksUpdated(events);
       }
     };
-    DynamicDAO.addEntityListener(IBookMark.class, fBookMarkListener);
+    OwlDAO.addEntityListener(IBookMark.class, fBookMarkListener);
 
     /* React on Folder Events */
     fFolderListener = new FolderAdapter() {
@@ -684,7 +684,7 @@ public class FeedView extends EditorPart implements IReusableEditor {
         onNewsFoldersUpdated(events);
       }
     };
-    DynamicDAO.addEntityListener(IFolder.class, fFolderListener);
+    OwlDAO.addEntityListener(IFolder.class, fFolderListener);
 
     /* React on Searchmark Events */
     fSearchMarkListener = new SearchMarkAdapter() {
@@ -698,7 +698,7 @@ public class FeedView extends EditorPart implements IReusableEditor {
         onNewsMarksUpdated(events);
       }
     };
-    DynamicDAO.addEntityListener(ISearchMark.class, fSearchMarkListener);
+    OwlDAO.addEntityListener(ISearchMark.class, fSearchMarkListener);
 
     /* Refresh on Condition Changes if SearchMark showing */
     fSearchConditionListener = new SearchConditionListener() {
@@ -720,7 +720,7 @@ public class FeedView extends EditorPart implements IReusableEditor {
       /* We rely on the implementation detail that updating a SM means deleting/adding conditions */
       private void refreshIfRequired(Set<SearchConditionEvent> events) {
         if (fInput.getMark() instanceof ISearchMark) {
-          ISearchMarkDAO dao = DynamicDAO.getDAO(ISearchMarkDAO.class);
+          ISearchMarkDAO dao = OwlDAO.getDAO(ISearchMarkDAO.class);
           for (SearchConditionEvent event : events) {
             ISearchCondition condition = event.getEntity();
             ISearchMark searchMark = dao.load(condition);
@@ -750,7 +750,7 @@ public class FeedView extends EditorPart implements IReusableEditor {
         }
       }
     };
-    DynamicDAO.addEntityListener(ISearchCondition.class, fSearchConditionListener);
+    OwlDAO.addEntityListener(ISearchCondition.class, fSearchConditionListener);
 
     /* React on Newsbin Events */
     fNewsBinListener = new NewsBinAdapter() {
@@ -764,7 +764,7 @@ public class FeedView extends EditorPart implements IReusableEditor {
         onNewsMarksUpdated(events);
       }
     };
-    DynamicDAO.addEntityListener(INewsBin.class, fNewsBinListener);
+    OwlDAO.addEntityListener(INewsBin.class, fNewsBinListener);
 
     /* Listen if Title Image is changing */
     fFeedListener = new FeedAdapter() {
@@ -798,7 +798,7 @@ public class FeedView extends EditorPart implements IReusableEditor {
         }
       }
     };
-    DynamicDAO.addEntityListener(IFeed.class, fFeedListener);
+    OwlDAO.addEntityListener(IFeed.class, fFeedListener);
 
     /* Show Busy when Input is loaded */
     fBookMarkLoadListener = new Controller.BookMarkLoadListener() {
@@ -1582,15 +1582,15 @@ public class FeedView extends EditorPart implements IReusableEditor {
 
         /* Mark the Bookmark as visited */
         if (mark instanceof IBookMark)
-          DynamicDAO.getDAO(IBookMarkDAO.class).visited((IBookMark) mark);
+          OwlDAO.getDAO(IBookMarkDAO.class).visited((IBookMark) mark);
 
         /* Mark the Searchmark as visited */
         else if (mark instanceof ISearchMark)
-          DynamicDAO.getDAO(ISearchMarkDAO.class).visited((ISearchMark) mark);
+          OwlDAO.getDAO(ISearchMarkDAO.class).visited((ISearchMark) mark);
 
         /* Mark the newsbin as visited */
         else if (mark instanceof INewsBin)
-          DynamicDAO.getDAO(INewsBinDAO.class).visited((INewsBin) mark);
+          OwlDAO.getDAO(INewsBinDAO.class).visited((INewsBin) mark);
       }
     });
   }
@@ -1778,12 +1778,12 @@ public class FeedView extends EditorPart implements IReusableEditor {
 
   private void unregisterListeners() {
     fEditorSite.getPage().removePartListener(fPartListener);
-    DynamicDAO.removeEntityListener(IBookMark.class, fBookMarkListener);
-    DynamicDAO.removeEntityListener(IFolder.class, fFolderListener);
-    DynamicDAO.removeEntityListener(ISearchMark.class, fSearchMarkListener);
-    DynamicDAO.removeEntityListener(IFeed.class, fFeedListener);
-    DynamicDAO.removeEntityListener(ISearchCondition.class, fSearchConditionListener);
-    DynamicDAO.removeEntityListener(INewsBin.class, fNewsBinListener);
+    OwlDAO.removeEntityListener(IBookMark.class, fBookMarkListener);
+    OwlDAO.removeEntityListener(IFolder.class, fFolderListener);
+    OwlDAO.removeEntityListener(ISearchMark.class, fSearchMarkListener);
+    OwlDAO.removeEntityListener(IFeed.class, fFeedListener);
+    OwlDAO.removeEntityListener(ISearchCondition.class, fSearchConditionListener);
+    OwlDAO.removeEntityListener(INewsBin.class, fNewsBinListener);
     Controller.getDefault().removeBookMarkLoadListener(fBookMarkLoadListener);
   }
 
@@ -2169,7 +2169,7 @@ public class FeedView extends EditorPart implements IReusableEditor {
           entityToSave = fInput.getMark();
 
         if (needToSave)
-          DynamicDAO.save(entityToSave);
+          OwlDAO.save(entityToSave);
       }
     });
   }

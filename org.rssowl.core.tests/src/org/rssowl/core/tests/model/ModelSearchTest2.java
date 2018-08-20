@@ -43,7 +43,7 @@ import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.ISource;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.reference.FeedLinkReference;
 import org.rssowl.core.persist.reference.NewsReference;
 import org.rssowl.core.persist.service.PersistenceException;
@@ -119,7 +119,7 @@ public class ModelSearchTest2 extends AbstractModelSearchTest {
       ICategory news5cat2 = fFactory.createCategory(null, news5);
       news5cat2.setName("Java");
 
-      DynamicDAO.save(feed);
+      OwlDAO.save(feed);
 
       /* Wait for Indexer */
       waitForIndexer();
@@ -361,7 +361,7 @@ public class ModelSearchTest2 extends AbstractModelSearchTest {
       ICategory news5cat2 = fFactory.createCategory(null, news5);
       news5cat2.setName("Java");
 
-      DynamicDAO.save(feed);
+      OwlDAO.save(feed);
 
       /* Wait for Indexer */
       waitForIndexer();
@@ -591,7 +591,7 @@ public class ModelSearchTest2 extends AbstractModelSearchTest {
       INews news5 = createNews(feed, " Bar", "http://www.news.com/news2.html", State.NEW);
       news5.setPublishDate(d5);
 
-      DynamicDAO.save(feed);
+      OwlDAO.save(feed);
 
       /* Wait for Indexer */
       waitForIndexer();
@@ -678,7 +678,7 @@ public class ModelSearchTest2 extends AbstractModelSearchTest {
       INews news5 = createNews(feed, " Bar", "http://www.news.com/news2.html", State.NEW);
       news5.setPublishDate(d5);
 
-      DynamicDAO.save(feed);
+      OwlDAO.save(feed);
 
       /* Wait for Indexer */
       waitForIndexer();
@@ -771,7 +771,7 @@ public class ModelSearchTest2 extends AbstractModelSearchTest {
       INews news5 = createNews(feed, null, "http://www.news.com/news5.html", State.NEW);
       news5.setRating(10);
 
-      DynamicDAO.save(feed);
+      OwlDAO.save(feed);
 
       /* Wait for Indexer */
       waitForIndexer();
@@ -887,7 +887,7 @@ public class ModelSearchTest2 extends AbstractModelSearchTest {
       INews news5 = createNews(feed, null, "http://www.news.com/news5.html", State.NEW);
       news5.setRating(10);
 
-      DynamicDAO.save(feed);
+      OwlDAO.save(feed);
 
       /* Wait for Indexer */
       waitForIndexer();
@@ -1026,7 +1026,7 @@ public class ModelSearchTest2 extends AbstractModelSearchTest {
       ISource source5 = fFactory.createSource(news5);
       source5.setName("Source for News 5");
 
-      DynamicDAO.save(feed);
+      OwlDAO.save(feed);
 
       /* Wait for Indexer */
       waitForIndexer();
@@ -1128,7 +1128,7 @@ public class ModelSearchTest2 extends AbstractModelSearchTest {
       ISource source5 = fFactory.createSource(news5);
       source5.setName("Source for News 5");
 
-      DynamicDAO.save(feed);
+      OwlDAO.save(feed);
 
       /* Wait for Indexer */
       waitForIndexer();
@@ -1353,7 +1353,7 @@ public class ModelSearchTest2 extends AbstractModelSearchTest {
     ISource source5 = fFactory.createSource(news5);
     source5.setName("Source for News 5");
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -1537,8 +1537,8 @@ public class ModelSearchTest2 extends AbstractModelSearchTest {
     INews news3 = createNews(feed2, "First News of Feed Two", "http://www.news.com/news3.html", State.NEW);
     INews news4 = createNews(feed2, "Second News of Feed Two", "http://www.news.com/news4.html", State.READ);
 
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -1701,8 +1701,8 @@ public class ModelSearchTest2 extends AbstractModelSearchTest {
     INews news3 = createNews(feed2, "First News of Feed Two", "http://www.news.com/news3.html", State.NEW);
     INews news4 = createNews(feed2, "Second News of Feed Two", "http://www.news.com/news4.html", State.READ);
 
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -1771,10 +1771,10 @@ public class ModelSearchTest2 extends AbstractModelSearchTest {
 
     /* First add some Types */
     IFolder rootFolder = fFactory.createFolder(null, null, "Root");
-    DynamicDAO.save(rootFolder);
+    OwlDAO.save(rootFolder);
 
     IFolder subFolder = fFactory.createFolder(null, rootFolder, "Sub Folder");
-    DynamicDAO.save(subFolder);
+    OwlDAO.save(subFolder);
 
     IFeed feed1 = fFactory.createFeed(null, new URI("http://www.testSearchNewsWithLocationFeed1.com"));
 
@@ -1788,10 +1788,10 @@ public class ModelSearchTest2 extends AbstractModelSearchTest {
     INews news2 = createNews(feed1, "Second News of Feed One", "http://www.news.com/news2.html", State.NEW);
     news2.addLabel(label2);
 
-    DynamicDAO.save(feed1);
+    OwlDAO.save(feed1);
 
     IBookMark rootMark1 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed1.getLink()), "rootMark1");
-    DynamicDAO.save(rootMark1);
+    OwlDAO.save(rootMark1);
 
     /* Wait for Indexer */
     waitForIndexer();
@@ -1823,10 +1823,10 @@ public class ModelSearchTest2 extends AbstractModelSearchTest {
 
     /* First add some Types */
     IFolder rootFolder = fFactory.createFolder(null, null, "Root");
-    DynamicDAO.save(rootFolder);
+    OwlDAO.save(rootFolder);
 
     IFolder subFolder = fFactory.createFolder(null, rootFolder, "Sub Folder");
-    DynamicDAO.save(subFolder);
+    OwlDAO.save(subFolder);
 
     IFeed feed1 = fFactory.createFeed(null, new URI("http://www.testSearchNewsWithLocationFeed1.com"));
     IFeed feed2 = fFactory.createFeed(null, new URI("http://www.testSearchNewsWithLocationFeed2.com"));
@@ -1841,18 +1841,18 @@ public class ModelSearchTest2 extends AbstractModelSearchTest {
     INews news5 = createNews(feed3, "First News of Feed Three", "http://www.news.com/news5.html", State.UPDATED);
     INews news6 = createNews(feed3, "Second News of Feed Three", "http://www.news.com/news6.html", State.NEW);
 
-    DynamicDAO.save(feed1);
-    DynamicDAO.save(feed2);
-    DynamicDAO.save(feed3);
+    OwlDAO.save(feed1);
+    OwlDAO.save(feed2);
+    OwlDAO.save(feed3);
 
     IBookMark rootMark1 = fFactory.createBookMark(null, rootFolder, new FeedLinkReference(feed1.getLink()), "rootMark1");
-    DynamicDAO.save(rootMark1);
+    OwlDAO.save(rootMark1);
 
     IBookMark subRootMark1 = fFactory.createBookMark(null, subFolder, new FeedLinkReference(feed2.getLink()), "subRootMark1");
-    DynamicDAO.save(subRootMark1);
+    OwlDAO.save(subRootMark1);
 
     IBookMark subRootMark2 = fFactory.createBookMark(null, subFolder, new FeedLinkReference(feed3.getLink()), "subRootMark2");
-    DynamicDAO.save(subRootMark2);
+    OwlDAO.save(subRootMark2);
 
     /* Wait for Indexer */
     waitForIndexer();

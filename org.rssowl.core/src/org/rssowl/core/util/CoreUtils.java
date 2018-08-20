@@ -60,7 +60,7 @@ import org.rssowl.core.persist.ISearchFilter;
 import org.rssowl.core.persist.ISearchMark;
 import org.rssowl.core.persist.ISearchValueType;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IBookMarkDAO;
 import org.rssowl.core.persist.dao.IFolderDAO;
 import org.rssowl.core.persist.event.ModelEvent;
@@ -342,7 +342,7 @@ public class CoreUtils {
   public static List<INewsBin> toBins(Long[] primitives) {
     List<INewsBin> bins = new ArrayList<INewsBin>(primitives.length);
     for (Long id : primitives) {
-      INewsBin bin = DynamicDAO.load(INewsBin.class, id);
+      INewsBin bin = OwlDAO.load(INewsBin.class, id);
       if (bin != null)
         bins.add(bin);
     }
@@ -1221,7 +1221,7 @@ public class CoreUtils {
     });
 
     /* Add Root-Folders */
-    rootFolders.addAll(DynamicDAO.getDAO(IFolderDAO.class).loadRoots());
+    rootFolders.addAll(OwlDAO.getDAO(IFolderDAO.class).loadRoots());
 
     return rootFolders;
   }
@@ -1246,7 +1246,7 @@ public class CoreUtils {
     });
 
     /* Add Searchmarks */
-    searchmarks.addAll(DynamicDAO.loadAll(ISearchMark.class));
+    searchmarks.addAll(OwlDAO.loadAll(ISearchMark.class));
 
     return searchmarks;
   }
@@ -1271,7 +1271,7 @@ public class CoreUtils {
     });
 
     /* Add Filters */
-    filters.addAll(DynamicDAO.loadAll(ISearchFilter.class));
+    filters.addAll(OwlDAO.loadAll(ISearchFilter.class));
 
     return filters;
   }
@@ -1293,7 +1293,7 @@ public class CoreUtils {
    * @return all labels sorted by their sort value.
    */
   public static Set<ILabel> loadSortedLabels() {
-    return sortLabels(DynamicDAO.loadAll(ILabel.class));
+    return sortLabels(OwlDAO.loadAll(ILabel.class));
   }
 
   private static Set<ILabel> sortLabels(Collection<ILabel> labels) {
@@ -2019,7 +2019,7 @@ public class CoreUtils {
    * <code>null</code> if none.
    */
   public static INewsBin findArchive() {
-    Collection<INewsBin> bins = DynamicDAO.loadAll(INewsBin.class);
+    Collection<INewsBin> bins = OwlDAO.loadAll(INewsBin.class);
     for (INewsBin bin : bins) {
       if (bin.getProperty(DefaultPreferences.ARCHIVE_BIN_MARKER) != null)
         return bin;

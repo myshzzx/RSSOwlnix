@@ -37,7 +37,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.keys.IBindingService;
 import org.rssowl.core.persist.INews;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.ui.internal.Controller;
 import org.rssowl.ui.internal.OwlUI;
 import org.rssowl.ui.internal.undo.StickyOperation;
@@ -148,7 +148,7 @@ public class MakeNewsStickyAction extends Action implements IWorkbenchWindowActi
     Controller.getDefault().getSavedSearchService().forceQuickUpdate();
 
     /* Save List of INews */
-    DynamicDAO.saveAll(newsList);
+    OwlDAO.saveAll(newsList);
 
     /* Update in case this action is rerun on the same selection */
     fMarkSticky = !fMarkSticky;

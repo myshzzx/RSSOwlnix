@@ -54,7 +54,7 @@ import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INews.State;
 import org.rssowl.core.persist.INewsBin;
 import org.rssowl.core.persist.IPerson;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.reference.NewsBinReference;
 import org.rssowl.core.util.CoreUtils;
 import org.rssowl.core.util.DateUtils;
@@ -259,7 +259,7 @@ public class NewsTableLabelProvider extends OwnerDrawLabelProvider {
         name = feedRef;
 
       if (news.getParentId() != 0) {
-        INewsBin bin = DynamicDAO.load(INewsBin.class, news.getParentId());
+        INewsBin bin = OwlDAO.load(INewsBin.class, news.getParentId());
         if (bin != null) {
           name = NLS.bind(Messages.NewsTableLabelProvider_BIN_NAME, bin.getName(), name);
         }

@@ -77,7 +77,7 @@ import org.rssowl.core.persist.INewsBin;
 import org.rssowl.core.persist.IPreference;
 import org.rssowl.core.persist.ISearchFilter;
 import org.rssowl.core.persist.ISearchMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IBookMarkDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
 import org.rssowl.core.persist.reference.FeedLinkReference;
@@ -165,7 +165,7 @@ public class ImportElementsPage extends WizardPage {
 
   /* Filter to Exclude Existing Bookmarks (empty folders are excluded as well) */
   private static class ExistingBookmarkFilter extends ViewerFilter {
-    private IBookMarkDAO dao = DynamicDAO.getDAO(IBookMarkDAO.class);
+    private IBookMarkDAO dao = OwlDAO.getDAO(IBookMarkDAO.class);
     private Map<IFolderChild, Boolean> cache = new IdentityHashMap<IFolderChild, Boolean>();
 
     @Override
@@ -1140,7 +1140,7 @@ public class ImportElementsPage extends WizardPage {
     /* For Each Link of the Queue - try to interpret as Feed */
     int counter = 0;
     final List<String> foundBookMarkNames = new ArrayList<String>();
-    IBookMarkDAO dao = DynamicDAO.getDAO(IBookMarkDAO.class);
+    IBookMarkDAO dao = OwlDAO.getDAO(IBookMarkDAO.class);
     for (String feedLinkVal : links) {
       monitor.worked(1);
 

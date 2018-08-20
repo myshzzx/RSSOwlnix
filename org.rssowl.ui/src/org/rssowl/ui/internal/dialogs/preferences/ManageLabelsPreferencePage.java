@@ -66,7 +66,7 @@ import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.ILabelDAO;
 import org.rssowl.core.persist.reference.NewsReference;
 import org.rssowl.core.util.CoreUtils;
@@ -275,7 +275,7 @@ public class ManageLabelsPreferencePage extends PreferencePage implements IWorkb
       otherLabel.setOrder(selectedLabelOrder);
     }
 
-    DynamicDAO.getDAO(ILabelDAO.class).saveAll(Arrays.asList(new ILabel[] { selectedLabel, otherLabel }));
+    OwlDAO.getDAO(ILabelDAO.class).saveAll(Arrays.asList(new ILabel[] { selectedLabel, otherLabel }));
     fViewer.refresh();
     fViewer.getTree().showSelection();
     updateMoveEnablement();
@@ -311,7 +311,7 @@ public class ManageLabelsPreferencePage extends PreferencePage implements IWorkb
       ILabel newLabel = Owl.getModelFactory().createLabel(null, name);
       newLabel.setColor(OwlUI.toString(color));
       newLabel.setOrder(fViewer.getTree().getItemCount());
-      DynamicDAO.save(newLabel);
+      OwlDAO.save(newLabel);
 
       fViewer.refresh();
       fViewer.setSelection(new StructuredSelection(newLabel));
@@ -344,7 +344,7 @@ public class ManageLabelsPreferencePage extends PreferencePage implements IWorkb
         /* Save Label */
         if (changed) {
           Controller.getDefault().getSavedSearchService().forceQuickUpdate();
-          DynamicDAO.save(label);
+          OwlDAO.save(label);
           fViewer.update(label, null);
         }
       }
@@ -486,12 +486,12 @@ public class ManageLabelsPreferencePage extends PreferencePage implements IWorkb
 
               /* Save */
               if (!newsToSave.isEmpty())
-                DynamicDAO.saveAll(newsToSave);
+                OwlDAO.saveAll(newsToSave);
             }
           }
 
           /* Delete Labels from DB */
-          DynamicDAO.deleteAll(labelsToDelete);
+          OwlDAO.deleteAll(labelsToDelete);
 
           /* Update UI */
           JobRunner.runInUIThread(fViewer.getControl(), new Runnable() {
@@ -560,7 +560,7 @@ public class ManageLabelsPreferencePage extends PreferencePage implements IWorkb
       labelsToSave.add(label);
     }
 
-    DynamicDAO.saveAll(labelsToSave);
+    OwlDAO.saveAll(labelsToSave);
   }
 
   private void createViewer(Composite container) {

@@ -47,7 +47,7 @@ import org.rssowl.core.persist.IModelFactory;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INewsBin;
 import org.rssowl.core.persist.IPerson;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
 import org.rssowl.core.persist.reference.FeedLinkReference;
 import org.rssowl.core.util.URIUtils;
@@ -103,8 +103,8 @@ public class MiscUITests {
     IBookMark bookmark = new BookMark(null, root, new FeedLinkReference(feed.getLink()), "Bookmark");
     root.addMark(bookmark, null, false);
 
-    feed = DynamicDAO.save(feed);
-    DynamicDAO.save(root);
+    feed = OwlDAO.save(feed);
+    OwlDAO.save(root);
 
     assertEquals(null, OwlUI.getFavicon(bookmark));
 
@@ -112,7 +112,7 @@ public class MiscUITests {
 
     assertNotNull(OwlUI.getFavicon(bookmark));
 
-    DynamicDAO.delete(bookmark);
+    OwlDAO.delete(bookmark);
 
     assertEquals(null, OwlUI.getFavicon(bookmark));
   }
@@ -128,11 +128,11 @@ public class MiscUITests {
     INews news = Owl.getModelFactory().createNews(null, feed, new Date());
     news.setLink(new URI("link"));
     news.setTitle("My News");
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     IBookMark bm1 = Owl.getModelFactory().createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "My Bookmark");
     IBookMark bm2 = Owl.getModelFactory().createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "My <other> ? & Bo_öokmark");
-    folder = DynamicDAO.save(folder);
+    folder = OwlDAO.save(folder);
 
     List<ShareProvider> providers = Controller.getDefault().getShareProviders();
     for (ShareProvider provider : providers) {
@@ -158,7 +158,7 @@ public class MiscUITests {
     INews news = Owl.getModelFactory().createNews(null, feed, new Date());
     news.setLink(new URI("http://www.link.org"));
     news.setTitle("My News");
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     List<LinkTransformer> transformers = Controller.getDefault().getLinkTransformers();
     for (LinkTransformer transformer : transformers) {
@@ -177,7 +177,7 @@ public class MiscUITests {
   public void testMoveCopyToBinAction() throws Exception {
     IFolder folder = fFactory.createFolder(null, null, "Root");
     INewsBin bin = fFactory.createNewsBin(null, folder, "Bin");
-    folder = DynamicDAO.save(folder);
+    folder = OwlDAO.save(folder);
     bin = (INewsBin) folder.getMarks().get(0);
 
     IFeed feed = Owl.getModelFactory().createFeed(null, new URI("feed"));
@@ -187,7 +187,7 @@ public class MiscUITests {
     news2.setTitle("News 2");
     INews news3 = Owl.getModelFactory().createNews(null, feed, new Date());
     news3.setTitle("News 3");
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     MoveCopyNewsToBinAction action = new MoveCopyNewsToBinAction(new StructuredSelection(news1), bin, false);
     action.run();
@@ -217,7 +217,7 @@ public class MiscUITests {
     news2.setState(INews.State.READ);
     INews news3 = Owl.getModelFactory().createNews(null, feed, new Date());
     news3.setTitle("News 3");
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     ToggleReadStateAction action = new ToggleReadStateAction(new StructuredSelection(new Object[] { news1, news2 }));
     action.run();
@@ -238,7 +238,7 @@ public class MiscUITests {
     news2.setTitle("News 2");
     INews news3 = Owl.getModelFactory().createNews(null, feed, new Date());
     news3.setTitle("News 3");
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     MakeNewsStickyAction action = new MakeNewsStickyAction(new StructuredSelection(new Object[] { news1, news2 }));
     action.run();
@@ -252,7 +252,7 @@ public class MiscUITests {
    */
   @Test
   public void testLabelAction() throws Exception {
-    ILabel label1 = DynamicDAO.save(fFactory.createLabel(null, "Foo"));
+    ILabel label1 = OwlDAO.save(fFactory.createLabel(null, "Foo"));
 
     IFeed feed = Owl.getModelFactory().createFeed(null, new URI("feed"));
     INews news1 = Owl.getModelFactory().createNews(null, feed, new Date());
@@ -261,7 +261,7 @@ public class MiscUITests {
     news2.setTitle("News 2");
     INews news3 = Owl.getModelFactory().createNews(null, feed, new Date());
     news3.setTitle("News 3");
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     LabelAction action = new LabelAction(label1, new StructuredSelection(new Object[] { news1, news2 }));
     action.setChecked(true);
@@ -282,7 +282,7 @@ public class MiscUITests {
    */
   @Test
   public void testNewsColumnViewModel() throws Exception {
-    IFolder root = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder root = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
     IPreferenceScope prefs = Owl.getPreferenceService().getEntityScope(root);
 
     NewsColumnViewModel model = NewsColumnViewModel.createFrom(new int[] { 5, 4, 3, 6, 1 }, 3, true);
@@ -316,7 +316,7 @@ public class MiscUITests {
 
     INews news3 = Owl.getModelFactory().createNews(null, feed, new Date());
     news3.setTitle("C News");
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
     NewsComparator comp = new NewsComparator();
 
@@ -463,7 +463,7 @@ public class MiscUITests {
     ApplicationServer server = ApplicationServer.getDefault();
     server.startup();
 
-    ILabel label = DynamicDAO.save(fFactory.createLabel(null, "Label"));
+    ILabel label = OwlDAO.save(fFactory.createLabel(null, "Label"));
 
     IFeed feed = Owl.getModelFactory().createFeed(null, new URI("feed"));
     INews news1 = Owl.getModelFactory().createNews(null, feed, new Date(0));
@@ -485,11 +485,11 @@ public class MiscUITests {
     attachment.setLink(new URI("attachment"));
     news1.addAttachment(attachment);
 
-    feed = DynamicDAO.save(feed);
+    feed = OwlDAO.save(feed);
 
     IFolder root = fFactory.createFolder(null, null, "Root");
     IBookMark bm = fFactory.createBookMark(null, root, new FeedLinkReference(feed.getLink()), "Bookmark");
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     String newsUrl = server.toUrl("foo", news1);
     assertTrue(URIUtils.looksLikeLink(newsUrl));

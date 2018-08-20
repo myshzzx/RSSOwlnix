@@ -29,7 +29,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IActionDelegate;
 import org.rssowl.core.persist.IFolder;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 
 import java.util.List;
 
@@ -54,7 +54,7 @@ public class SortByNameAction implements IActionDelegate {
       if (obj instanceof IFolder) {
         IFolder folder = (IFolder) obj;
         folder.sort();
-        DynamicDAO.save(folder);
+        OwlDAO.save(folder);
       }
     }
   }

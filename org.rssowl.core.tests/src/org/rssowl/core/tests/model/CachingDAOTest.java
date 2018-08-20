@@ -50,7 +50,7 @@ import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.ISearchMark;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IBookMarkDAO;
 import org.rssowl.core.persist.dao.IFolderDAO;
 import org.rssowl.core.persist.dao.ILabelDAO;
@@ -103,9 +103,9 @@ public class CachingDAOTest extends LargeBlockSizeTest {
   @After
   public void tearDown() throws Exception {
     System.setProperty("rssowl.reindex", "false"); //Clear any set reindex marker
-    DBManager.getDefault().getReIndexFile().delete();
-    DBManager.getDefault().getDefragmentFile().delete();
-    DBManager.getDefault().getCleanUpIndexFile().delete();
+    DBManager.getInstance().getReIndexFile().delete();
+    DBManager.getInstance().getDefragmentFile().delete();
+    DBManager.getInstance().getCleanUpIndexFile().delete();
   }
 
   private void setProperties(IEntity entity) {
@@ -118,7 +118,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     prefs.putString("stringKey", "Hello World");
     prefs.putStrings("stringsKey", new String[] { "Hello", "World", "foo", "bar" });
 
-    DynamicDAO.save(entity);
+    OwlDAO.save(entity);
   }
 
   private void setProperties(IBookMark entity) {
@@ -128,7 +128,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     entity.setLastVisitDate(new Date(100));
     entity.setPopularity(1000);
 
-    DynamicDAO.save(entity);
+    OwlDAO.save(entity);
   }
 
   private void setProperties(ISearchMark entity) {
@@ -140,49 +140,49 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     entity.setMatchAllConditions(true);
 
     ISearchField allField = fFactory.createSearchField(IEntity.ALL_FIELDS, INews.class.getName());
-    entity.addSearchCondition(DynamicDAO.save(fFactory.createSearchCondition(allField, SearchSpecifier.CONTAINS, "foo bar")));
+    entity.addSearchCondition(OwlDAO.save(fFactory.createSearchCondition(allField, SearchSpecifier.CONTAINS, "foo bar")));
 
     ISearchField ageInDaysField = fFactory.createSearchField(INews.AGE_IN_DAYS, INews.class.getName());
-    entity.addSearchCondition(DynamicDAO.save(fFactory.createSearchCondition(ageInDaysField, SearchSpecifier.IS, 5)));
+    entity.addSearchCondition(OwlDAO.save(fFactory.createSearchCondition(ageInDaysField, SearchSpecifier.IS, 5)));
 
     ISearchField attachmentContentField = fFactory.createSearchField(INews.ATTACHMENTS_CONTENT, INews.class.getName());
-    entity.addSearchCondition(DynamicDAO.save(fFactory.createSearchCondition(attachmentContentField, SearchSpecifier.CONTAINS, "hello world")));
+    entity.addSearchCondition(OwlDAO.save(fFactory.createSearchCondition(attachmentContentField, SearchSpecifier.CONTAINS, "hello world")));
 
     ISearchField authorField = fFactory.createSearchField(INews.AUTHOR, INews.class.getName());
-    entity.addSearchCondition(DynamicDAO.save(fFactory.createSearchCondition(authorField, SearchSpecifier.CONTAINS_NOT, "author help")));
+    entity.addSearchCondition(OwlDAO.save(fFactory.createSearchCondition(authorField, SearchSpecifier.CONTAINS_NOT, "author help")));
 
     ISearchField categoriesField = fFactory.createSearchField(INews.CATEGORIES, INews.class.getName());
-    entity.addSearchCondition(DynamicDAO.save(fFactory.createSearchCondition(categoriesField, SearchSpecifier.IS_NOT, "categories horror")));
+    entity.addSearchCondition(OwlDAO.save(fFactory.createSearchCondition(categoriesField, SearchSpecifier.IS_NOT, "categories horror")));
 
     ISearchField descriptionField = fFactory.createSearchField(INews.DESCRIPTION, INews.class.getName());
-    entity.addSearchCondition(DynamicDAO.save(fFactory.createSearchCondition(descriptionField, SearchSpecifier.CONTAINS_ALL, "lorem ipsum dolor sit...")));
+    entity.addSearchCondition(OwlDAO.save(fFactory.createSearchCondition(descriptionField, SearchSpecifier.CONTAINS_ALL, "lorem ipsum dolor sit...")));
 
     ISearchField feedField = fFactory.createSearchField(INews.FEED, INews.class.getName());
-    entity.addSearchCondition(DynamicDAO.save(fFactory.createSearchCondition(feedField, SearchSpecifier.IS, "http://www.rssowl.org")));
+    entity.addSearchCondition(OwlDAO.save(fFactory.createSearchCondition(feedField, SearchSpecifier.IS, "http://www.rssowl.org")));
 
     ISearchField hasAttachmentsField = fFactory.createSearchField(INews.HAS_ATTACHMENTS, INews.class.getName());
-    entity.addSearchCondition(DynamicDAO.save(fFactory.createSearchCondition(hasAttachmentsField, SearchSpecifier.IS, true)));
+    entity.addSearchCondition(OwlDAO.save(fFactory.createSearchCondition(hasAttachmentsField, SearchSpecifier.IS, true)));
 
     ISearchField labelField = fFactory.createSearchField(INews.LABEL, INews.class.getName());
-    entity.addSearchCondition(DynamicDAO.save(fFactory.createSearchCondition(labelField, SearchSpecifier.IS_NOT, "myLabel")));
+    entity.addSearchCondition(OwlDAO.save(fFactory.createSearchCondition(labelField, SearchSpecifier.IS_NOT, "myLabel")));
 
     ISearchField linkField = fFactory.createSearchField(INews.LINK, INews.class.getName());
-    entity.addSearchCondition(DynamicDAO.save(fFactory.createSearchCondition(linkField, SearchSpecifier.IS, "http://www.rssowl.de")));
+    entity.addSearchCondition(OwlDAO.save(fFactory.createSearchCondition(linkField, SearchSpecifier.IS, "http://www.rssowl.de")));
 
     ISearchField locationField = fFactory.createSearchField(INews.LOCATION, INews.class.getName());
-    entity.addSearchCondition(DynamicDAO.save(fFactory.createSearchCondition(locationField, SearchSpecifier.SCOPE, new Long[][] { { 1l, 2l, 3l }, { 4l, 5l, 6l }, { 6l, 7l, 8l } })));
-    entity.addSearchCondition(DynamicDAO.save(fFactory.createSearchCondition(locationField, SearchSpecifier.IS, new Long[][] { { 1l, 2l, 3l }, { 0l, 0l, 0l }, { 6l, 7l, 8l } })));
-    entity.addSearchCondition(DynamicDAO.save(fFactory.createSearchCondition(locationField, SearchSpecifier.IS_AFTER, new Long[][] { { 0l, 0l, 0l }, { 4l, 5l, 6l }, { 6l, 7l, 8l } })));
-    entity.addSearchCondition(DynamicDAO.save(fFactory.createSearchCondition(locationField, SearchSpecifier.IS_BEFORE, new Long[][] { { 1l, 2l, 3l }, { 4l, 5l, 6l }, { 0l, 0l, 0l } })));
-    entity.addSearchCondition(DynamicDAO.save(fFactory.createSearchCondition(locationField, SearchSpecifier.IS_GREATER_THAN, new Long[][] { { 0l, 0l, 0l }, { 0l, 0l, 0l }, { 0l, 0l, 0l } })));
+    entity.addSearchCondition(OwlDAO.save(fFactory.createSearchCondition(locationField, SearchSpecifier.SCOPE, new Long[][] { { 1l, 2l, 3l }, { 4l, 5l, 6l }, { 6l, 7l, 8l } })));
+    entity.addSearchCondition(OwlDAO.save(fFactory.createSearchCondition(locationField, SearchSpecifier.IS, new Long[][] { { 1l, 2l, 3l }, { 0l, 0l, 0l }, { 6l, 7l, 8l } })));
+    entity.addSearchCondition(OwlDAO.save(fFactory.createSearchCondition(locationField, SearchSpecifier.IS_AFTER, new Long[][] { { 0l, 0l, 0l }, { 4l, 5l, 6l }, { 6l, 7l, 8l } })));
+    entity.addSearchCondition(OwlDAO.save(fFactory.createSearchCondition(locationField, SearchSpecifier.IS_BEFORE, new Long[][] { { 1l, 2l, 3l }, { 4l, 5l, 6l }, { 0l, 0l, 0l } })));
+    entity.addSearchCondition(OwlDAO.save(fFactory.createSearchCondition(locationField, SearchSpecifier.IS_GREATER_THAN, new Long[][] { { 0l, 0l, 0l }, { 0l, 0l, 0l }, { 0l, 0l, 0l } })));
 
     ISearchField modifiedDateField = fFactory.createSearchField(INews.MODIFIED_DATE, INews.class.getName());
-    entity.addSearchCondition(DynamicDAO.save(fFactory.createSearchCondition(modifiedDateField, SearchSpecifier.IS_AFTER, new Date(1000))));
+    entity.addSearchCondition(OwlDAO.save(fFactory.createSearchCondition(modifiedDateField, SearchSpecifier.IS_AFTER, new Date(1000))));
 
     ISearchField stateField = fFactory.createSearchField(INews.STATE, INews.class.getName());
-    entity.addSearchCondition(DynamicDAO.save(fFactory.createSearchCondition(stateField, SearchSpecifier.IS, EnumSet.of(State.NEW, State.UNREAD, State.UPDATED, State.READ))));
+    entity.addSearchCondition(OwlDAO.save(fFactory.createSearchCondition(stateField, SearchSpecifier.IS, EnumSet.of(State.NEW, State.UNREAD, State.UPDATED, State.READ))));
 
-    DynamicDAO.save(entity);
+    OwlDAO.save(entity);
   }
 
   private void setProperties(INewsBin entity) {
@@ -192,26 +192,26 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     entity.setLastVisitDate(new Date(100));
     entity.setPopularity(1000);
 
-    IFeed feed = DynamicDAO.save(fFactory.createFeed(null, URI.create(String.valueOf(fgCounter.incrementAndGet()))));
+    IFeed feed = OwlDAO.save(fFactory.createFeed(null, URI.create(String.valueOf(fgCounter.incrementAndGet()))));
     INews news1 = fFactory.createNews(null, feed, new Date());
     news1.setState(INews.State.NEW);
-    DynamicDAO.save(news1);
+    OwlDAO.save(news1);
 
     INews news2 = fFactory.createNews(null, feed, new Date());
     news2.setState(INews.State.UNREAD);
-    DynamicDAO.save(news2);
+    OwlDAO.save(news2);
 
     INews news3 = fFactory.createNews(null, feed, new Date());
     news3.setState(INews.State.READ);
-    DynamicDAO.save(news3);
+    OwlDAO.save(news3);
 
-    DynamicDAO.save(feed);
+    OwlDAO.save(feed);
 
-    DynamicDAO.save(fFactory.createNews(news1, entity));
-    DynamicDAO.save(fFactory.createNews(news2, entity));
-    DynamicDAO.save(fFactory.createNews(news3, entity));
+    OwlDAO.save(fFactory.createNews(news1, entity));
+    OwlDAO.save(fFactory.createNews(news2, entity));
+    OwlDAO.save(fFactory.createNews(news3, entity));
 
-    DynamicDAO.save(entity);
+    OwlDAO.save(entity);
   }
 
   private void assertProperties(IEntity entity) {
@@ -395,138 +395,138 @@ public class CachingDAOTest extends LargeBlockSizeTest {
   public void testDeepHierarchyResolvedWithCachingDAOSingleRoot() throws Exception {
 
     /* Folders */
-    IFolder root = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder root = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
     Long rootFolderId = root.getId();
     setProperties(root);
 
-    IFolder subRoot1 = DynamicDAO.save(fFactory.createFolder(null, root, "Sub Root 1"));
+    IFolder subRoot1 = OwlDAO.save(fFactory.createFolder(null, root, "Sub Root 1"));
     Long subRootFolder1Id = subRoot1.getId();
     setProperties(subRoot1);
 
-    IFolder subRoot2 = DynamicDAO.save(fFactory.createFolder(null, root, "Sub Root 2"));
+    IFolder subRoot2 = OwlDAO.save(fFactory.createFolder(null, root, "Sub Root 2"));
     Long subRootFolder2Id = subRoot2.getId();
     setProperties(subRoot2);
 
-    IFolder subRoot3 = DynamicDAO.save(fFactory.createFolder(null, root, "Sub Root 3"));
+    IFolder subRoot3 = OwlDAO.save(fFactory.createFolder(null, root, "Sub Root 3"));
     Long subRootFolder3Id = subRoot3.getId();
     setProperties(subRoot3);
 
-    IFolder subSubRoot1 = DynamicDAO.save(fFactory.createFolder(null, subRoot3, "Sub Sub Root 1"));
+    IFolder subSubRoot1 = OwlDAO.save(fFactory.createFolder(null, subRoot3, "Sub Sub Root 1"));
     Long subSubRootFolder1Id = subSubRoot1.getId();
     setProperties(subSubRoot1);
 
-    IFolder subSubSubRoot1 = DynamicDAO.save(fFactory.createFolder(null, subSubRoot1, "Sub Sub Sub Root 1"));
+    IFolder subSubSubRoot1 = OwlDAO.save(fFactory.createFolder(null, subSubRoot1, "Sub Sub Sub Root 1"));
     Long subSubSubRootFolder1Id = subSubSubRoot1.getId();
     setProperties(subSubSubRoot1);
 
     /* Book Marks */
     IFeed feed1 = fFactory.createFeed(null, URI.create("1"));
-    IBookMark rootBM1 = DynamicDAO.save(fFactory.createBookMark(null, root, new FeedLinkReference(feed1.getLink()), "Root Bookmark 1"));
+    IBookMark rootBM1 = OwlDAO.save(fFactory.createBookMark(null, root, new FeedLinkReference(feed1.getLink()), "Root Bookmark 1"));
     Long rootBM1Id = rootBM1.getId();
     setProperties(rootBM1);
 
     IFeed feed2 = fFactory.createFeed(null, URI.create("2"));
-    IBookMark rootBM2 = DynamicDAO.save(fFactory.createBookMark(null, root, new FeedLinkReference(feed2.getLink()), "Root Bookmark 2"));
+    IBookMark rootBM2 = OwlDAO.save(fFactory.createBookMark(null, root, new FeedLinkReference(feed2.getLink()), "Root Bookmark 2"));
     Long rootBM2Id = rootBM2.getId();
     setProperties(rootBM2);
 
     IFeed feed3 = fFactory.createFeed(null, URI.create("3"));
-    IBookMark subRoot1BM1 = DynamicDAO.save(fFactory.createBookMark(null, subRoot1, new FeedLinkReference(feed3.getLink()), "Sub Root 1 Bookmark 1"));
+    IBookMark subRoot1BM1 = OwlDAO.save(fFactory.createBookMark(null, subRoot1, new FeedLinkReference(feed3.getLink()), "Sub Root 1 Bookmark 1"));
     Long subRoot1BM1Id = subRoot1BM1.getId();
     setProperties(subRoot1BM1);
 
     IFeed feed4 = fFactory.createFeed(null, URI.create("4"));
-    IBookMark subRoot1BM2 = DynamicDAO.save(fFactory.createBookMark(null, subRoot1, new FeedLinkReference(feed4.getLink()), "Sub Root 1 Bookmark 2"));
+    IBookMark subRoot1BM2 = OwlDAO.save(fFactory.createBookMark(null, subRoot1, new FeedLinkReference(feed4.getLink()), "Sub Root 1 Bookmark 2"));
     Long subRoot1BM2Id = subRoot1BM2.getId();
     setProperties(subRoot1BM2);
 
     IFeed feed5 = fFactory.createFeed(null, URI.create("5"));
-    IBookMark subRoot2BM1 = DynamicDAO.save(fFactory.createBookMark(null, subRoot2, new FeedLinkReference(feed5.getLink()), "Sub Root 2 Bookmark 1"));
+    IBookMark subRoot2BM1 = OwlDAO.save(fFactory.createBookMark(null, subRoot2, new FeedLinkReference(feed5.getLink()), "Sub Root 2 Bookmark 1"));
     Long subRoot2BM1Id = subRoot2BM1.getId();
     setProperties(subRoot2BM1);
 
     IFeed feed6 = fFactory.createFeed(null, URI.create("6"));
-    IBookMark subRoot3BM1 = DynamicDAO.save(fFactory.createBookMark(null, subRoot3, new FeedLinkReference(feed6.getLink()), "Sub Root 3 Bookmark 1"));
+    IBookMark subRoot3BM1 = OwlDAO.save(fFactory.createBookMark(null, subRoot3, new FeedLinkReference(feed6.getLink()), "Sub Root 3 Bookmark 1"));
     Long subRoot3BM1Id = subRoot3BM1.getId();
     setProperties(subRoot3BM1);
 
     IFeed feed7 = fFactory.createFeed(null, URI.create("7"));
-    IBookMark subSubRoot1BM1 = DynamicDAO.save(fFactory.createBookMark(null, subSubRoot1, new FeedLinkReference(feed7.getLink()), "Sub Sub Root 1 Bookmark 1"));
+    IBookMark subSubRoot1BM1 = OwlDAO.save(fFactory.createBookMark(null, subSubRoot1, new FeedLinkReference(feed7.getLink()), "Sub Sub Root 1 Bookmark 1"));
     Long subSubRoot1BM1Id = subSubRoot1BM1.getId();
     setProperties(subSubRoot1BM1);
 
     IFeed feed8 = fFactory.createFeed(null, URI.create("8"));
-    IBookMark subSubSubRoot1BM1 = DynamicDAO.save(fFactory.createBookMark(null, subSubSubRoot1, new FeedLinkReference(feed8.getLink()), "Sub Sub Sub Root 1 Bookmark 1"));
+    IBookMark subSubSubRoot1BM1 = OwlDAO.save(fFactory.createBookMark(null, subSubSubRoot1, new FeedLinkReference(feed8.getLink()), "Sub Sub Sub Root 1 Bookmark 1"));
     Long subSubSubRoot1BM1Id = subSubSubRoot1BM1.getId();
     setProperties(subSubSubRoot1BM1);
 
     /* News Bins */
-    INewsBin rootNB1 = DynamicDAO.save(fFactory.createNewsBin(null, root, "Root Newsbin 1"));
+    INewsBin rootNB1 = OwlDAO.save(fFactory.createNewsBin(null, root, "Root Newsbin 1"));
     Long rootNB1Id = rootNB1.getId();
     setProperties(rootNB1);
 
-    INewsBin rootNB2 = DynamicDAO.save(fFactory.createNewsBin(null, root, "Root Newsbin 2"));
+    INewsBin rootNB2 = OwlDAO.save(fFactory.createNewsBin(null, root, "Root Newsbin 2"));
     Long rootNB2Id = rootNB2.getId();
     setProperties(rootNB2);
 
-    INewsBin subRoot1NB1 = DynamicDAO.save(fFactory.createNewsBin(null, subRoot1, "Sub Root 1 Newsbin 1"));
+    INewsBin subRoot1NB1 = OwlDAO.save(fFactory.createNewsBin(null, subRoot1, "Sub Root 1 Newsbin 1"));
     Long subRoot1NB1Id = subRoot1NB1.getId();
     setProperties(subRoot1NB1);
 
-    INewsBin subRoot1NB2 = DynamicDAO.save(fFactory.createNewsBin(null, subRoot1, "Sub Root 1 Newsbin 2"));
+    INewsBin subRoot1NB2 = OwlDAO.save(fFactory.createNewsBin(null, subRoot1, "Sub Root 1 Newsbin 2"));
     Long subRoot1NB2Id = subRoot1NB2.getId();
     setProperties(subRoot1NB2);
 
-    INewsBin subRoot2NB1 = DynamicDAO.save(fFactory.createNewsBin(null, subRoot2, "Sub Root 2 Newsbin 1"));
+    INewsBin subRoot2NB1 = OwlDAO.save(fFactory.createNewsBin(null, subRoot2, "Sub Root 2 Newsbin 1"));
     Long subRoot2NB1Id = subRoot2NB1.getId();
     setProperties(subRoot2NB1);
 
-    INewsBin subRoot3NB1 = DynamicDAO.save(fFactory.createNewsBin(null, subRoot3, "Sub Root 3 Newsbin 1"));
+    INewsBin subRoot3NB1 = OwlDAO.save(fFactory.createNewsBin(null, subRoot3, "Sub Root 3 Newsbin 1"));
     Long subRoot3NB1Id = subRoot3NB1.getId();
     setProperties(subRoot3NB1);
 
-    INewsBin subSubRoot1NB1 = DynamicDAO.save(fFactory.createNewsBin(null, subSubRoot1, "Sub Sub Root 1 Newsbin 1"));
+    INewsBin subSubRoot1NB1 = OwlDAO.save(fFactory.createNewsBin(null, subSubRoot1, "Sub Sub Root 1 Newsbin 1"));
     Long subSubRoot1NB1Id = subSubRoot1NB1.getId();
     setProperties(subSubRoot1NB1);
 
-    INewsBin subSubSubRoot1NB1 = DynamicDAO.save(fFactory.createNewsBin(null, subSubSubRoot1, "Sub Sub Sub Root 1 Newsbin 1"));
+    INewsBin subSubSubRoot1NB1 = OwlDAO.save(fFactory.createNewsBin(null, subSubSubRoot1, "Sub Sub Sub Root 1 Newsbin 1"));
     Long subSubSubRoot1NB1Id = subSubSubRoot1NB1.getId();
     setProperties(subSubSubRoot1NB1);
 
     /* Search Marks */
-    ISearchMark rootSM1 = DynamicDAO.save(fFactory.createSearchMark(null, root, "Root Searchmark 1"));
+    ISearchMark rootSM1 = OwlDAO.save(fFactory.createSearchMark(null, root, "Root Searchmark 1"));
     Long rootSM1Id = rootSM1.getId();
     setProperties(rootSM1);
 
-    ISearchMark rootSM2 = DynamicDAO.save(fFactory.createSearchMark(null, root, "Root Searchmark 2"));
+    ISearchMark rootSM2 = OwlDAO.save(fFactory.createSearchMark(null, root, "Root Searchmark 2"));
     Long rootSM2Id = rootSM2.getId();
     setProperties(rootSM2);
 
-    ISearchMark subRoot1SM1 = DynamicDAO.save(fFactory.createSearchMark(null, subRoot1, "Sub Root 1 Searchmark 1"));
+    ISearchMark subRoot1SM1 = OwlDAO.save(fFactory.createSearchMark(null, subRoot1, "Sub Root 1 Searchmark 1"));
     Long subRoot1SM1Id = subRoot1SM1.getId();
     setProperties(subRoot1SM1);
 
-    ISearchMark subRoot1SM2 = DynamicDAO.save(fFactory.createSearchMark(null, subRoot1, "Sub Root 1 Searchmark 2"));
+    ISearchMark subRoot1SM2 = OwlDAO.save(fFactory.createSearchMark(null, subRoot1, "Sub Root 1 Searchmark 2"));
     Long subRoot1SM2Id = subRoot1SM2.getId();
     setProperties(subRoot1SM2);
 
-    ISearchMark subRoot2SM1 = DynamicDAO.save(fFactory.createSearchMark(null, subRoot2, "Sub Root 2 Searchmark 1"));
+    ISearchMark subRoot2SM1 = OwlDAO.save(fFactory.createSearchMark(null, subRoot2, "Sub Root 2 Searchmark 1"));
     Long subRoot2SM1Id = subRoot2SM1.getId();
     setProperties(subRoot2SM1);
 
-    ISearchMark subRoot3SM1 = DynamicDAO.save(fFactory.createSearchMark(null, subRoot3, "Sub Root 3 Searchmark 1"));
+    ISearchMark subRoot3SM1 = OwlDAO.save(fFactory.createSearchMark(null, subRoot3, "Sub Root 3 Searchmark 1"));
     Long subRoot3SM1Id = subRoot3SM1.getId();
     setProperties(subRoot3SM1);
 
-    ISearchMark subSubRoot1SM1 = DynamicDAO.save(fFactory.createSearchMark(null, subSubRoot1, "Sub Sub Root 1 Searchmark 1"));
+    ISearchMark subSubRoot1SM1 = OwlDAO.save(fFactory.createSearchMark(null, subSubRoot1, "Sub Sub Root 1 Searchmark 1"));
     Long subSubRoot1SM1Id = subSubRoot1SM1.getId();
     setProperties(subSubRoot1SM1);
 
-    ISearchMark subSubSubRoot1SM1 = DynamicDAO.save(fFactory.createSearchMark(null, subSubSubRoot1, "Sub Sub Sub Root 1 Searchmark 1"));
+    ISearchMark subSubSubRoot1SM1 = OwlDAO.save(fFactory.createSearchMark(null, subSubSubRoot1, "Sub Sub Sub Root 1 Searchmark 1"));
     Long subSubSubRoot1SM1Id = subSubSubRoot1SM1.getId();
     setProperties(subSubSubRoot1SM1);
 
-    DynamicDAO.save(root);
+    OwlDAO.save(root);
 
     /* Reopen Database */
     Owl.getPersistenceService().shutdown(false);
@@ -569,7 +569,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     Owl.getPersistenceService().startup(new NullOperationMonitor(), false, false);
 
     /* Assert Folders */
-    CachingDAO dao = (CachingDAO) DynamicDAO.getDAO(IFolderDAO.class);
+    CachingDAO dao = (CachingDAO) OwlDAO.getDAO(IFolderDAO.class);
     root = (IFolder) dao.load(rootFolderId);
     assertNotNull(root);
     assertEquals("Root", root.getName());
@@ -601,7 +601,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     assertProperties(subSubSubRoot1);
 
     /* Assert Bookmarks */
-    dao = (CachingDAO) DynamicDAO.getDAO(IBookMarkDAO.class);
+    dao = (CachingDAO) OwlDAO.getDAO(IBookMarkDAO.class);
 
     rootBM1 = (IBookMark) dao.load(rootBM1Id);
     assertNotNull(rootBM1);
@@ -644,7 +644,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     assertProperties(subSubSubRoot1BM1);
 
     /* Assert News Bins */
-    dao = (CachingDAO) DynamicDAO.getDAO(INewsBinDAO.class);
+    dao = (CachingDAO) OwlDAO.getDAO(INewsBinDAO.class);
 
     rootNB1 = (INewsBin) dao.load(rootNB1Id);
     assertNotNull(rootNB1);
@@ -687,7 +687,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     assertProperties(subSubSubRoot1NB1);
 
     /* Assert Search Marks */
-    dao = (CachingDAO) DynamicDAO.getDAO(ISearchMarkDAO.class);
+    dao = (CachingDAO) OwlDAO.getDAO(ISearchMarkDAO.class);
 
     rootSM1 = (ISearchMark) dao.load(rootSM1Id);
     assertNotNull(rootSM1);
@@ -741,146 +741,146 @@ public class CachingDAOTest extends LargeBlockSizeTest {
   public void testDeepHierarchyResolvedWithCachingDAOMultiRoot() throws Exception {
 
     /* Folders */
-    IFolder root1 = DynamicDAO.save(fFactory.createFolder(null, null, "Root 1"));
+    IFolder root1 = OwlDAO.save(fFactory.createFolder(null, null, "Root 1"));
     Long rootFolder1Id = root1.getId();
     setProperties(root1);
 
-    IFolder root2 = DynamicDAO.save(fFactory.createFolder(null, null, "Root 2"));
+    IFolder root2 = OwlDAO.save(fFactory.createFolder(null, null, "Root 2"));
     Long rootFolder2Id = root2.getId();
     setProperties(root2);
 
-    IFolder root3 = DynamicDAO.save(fFactory.createFolder(null, null, "Root 3"));
+    IFolder root3 = OwlDAO.save(fFactory.createFolder(null, null, "Root 3"));
     Long rootFolder3Id = root3.getId();
     setProperties(root3);
 
-    IFolder subRoot1 = DynamicDAO.save(fFactory.createFolder(null, root1, "Sub Root 1"));
+    IFolder subRoot1 = OwlDAO.save(fFactory.createFolder(null, root1, "Sub Root 1"));
     Long subRootFolder1Id = subRoot1.getId();
     setProperties(subRoot1);
 
-    IFolder subRoot2 = DynamicDAO.save(fFactory.createFolder(null, root2, "Sub Root 2"));
+    IFolder subRoot2 = OwlDAO.save(fFactory.createFolder(null, root2, "Sub Root 2"));
     Long subRootFolder2Id = subRoot2.getId();
     setProperties(subRoot2);
 
-    IFolder subRoot3 = DynamicDAO.save(fFactory.createFolder(null, root3, "Sub Root 3"));
+    IFolder subRoot3 = OwlDAO.save(fFactory.createFolder(null, root3, "Sub Root 3"));
     Long subRootFolder3Id = subRoot3.getId();
     setProperties(subRoot3);
 
-    IFolder subSubRoot1 = DynamicDAO.save(fFactory.createFolder(null, subRoot3, "Sub Sub Root 1"));
+    IFolder subSubRoot1 = OwlDAO.save(fFactory.createFolder(null, subRoot3, "Sub Sub Root 1"));
     Long subSubRootFolder1Id = subSubRoot1.getId();
     setProperties(subSubRoot1);
 
-    IFolder subSubSubRoot1 = DynamicDAO.save(fFactory.createFolder(null, subSubRoot1, "Sub Sub Sub Root 1"));
+    IFolder subSubSubRoot1 = OwlDAO.save(fFactory.createFolder(null, subSubRoot1, "Sub Sub Sub Root 1"));
     Long subSubSubRootFolder1Id = subSubSubRoot1.getId();
     setProperties(subSubSubRoot1);
 
     /* Book Marks */
     IFeed feed1 = fFactory.createFeed(null, URI.create("1"));
-    IBookMark rootBM1 = DynamicDAO.save(fFactory.createBookMark(null, root1, new FeedLinkReference(feed1.getLink()), "Root Bookmark 1"));
+    IBookMark rootBM1 = OwlDAO.save(fFactory.createBookMark(null, root1, new FeedLinkReference(feed1.getLink()), "Root Bookmark 1"));
     Long rootBM1Id = rootBM1.getId();
     setProperties(rootBM1);
 
     IFeed feed2 = fFactory.createFeed(null, URI.create("2"));
-    IBookMark rootBM2 = DynamicDAO.save(fFactory.createBookMark(null, root1, new FeedLinkReference(feed2.getLink()), "Root Bookmark 2"));
+    IBookMark rootBM2 = OwlDAO.save(fFactory.createBookMark(null, root1, new FeedLinkReference(feed2.getLink()), "Root Bookmark 2"));
     Long rootBM2Id = rootBM2.getId();
     setProperties(rootBM2);
 
     IFeed feed3 = fFactory.createFeed(null, URI.create("3"));
-    IBookMark subRoot1BM1 = DynamicDAO.save(fFactory.createBookMark(null, subRoot1, new FeedLinkReference(feed3.getLink()), "Sub Root 1 Bookmark 1"));
+    IBookMark subRoot1BM1 = OwlDAO.save(fFactory.createBookMark(null, subRoot1, new FeedLinkReference(feed3.getLink()), "Sub Root 1 Bookmark 1"));
     Long subRoot1BM1Id = subRoot1BM1.getId();
     setProperties(subRoot1BM1);
 
     IFeed feed4 = fFactory.createFeed(null, URI.create("4"));
-    IBookMark subRoot1BM2 = DynamicDAO.save(fFactory.createBookMark(null, subRoot1, new FeedLinkReference(feed4.getLink()), "Sub Root 1 Bookmark 2"));
+    IBookMark subRoot1BM2 = OwlDAO.save(fFactory.createBookMark(null, subRoot1, new FeedLinkReference(feed4.getLink()), "Sub Root 1 Bookmark 2"));
     Long subRoot1BM2Id = subRoot1BM2.getId();
     setProperties(subRoot1BM2);
 
     IFeed feed5 = fFactory.createFeed(null, URI.create("5"));
-    IBookMark subRoot2BM1 = DynamicDAO.save(fFactory.createBookMark(null, subRoot2, new FeedLinkReference(feed5.getLink()), "Sub Root 2 Bookmark 1"));
+    IBookMark subRoot2BM1 = OwlDAO.save(fFactory.createBookMark(null, subRoot2, new FeedLinkReference(feed5.getLink()), "Sub Root 2 Bookmark 1"));
     Long subRoot2BM1Id = subRoot2BM1.getId();
     setProperties(subRoot2BM1);
 
     IFeed feed6 = fFactory.createFeed(null, URI.create("6"));
-    IBookMark subRoot3BM1 = DynamicDAO.save(fFactory.createBookMark(null, subRoot3, new FeedLinkReference(feed6.getLink()), "Sub Root 3 Bookmark 1"));
+    IBookMark subRoot3BM1 = OwlDAO.save(fFactory.createBookMark(null, subRoot3, new FeedLinkReference(feed6.getLink()), "Sub Root 3 Bookmark 1"));
     Long subRoot3BM1Id = subRoot3BM1.getId();
     setProperties(subRoot3BM1);
 
     IFeed feed7 = fFactory.createFeed(null, URI.create("7"));
-    IBookMark subSubRoot1BM1 = DynamicDAO.save(fFactory.createBookMark(null, subSubRoot1, new FeedLinkReference(feed7.getLink()), "Sub Sub Root 1 Bookmark 1"));
+    IBookMark subSubRoot1BM1 = OwlDAO.save(fFactory.createBookMark(null, subSubRoot1, new FeedLinkReference(feed7.getLink()), "Sub Sub Root 1 Bookmark 1"));
     Long subSubRoot1BM1Id = subSubRoot1BM1.getId();
     setProperties(subSubRoot1BM1);
 
     IFeed feed8 = fFactory.createFeed(null, URI.create("8"));
-    IBookMark subSubSubRoot1BM1 = DynamicDAO.save(fFactory.createBookMark(null, subSubSubRoot1, new FeedLinkReference(feed8.getLink()), "Sub Sub Sub Root 1 Bookmark 1"));
+    IBookMark subSubSubRoot1BM1 = OwlDAO.save(fFactory.createBookMark(null, subSubSubRoot1, new FeedLinkReference(feed8.getLink()), "Sub Sub Sub Root 1 Bookmark 1"));
     Long subSubSubRoot1BM1Id = subSubSubRoot1BM1.getId();
     setProperties(subSubSubRoot1BM1);
 
     /* News Bins */
-    INewsBin rootNB1 = DynamicDAO.save(fFactory.createNewsBin(null, root1, "Root Newsbin 1"));
+    INewsBin rootNB1 = OwlDAO.save(fFactory.createNewsBin(null, root1, "Root Newsbin 1"));
     Long rootNB1Id = rootNB1.getId();
     setProperties(rootNB1);
 
-    INewsBin rootNB2 = DynamicDAO.save(fFactory.createNewsBin(null, root1, "Root Newsbin 2"));
+    INewsBin rootNB2 = OwlDAO.save(fFactory.createNewsBin(null, root1, "Root Newsbin 2"));
     Long rootNB2Id = rootNB2.getId();
     setProperties(rootNB2);
 
-    INewsBin subRoot1NB1 = DynamicDAO.save(fFactory.createNewsBin(null, subRoot1, "Sub Root 1 Newsbin 1"));
+    INewsBin subRoot1NB1 = OwlDAO.save(fFactory.createNewsBin(null, subRoot1, "Sub Root 1 Newsbin 1"));
     Long subRoot1NB1Id = subRoot1NB1.getId();
     setProperties(subRoot1NB1);
 
-    INewsBin subRoot1NB2 = DynamicDAO.save(fFactory.createNewsBin(null, subRoot1, "Sub Root 1 Newsbin 2"));
+    INewsBin subRoot1NB2 = OwlDAO.save(fFactory.createNewsBin(null, subRoot1, "Sub Root 1 Newsbin 2"));
     Long subRoot1NB2Id = subRoot1NB2.getId();
     setProperties(subRoot1NB2);
 
-    INewsBin subRoot2NB1 = DynamicDAO.save(fFactory.createNewsBin(null, subRoot2, "Sub Root 2 Newsbin 1"));
+    INewsBin subRoot2NB1 = OwlDAO.save(fFactory.createNewsBin(null, subRoot2, "Sub Root 2 Newsbin 1"));
     Long subRoot2NB1Id = subRoot2NB1.getId();
     setProperties(subRoot2NB1);
 
-    INewsBin subRoot3NB1 = DynamicDAO.save(fFactory.createNewsBin(null, subRoot3, "Sub Root 3 Newsbin 1"));
+    INewsBin subRoot3NB1 = OwlDAO.save(fFactory.createNewsBin(null, subRoot3, "Sub Root 3 Newsbin 1"));
     Long subRoot3NB1Id = subRoot3NB1.getId();
     setProperties(subRoot3NB1);
 
-    INewsBin subSubRoot1NB1 = DynamicDAO.save(fFactory.createNewsBin(null, subSubRoot1, "Sub Sub Root 1 Newsbin 1"));
+    INewsBin subSubRoot1NB1 = OwlDAO.save(fFactory.createNewsBin(null, subSubRoot1, "Sub Sub Root 1 Newsbin 1"));
     Long subSubRoot1NB1Id = subSubRoot1NB1.getId();
     setProperties(subSubRoot1NB1);
 
-    INewsBin subSubSubRoot1NB1 = DynamicDAO.save(fFactory.createNewsBin(null, subSubSubRoot1, "Sub Sub Sub Root 1 Newsbin 1"));
+    INewsBin subSubSubRoot1NB1 = OwlDAO.save(fFactory.createNewsBin(null, subSubSubRoot1, "Sub Sub Sub Root 1 Newsbin 1"));
     Long subSubSubRoot1NB1Id = subSubSubRoot1NB1.getId();
     setProperties(subSubSubRoot1NB1);
 
     /* Search Marks */
-    ISearchMark rootSM1 = DynamicDAO.save(fFactory.createSearchMark(null, root1, "Root Searchmark 1"));
+    ISearchMark rootSM1 = OwlDAO.save(fFactory.createSearchMark(null, root1, "Root Searchmark 1"));
     Long rootSM1Id = rootSM1.getId();
     setProperties(rootSM1);
 
-    ISearchMark rootSM2 = DynamicDAO.save(fFactory.createSearchMark(null, root1, "Root Searchmark 2"));
+    ISearchMark rootSM2 = OwlDAO.save(fFactory.createSearchMark(null, root1, "Root Searchmark 2"));
     Long rootSM2Id = rootSM2.getId();
     setProperties(rootSM2);
 
-    ISearchMark subRoot1SM1 = DynamicDAO.save(fFactory.createSearchMark(null, subRoot1, "Sub Root 1 Searchmark 1"));
+    ISearchMark subRoot1SM1 = OwlDAO.save(fFactory.createSearchMark(null, subRoot1, "Sub Root 1 Searchmark 1"));
     Long subRoot1SM1Id = subRoot1SM1.getId();
     setProperties(subRoot1SM1);
 
-    ISearchMark subRoot1SM2 = DynamicDAO.save(fFactory.createSearchMark(null, subRoot1, "Sub Root 1 Searchmark 2"));
+    ISearchMark subRoot1SM2 = OwlDAO.save(fFactory.createSearchMark(null, subRoot1, "Sub Root 1 Searchmark 2"));
     Long subRoot1SM2Id = subRoot1SM2.getId();
     setProperties(subRoot1SM2);
 
-    ISearchMark subRoot2SM1 = DynamicDAO.save(fFactory.createSearchMark(null, subRoot2, "Sub Root 2 Searchmark 1"));
+    ISearchMark subRoot2SM1 = OwlDAO.save(fFactory.createSearchMark(null, subRoot2, "Sub Root 2 Searchmark 1"));
     Long subRoot2SM1Id = subRoot2SM1.getId();
     setProperties(subRoot2SM1);
 
-    ISearchMark subRoot3SM1 = DynamicDAO.save(fFactory.createSearchMark(null, subRoot3, "Sub Root 3 Searchmark 1"));
+    ISearchMark subRoot3SM1 = OwlDAO.save(fFactory.createSearchMark(null, subRoot3, "Sub Root 3 Searchmark 1"));
     Long subRoot3SM1Id = subRoot3SM1.getId();
     setProperties(subRoot3SM1);
 
-    ISearchMark subSubRoot1SM1 = DynamicDAO.save(fFactory.createSearchMark(null, subSubRoot1, "Sub Sub Root 1 Searchmark 1"));
+    ISearchMark subSubRoot1SM1 = OwlDAO.save(fFactory.createSearchMark(null, subSubRoot1, "Sub Sub Root 1 Searchmark 1"));
     Long subSubRoot1SM1Id = subSubRoot1SM1.getId();
     setProperties(subSubRoot1SM1);
 
-    ISearchMark subSubSubRoot1SM1 = DynamicDAO.save(fFactory.createSearchMark(null, subSubSubRoot1, "Sub Sub Sub Root 1 Searchmark 1"));
+    ISearchMark subSubSubRoot1SM1 = OwlDAO.save(fFactory.createSearchMark(null, subSubSubRoot1, "Sub Sub Sub Root 1 Searchmark 1"));
     Long subSubSubRoot1SM1Id = subSubSubRoot1SM1.getId();
     setProperties(subSubSubRoot1SM1);
 
-    DynamicDAO.save(root1);
+    OwlDAO.save(root1);
 
     /* Reopen Database */
     Owl.getPersistenceService().shutdown(false);
@@ -925,7 +925,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     Owl.getPersistenceService().startup(new NullOperationMonitor(), false, false);
 
     /* Assert Folders */
-    CachingDAO dao = (CachingDAO) DynamicDAO.getDAO(IFolderDAO.class);
+    CachingDAO dao = (CachingDAO) OwlDAO.getDAO(IFolderDAO.class);
     root1 = (IFolder) dao.load(rootFolder1Id);
     assertNotNull(root1);
     assertEquals("Root 1", root1.getName());
@@ -967,7 +967,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     assertProperties(subSubSubRoot1);
 
     /* Assert Bookmarks */
-    dao = (CachingDAO) DynamicDAO.getDAO(IBookMarkDAO.class);
+    dao = (CachingDAO) OwlDAO.getDAO(IBookMarkDAO.class);
 
     rootBM1 = (IBookMark) dao.load(rootBM1Id);
     assertNotNull(rootBM1);
@@ -1010,7 +1010,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     assertProperties(subSubSubRoot1BM1);
 
     /* Assert News Bins */
-    dao = (CachingDAO) DynamicDAO.getDAO(INewsBinDAO.class);
+    dao = (CachingDAO) OwlDAO.getDAO(INewsBinDAO.class);
 
     rootNB1 = (INewsBin) dao.load(rootNB1Id);
     assertNotNull(rootNB1);
@@ -1053,7 +1053,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     assertProperties(subSubSubRoot1NB1);
 
     /* Assert Search Marks */
-    dao = (CachingDAO) DynamicDAO.getDAO(ISearchMarkDAO.class);
+    dao = (CachingDAO) OwlDAO.getDAO(ISearchMarkDAO.class);
 
     rootSM1 = (ISearchMark) dao.load(rootSM1Id);
     assertNotNull(rootSM1);
@@ -1106,20 +1106,20 @@ public class CachingDAOTest extends LargeBlockSizeTest {
   public void testCrazyDeepHierarchyResolvedWithCachingDAOSingleRoot() throws Exception {
     IFolder folder = null;
     for (int i = 0; i < 20; i++) {
-      folder = DynamicDAO.save(fFactory.createFolder(null, folder, "Folder " + i));
+      folder = OwlDAO.save(fFactory.createFolder(null, folder, "Folder " + i));
       setProperties(folder);
 
       IFeed feed = fFactory.createFeed(null, URI.create("1"));
-      IBookMark bm = DynamicDAO.save(fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "Bookmark " + i));
+      IBookMark bm = OwlDAO.save(fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "Bookmark " + i));
       setProperties(bm);
 
-      INewsBin nb = DynamicDAO.save(fFactory.createNewsBin(null, folder, "Newsbin " + i));
+      INewsBin nb = OwlDAO.save(fFactory.createNewsBin(null, folder, "Newsbin " + i));
       setProperties(nb);
 
-      ISearchMark sm = DynamicDAO.save(fFactory.createSearchMark(null, folder, "Searchmark " + i));
+      ISearchMark sm = OwlDAO.save(fFactory.createSearchMark(null, folder, "Searchmark " + i));
       setProperties(sm);
 
-      DynamicDAO.save(folder);
+      OwlDAO.save(folder);
     }
 
     /* Reopen Database */
@@ -1128,7 +1128,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     Owl.getPersistenceService().startup(new NullOperationMonitor(), false, false);
 
     /* Assert Folders */
-    CachingDAO dao = (CachingDAO) DynamicDAO.getDAO(IFolderDAO.class);
+    CachingDAO dao = (CachingDAO) OwlDAO.getDAO(IFolderDAO.class);
     Collection all = dao.loadAll();
     assertEquals(20, all.size());
     for (Object object : all) {
@@ -1139,7 +1139,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     }
 
     /* Assert Bookmarks */
-    dao = (CachingDAO) DynamicDAO.getDAO(IBookMarkDAO.class);
+    dao = (CachingDAO) OwlDAO.getDAO(IBookMarkDAO.class);
     all = dao.loadAll();
     assertEquals(20, all.size());
     for (Object object : all) {
@@ -1150,7 +1150,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     }
 
     /* Assert News Bins */
-    dao = (CachingDAO) DynamicDAO.getDAO(INewsBinDAO.class);
+    dao = (CachingDAO) OwlDAO.getDAO(INewsBinDAO.class);
     all = dao.loadAll();
     assertEquals(20, all.size());
     for (Object object : all) {
@@ -1161,7 +1161,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     }
 
     /* Assert Search Marks */
-    dao = (CachingDAO) DynamicDAO.getDAO(ISearchMarkDAO.class);
+    dao = (CachingDAO) OwlDAO.getDAO(ISearchMarkDAO.class);
     all = dao.loadAll();
     assertEquals(20, all.size());
     for (Object object : all) {
@@ -1182,20 +1182,20 @@ public class CachingDAOTest extends LargeBlockSizeTest {
   public void testCrazyDeepHierarchyResolvedWithCachingDAOSingleRootEmergencyStartup() throws Exception {
     IFolder folder = null;
     for (int i = 0; i < 20; i++) {
-      folder = DynamicDAO.save(fFactory.createFolder(null, folder, "Folder " + i));
+      folder = OwlDAO.save(fFactory.createFolder(null, folder, "Folder " + i));
       setProperties(folder);
 
       IFeed feed = fFactory.createFeed(null, URI.create("1"));
-      IBookMark bm = DynamicDAO.save(fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "Bookmark " + i));
+      IBookMark bm = OwlDAO.save(fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "Bookmark " + i));
       setProperties(bm);
 
-      INewsBin nb = DynamicDAO.save(fFactory.createNewsBin(null, folder, "Newsbin " + i));
+      INewsBin nb = OwlDAO.save(fFactory.createNewsBin(null, folder, "Newsbin " + i));
       setProperties(nb);
 
-      ISearchMark sm = DynamicDAO.save(fFactory.createSearchMark(null, folder, "Searchmark " + i));
+      ISearchMark sm = OwlDAO.save(fFactory.createSearchMark(null, folder, "Searchmark " + i));
       setProperties(sm);
 
-      DynamicDAO.save(folder);
+      OwlDAO.save(folder);
     }
 
     /* Reopen Database */
@@ -1205,7 +1205,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
 
     /* Assert Folders */
     {
-      CachingDAO dao = (CachingDAO) DynamicDAO.getDAO(IFolderDAO.class);
+      CachingDAO dao = (CachingDAO) OwlDAO.getDAO(IFolderDAO.class);
       Collection all = dao.loadAll();
       assertEquals(20, all.size());
       for (Object object : all) {
@@ -1216,7 +1216,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
       }
 
       /* Assert Bookmarks */
-      dao = (CachingDAO) DynamicDAO.getDAO(IBookMarkDAO.class);
+      dao = (CachingDAO) OwlDAO.getDAO(IBookMarkDAO.class);
       all = dao.loadAll();
       assertEquals(20, all.size());
       for (Object object : all) {
@@ -1227,7 +1227,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
       }
 
       /* Assert News Bins */
-      dao = (CachingDAO) DynamicDAO.getDAO(INewsBinDAO.class);
+      dao = (CachingDAO) OwlDAO.getDAO(INewsBinDAO.class);
       all = dao.loadAll();
       assertEquals(20, all.size());
       for (Object object : all) {
@@ -1238,7 +1238,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
       }
 
       /* Assert Search Marks */
-      dao = (CachingDAO) DynamicDAO.getDAO(ISearchMarkDAO.class);
+      dao = (CachingDAO) OwlDAO.getDAO(ISearchMarkDAO.class);
       all = dao.loadAll();
       assertEquals(20, all.size());
       for (Object object : all) {
@@ -1255,7 +1255,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     Owl.getPersistenceService().startup(new NullOperationMonitor(), false, false);
 
     /* Assert Folders */
-    CachingDAO dao = (CachingDAO) DynamicDAO.getDAO(IFolderDAO.class);
+    CachingDAO dao = (CachingDAO) OwlDAO.getDAO(IFolderDAO.class);
     Collection all = dao.loadAll();
     assertEquals(20, all.size());
     for (Object object : all) {
@@ -1266,7 +1266,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     }
 
     /* Assert Bookmarks */
-    dao = (CachingDAO) DynamicDAO.getDAO(IBookMarkDAO.class);
+    dao = (CachingDAO) OwlDAO.getDAO(IBookMarkDAO.class);
     all = dao.loadAll();
     assertEquals(20, all.size());
     for (Object object : all) {
@@ -1277,7 +1277,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     }
 
     /* Assert News Bins */
-    dao = (CachingDAO) DynamicDAO.getDAO(INewsBinDAO.class);
+    dao = (CachingDAO) OwlDAO.getDAO(INewsBinDAO.class);
     all = dao.loadAll();
     assertEquals(20, all.size());
     for (Object object : all) {
@@ -1288,7 +1288,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     }
 
     /* Assert Search Marks */
-    dao = (CachingDAO) DynamicDAO.getDAO(ISearchMarkDAO.class);
+    dao = (CachingDAO) OwlDAO.getDAO(ISearchMarkDAO.class);
     all = dao.loadAll();
     assertEquals(20, all.size());
     for (Object object : all) {
@@ -1306,22 +1306,22 @@ public class CachingDAOTest extends LargeBlockSizeTest {
   public void testCachingLabelDAO() throws Exception {
     ILabel label1 = fFactory.createLabel(null, "Hello");
     label1.setOrder(5);
-    label1 = DynamicDAO.save(label1);
+    label1 = OwlDAO.save(label1);
     Long label1Id = label1.getId();
 
     ILabel label2 = fFactory.createLabel(null, "Hello World");
     label2.setColor("255,255,0");
-    label2 = DynamicDAO.save(label2);
+    label2 = OwlDAO.save(label2);
     Long label2Id = label2.getId();
 
     ILabel label3 = fFactory.createLabel(null, "Foo Bar");
     label3.setProperty("key", "value");
-    label3 = DynamicDAO.save(label3);
+    label3 = OwlDAO.save(label3);
     Long label3Id = label3.getId();
 
-    DynamicDAO.save(label1);
-    DynamicDAO.save(label2);
-    DynamicDAO.save(label3);
+    OwlDAO.save(label1);
+    OwlDAO.save(label2);
+    OwlDAO.save(label3);
 
     label1 = null;
     label2 = null;
@@ -1333,7 +1333,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     Owl.getPersistenceService().startup(new NullOperationMonitor(), false, false);
 
     /* Assert Folders */
-    CachingDAO dao = (CachingDAO) DynamicDAO.getDAO(ILabelDAO.class);
+    CachingDAO dao = (CachingDAO) OwlDAO.getDAO(ILabelDAO.class);
 
     label1 = (ILabel) dao.load(label1Id);
     assertEquals("Hello", label1.getName());
@@ -1355,22 +1355,22 @@ public class CachingDAOTest extends LargeBlockSizeTest {
   public void testCachingLabelDAOEmergencyStartup() throws Exception {
     ILabel label1 = fFactory.createLabel(null, "Hello");
     label1.setOrder(5);
-    label1 = DynamicDAO.save(label1);
+    label1 = OwlDAO.save(label1);
     Long label1Id = label1.getId();
 
     ILabel label2 = fFactory.createLabel(null, "Hello World");
     label2.setColor("255,255,0");
-    label2 = DynamicDAO.save(label2);
+    label2 = OwlDAO.save(label2);
     Long label2Id = label2.getId();
 
     ILabel label3 = fFactory.createLabel(null, "Foo Bar");
     label3.setProperty("key", "value");
-    label3 = DynamicDAO.save(label3);
+    label3 = OwlDAO.save(label3);
     Long label3Id = label3.getId();
 
-    DynamicDAO.save(label1);
-    DynamicDAO.save(label2);
-    DynamicDAO.save(label3);
+    OwlDAO.save(label1);
+    OwlDAO.save(label2);
+    OwlDAO.save(label3);
 
     label1 = null;
     label2 = null;
@@ -1382,7 +1382,7 @@ public class CachingDAOTest extends LargeBlockSizeTest {
     Owl.getPersistenceService().startup(new NullOperationMonitor(), true, false);
 
     /* Assert Folders */
-    CachingDAO dao = (CachingDAO) DynamicDAO.getDAO(ILabelDAO.class);
+    CachingDAO dao = (CachingDAO) OwlDAO.getDAO(ILabelDAO.class);
 
     label1 = (ILabel) dao.load(label1Id);
     assertEquals("Hello", label1.getName());

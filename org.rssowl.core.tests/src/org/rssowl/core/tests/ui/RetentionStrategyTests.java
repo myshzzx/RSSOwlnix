@@ -39,7 +39,7 @@ import org.rssowl.core.persist.ILabel;
 import org.rssowl.core.persist.IMark;
 import org.rssowl.core.persist.IModelFactory;
 import org.rssowl.core.persist.INews;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
 import org.rssowl.core.persist.reference.BookMarkReference;
 import org.rssowl.core.persist.reference.FeedLinkReference;
@@ -84,7 +84,7 @@ public class RetentionStrategyTests {
   public void testProcessFolderByAge() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed1 = createFeedWithNews(new URI("http://www.url1.com"), 100, 0, today - DAY, today + 5 * HOUR, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed1.getLink()), "BookMark1");
@@ -95,7 +95,7 @@ public class RetentionStrategyTests {
     IFeed feed3 = createFeedWithNews(new URI("http://www.url3.com"), 100, 100, today - 31 * DAY, today - 25 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed3.getLink()), "BookMark3");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookMark1 = null, bookMark2 = null, bookMark3 = null;
     List<IMark> marks = folder.getMarks();
@@ -136,7 +136,7 @@ public class RetentionStrategyTests {
   public void testProcessFolderByAgeKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed1 = createFeedWithNews(new URI("http://www.url1.com"), 100, 0, today - DAY, today + 5 * HOUR, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed1.getLink()), "BookMark1");
@@ -147,7 +147,7 @@ public class RetentionStrategyTests {
     IFeed feed3 = createFeedWithNews(new URI("http://www.url3.com"), 100, 100, today - 31 * DAY, today - 25 * DAY, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed3.getLink()), "BookMark3");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookMark1 = null, bookMark2 = null, bookMark3 = null;
     List<IMark> marks = folder.getMarks();
@@ -188,7 +188,7 @@ public class RetentionStrategyTests {
   public void testProcessFolderByAge_NoDeleteUnread() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed1 = createFeedWithNews(new URI("http://www.url1.com"), 100, 0, today - DAY, today + 5 * HOUR, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed1.getLink()), "BookMark1");
@@ -199,7 +199,7 @@ public class RetentionStrategyTests {
     IFeed feed3 = createFeedWithNews(new URI("http://www.url3.com"), 100, 100, today - 31 * DAY, today - 25 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed3.getLink()), "BookMark3");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookMark1 = null, bookMark2 = null, bookMark3 = null;
     List<IMark> marks = folder.getMarks();
@@ -243,7 +243,7 @@ public class RetentionStrategyTests {
   public void testProcessFolderByAge_NoDeleteUnreadKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed1 = createFeedWithNews(new URI("http://www.url1.com"), 100, 0, today - DAY, today + 5 * HOUR, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed1.getLink()), "BookMark1");
@@ -254,7 +254,7 @@ public class RetentionStrategyTests {
     IFeed feed3 = createFeedWithNews(new URI("http://www.url3.com"), 100, 100, today - 31 * DAY, today - 25 * DAY, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed3.getLink()), "BookMark3");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookMark1 = null, bookMark2 = null, bookMark3 = null;
     List<IMark> marks = folder.getMarks();
@@ -298,7 +298,7 @@ public class RetentionStrategyTests {
   public void testProcessFolderByState() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed1 = createFeedWithNews(new URI("http://www.url1.com"), 100, 0, today - DAY, today + 5 * HOUR, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed1.getLink()), "BookMark1");
@@ -309,7 +309,7 @@ public class RetentionStrategyTests {
     IFeed feed3 = createFeedWithNews(new URI("http://www.url3.com"), 100, 100, today - 31 * DAY, today - 25 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed3.getLink()), "BookMark3");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookMark1 = null, bookMark2 = null, bookMark3 = null;
     List<IMark> marks = folder.getMarks();
@@ -347,7 +347,7 @@ public class RetentionStrategyTests {
   public void testProcessFolderByStateKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed1 = createFeedWithNews(new URI("http://www.url1.com"), 100, 0, today - DAY, today + 5 * HOUR, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed1.getLink()), "BookMark1");
@@ -358,7 +358,7 @@ public class RetentionStrategyTests {
     IFeed feed3 = createFeedWithNews(new URI("http://www.url3.com"), 100, 100, today - 31 * DAY, today - 25 * DAY, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed3.getLink()), "BookMark3");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookMark1 = null, bookMark2 = null, bookMark3 = null;
     List<IMark> marks = folder.getMarks();
@@ -396,7 +396,7 @@ public class RetentionStrategyTests {
   public void testProcessFolderByCount() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed1 = createFeedWithNews(new URI("http://www.url1.com"), 100, 0, today - DAY, today + 5 * HOUR, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed1.getLink()), "BookMark1");
@@ -407,7 +407,7 @@ public class RetentionStrategyTests {
     IFeed feed3 = createFeedWithNews(new URI("http://www.url3.com"), 100, 100, today - 31 * DAY, today - 25 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed3.getLink()), "BookMark3");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookMark1 = null, bookMark2 = null, bookMark3 = null;
     List<IMark> marks = folder.getMarks();
@@ -448,7 +448,7 @@ public class RetentionStrategyTests {
   public void testProcessFolderByCountKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed1 = createFeedWithNews(new URI("http://www.url1.com"), 100, 0, today - DAY, today + 5 * HOUR, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed1.getLink()), "BookMark1");
@@ -459,7 +459,7 @@ public class RetentionStrategyTests {
     IFeed feed3 = createFeedWithNews(new URI("http://www.url3.com"), 100, 100, today - 31 * DAY, today - 25 * DAY, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed3.getLink()), "BookMark3");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookMark1 = null, bookMark2 = null, bookMark3 = null;
     List<IMark> marks = folder.getMarks();
@@ -500,7 +500,7 @@ public class RetentionStrategyTests {
   public void testProcessFolderByCount_NoDeleteUnread() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed1 = createFeedWithNews(new URI("http://www.url1.com"), 100, 0, today - DAY, today + 5 * HOUR, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed1.getLink()), "BookMark1");
@@ -511,7 +511,7 @@ public class RetentionStrategyTests {
     IFeed feed3 = createFeedWithNews(new URI("http://www.url3.com"), 100, 100, today - 31 * DAY, today - 25 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed3.getLink()), "BookMark3");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookMark1 = null, bookMark2 = null, bookMark3 = null;
     List<IMark> marks = folder.getMarks();
@@ -555,7 +555,7 @@ public class RetentionStrategyTests {
   public void testProcessFolderByCount_NoDeleteUnreadKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed1 = createFeedWithNews(new URI("http://www.url1.com"), 100, 0, today - DAY, today + 5 * HOUR, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed1.getLink()), "BookMark1");
@@ -566,7 +566,7 @@ public class RetentionStrategyTests {
     IFeed feed3 = createFeedWithNews(new URI("http://www.url3.com"), 100, 100, today - 31 * DAY, today - 25 * DAY, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed3.getLink()), "BookMark3");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookMark1 = null, bookMark2 = null, bookMark3 = null;
     List<IMark> marks = folder.getMarks();
@@ -610,7 +610,7 @@ public class RetentionStrategyTests {
   public void testProcessFolderByAgeAndCount() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed1 = createFeedWithNews(new URI("http://www.url1.com"), 100, 0, today - DAY, today + 5 * HOUR, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed1.getLink()), "BookMark1");
@@ -621,7 +621,7 @@ public class RetentionStrategyTests {
     IFeed feed3 = createFeedWithNews(new URI("http://www.url3.com"), 100, 100, today - 31 * DAY, today - 25 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed3.getLink()), "BookMark3");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookMark1 = null, bookMark2 = null, bookMark3 = null;
     List<IMark> marks = folder.getMarks();
@@ -668,7 +668,7 @@ public class RetentionStrategyTests {
   public void testProcessFolderByAgeAndCountKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed1 = createFeedWithNews(new URI("http://www.url1.com"), 100, 0, today - DAY, today + 5 * HOUR, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed1.getLink()), "BookMark1");
@@ -679,7 +679,7 @@ public class RetentionStrategyTests {
     IFeed feed3 = createFeedWithNews(new URI("http://www.url3.com"), 100, 100, today - 31 * DAY, today - 25 * DAY, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed3.getLink()), "BookMark3");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookMark1 = null, bookMark2 = null, bookMark3 = null;
     List<IMark> marks = folder.getMarks();
@@ -726,7 +726,7 @@ public class RetentionStrategyTests {
   public void testProcessFolderByAgeAndCount_NoDeleteUnread() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed1 = createFeedWithNews(new URI("http://www.url1.com"), 100, 0, today - DAY, today + 5 * HOUR, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed1.getLink()), "BookMark1");
@@ -737,7 +737,7 @@ public class RetentionStrategyTests {
     IFeed feed3 = createFeedWithNews(new URI("http://www.url3.com"), 100, 100, today - 31 * DAY, today - 25 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed3.getLink()), "BookMark3");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookMark1 = null, bookMark2 = null, bookMark3 = null;
     List<IMark> marks = folder.getMarks();
@@ -787,7 +787,7 @@ public class RetentionStrategyTests {
   public void testProcessFolderByAgeAndCount_NoDeleteUnreadKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed1 = createFeedWithNews(new URI("http://www.url1.com"), 100, 0, today - DAY, today + 5 * HOUR, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed1.getLink()), "BookMark1");
@@ -798,7 +798,7 @@ public class RetentionStrategyTests {
     IFeed feed3 = createFeedWithNews(new URI("http://www.url3.com"), 100, 100, today - 31 * DAY, today - 25 * DAY, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed3.getLink()), "BookMark3");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookMark1 = null, bookMark2 = null, bookMark3 = null;
     List<IMark> marks = folder.getMarks();
@@ -848,7 +848,7 @@ public class RetentionStrategyTests {
   public void testProcessFolderByAgeAndState() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed1 = createFeedWithNews(new URI("http://www.url1.com"), 100, 0, today - DAY, today + 5 * HOUR, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed1.getLink()), "BookMark1");
@@ -859,7 +859,7 @@ public class RetentionStrategyTests {
     IFeed feed3 = createFeedWithNews(new URI("http://www.url3.com"), 100, 100, today - 31 * DAY, today - 25 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed3.getLink()), "BookMark3");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookMark1 = null, bookMark2 = null, bookMark3 = null;
     List<IMark> marks = folder.getMarks();
@@ -903,7 +903,7 @@ public class RetentionStrategyTests {
   public void testProcessFolderByAgeAndStateKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed1 = createFeedWithNews(new URI("http://www.url1.com"), 100, 0, today - DAY, today + 5 * HOUR, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed1.getLink()), "BookMark1");
@@ -914,7 +914,7 @@ public class RetentionStrategyTests {
     IFeed feed3 = createFeedWithNews(new URI("http://www.url3.com"), 100, 100, today - 31 * DAY, today - 25 * DAY, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed3.getLink()), "BookMark3");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookMark1 = null, bookMark2 = null, bookMark3 = null;
     List<IMark> marks = folder.getMarks();
@@ -958,7 +958,7 @@ public class RetentionStrategyTests {
   public void testProcessFolderByCountAndState() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed1 = createFeedWithNews(new URI("http://www.url1.com"), 100, 0, today - DAY, today + 5 * HOUR, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed1.getLink()), "BookMark1");
@@ -969,7 +969,7 @@ public class RetentionStrategyTests {
     IFeed feed3 = createFeedWithNews(new URI("http://www.url3.com"), 100, 100, today - 31 * DAY, today - 25 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed3.getLink()), "BookMark3");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookMark1 = null, bookMark2 = null, bookMark3 = null;
     List<IMark> marks = folder.getMarks();
@@ -1013,7 +1013,7 @@ public class RetentionStrategyTests {
   public void testProcessFolderByCountAndStateKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed1 = createFeedWithNews(new URI("http://www.url1.com"), 100, 0, today - DAY, today + 5 * HOUR, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed1.getLink()), "BookMark1");
@@ -1024,7 +1024,7 @@ public class RetentionStrategyTests {
     IFeed feed3 = createFeedWithNews(new URI("http://www.url3.com"), 100, 100, today - 31 * DAY, today - 25 * DAY, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed3.getLink()), "BookMark3");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookMark1 = null, bookMark2 = null, bookMark3 = null;
     List<IMark> marks = folder.getMarks();
@@ -1068,7 +1068,7 @@ public class RetentionStrategyTests {
   public void testProcessFolderByAgeAndCountAndState() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed1 = createFeedWithNews(new URI("http://www.url1.com"), 100, 0, today - DAY, today + 5 * HOUR, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed1.getLink()), "BookMark1");
@@ -1079,7 +1079,7 @@ public class RetentionStrategyTests {
     IFeed feed3 = createFeedWithNews(new URI("http://www.url3.com"), 100, 100, today - 31 * DAY, today - 25 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed3.getLink()), "BookMark3");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookMark1 = null, bookMark2 = null, bookMark3 = null;
     List<IMark> marks = folder.getMarks();
@@ -1129,7 +1129,7 @@ public class RetentionStrategyTests {
   public void testProcessFolderByAgeAndCountAndStateKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed1 = createFeedWithNews(new URI("http://www.url1.com"), 100, 0, today - DAY, today + 5 * HOUR, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed1.getLink()), "BookMark1");
@@ -1140,7 +1140,7 @@ public class RetentionStrategyTests {
     IFeed feed3 = createFeedWithNews(new URI("http://www.url3.com"), 100, 100, today - 31 * DAY, today - 25 * DAY, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed3.getLink()), "BookMark3");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookMark1 = null, bookMark2 = null, bookMark3 = null;
     List<IMark> marks = folder.getMarks();
@@ -1190,12 +1190,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByAge() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1220,12 +1220,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByAgeKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1250,12 +1250,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByAge_NoDeleteUnread() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1281,12 +1281,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByAge_NoDeleteUnreadKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1312,12 +1312,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByState() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1341,12 +1341,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByStateKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1370,12 +1370,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByCount() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1400,12 +1400,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByCountKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1430,12 +1430,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByCount_NoDeleteUnread() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1461,12 +1461,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByCount_NoDeleteUnreadKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1492,12 +1492,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByAgeAndCount() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1524,12 +1524,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByAgeAndCountKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1556,12 +1556,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByAgeAndCount_NoDeleteUnread() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1589,12 +1589,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByAgeAndCount_NoDeleteUnreadKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1622,12 +1622,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByAgeAndState() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1653,12 +1653,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByAgeAndStateKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1684,12 +1684,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByCountAndState() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1715,12 +1715,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByCountAndStateKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1746,12 +1746,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByAgeAndCountAndState() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1779,12 +1779,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByAgeAndCountAndStateKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1812,12 +1812,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByAgeAndCountAndStateWithStickyNews() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 10);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1845,12 +1845,12 @@ public class RetentionStrategyTests {
   public void testProcessBookMarkByAgeAndCountAndStateWithStickyNewsKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 10, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     IBookMark bookmark = (IBookMark) folder.getMarks().get(0);
     assertEquals(100, countNews(bookmark));
@@ -1878,12 +1878,12 @@ public class RetentionStrategyTests {
   public void testProcessFeedWithUnpersistedNewsByAge() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     /* Add unpersisted News */
     INews news1 = fFactory.createNews(null, feed, new Date());
@@ -1920,12 +1920,12 @@ public class RetentionStrategyTests {
   public void testProcessFeedWithUnpersistedNewsByCount() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     /* Add unpersisted News */
     INews news1 = fFactory.createNews(null, feed, new Date());
@@ -1962,12 +1962,12 @@ public class RetentionStrategyTests {
   public void testProcessFeedWithUnpersistedNewsByCountThatExceedLimit() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     /* Add unpersisted News */
     INews news1 = fFactory.createNews(null, feed, new Date());
@@ -2004,12 +2004,12 @@ public class RetentionStrategyTests {
   public void testProcessFeedWithUnpersistedNewsByState() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     /* Add unpersisted News */
     INews news1 = fFactory.createNews(null, feed, new Date());
@@ -2045,12 +2045,12 @@ public class RetentionStrategyTests {
   public void testProcessFeedWithUnpersistedNewsByAgeAndCount() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     /* Add unpersisted News */
     INews news1 = fFactory.createNews(null, feed, new Date());
@@ -2089,12 +2089,12 @@ public class RetentionStrategyTests {
   public void testProcessFeedWithUnpersistedNewsByAgeAndState() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     /* Add unpersisted News */
     INews news1 = fFactory.createNews(null, feed, new Date());
@@ -2132,12 +2132,12 @@ public class RetentionStrategyTests {
   public void testProcessFeedWithUnpersistedNewsByCountAndState() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     /* Add unpersisted News */
     INews news1 = fFactory.createNews(null, feed, new Date());
@@ -2175,12 +2175,12 @@ public class RetentionStrategyTests {
   public void testProcessFeedWithUnpersistedNewsByAgeAndCountAndState() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 20, today - 7 * DAY, today - 6 * DAY, 0);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     /* Add unpersisted News */
     INews news1 = fFactory.createNews(null, feed, new Date());
@@ -2220,12 +2220,12 @@ public class RetentionStrategyTests {
   public void testProcessFeedWithStickyNewsByCount() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 100, today - 7 * DAY, today - 6 * DAY, 100);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     /* Add unpersisted *new* News */
     INews news1 = fFactory.createNews(null, feed, new Date());
@@ -2262,12 +2262,12 @@ public class RetentionStrategyTests {
   public void testProcessFeedWithStickyNewsByCountKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 100, today - 7 * DAY, today - 6 * DAY, 100, true);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     /* Add unpersisted *new* News */
     INews news1 = fFactory.createNews(null, feed, new Date());
@@ -2300,14 +2300,14 @@ public class RetentionStrategyTests {
   public void testProcessFeedWithLabeledNewsByCount() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    ILabel label = DynamicDAO.save(fFactory.createLabel(null, "Label"));
+    ILabel label = OwlDAO.save(fFactory.createLabel(null, "Label"));
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 100, today - 7 * DAY, today - 6 * DAY, 0, false, label);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     /* Add unpersisted *new* News */
     INews news1 = fFactory.createNews(null, feed, new Date());
@@ -2344,14 +2344,14 @@ public class RetentionStrategyTests {
   public void testProcessFeedWithLabeledNewsByCountKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    ILabel label = DynamicDAO.save(fFactory.createLabel(null, "Label"));
+    ILabel label = OwlDAO.save(fFactory.createLabel(null, "Label"));
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 100, today - 7 * DAY, today - 6 * DAY, 0, true, label);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     /* Add unpersisted *new* News */
     INews news1 = fFactory.createNews(null, feed, new Date());
@@ -2384,12 +2384,12 @@ public class RetentionStrategyTests {
   public void testProcessFeedWithStickyNewsByCountKeepUnread() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 100, today - 7 * DAY, today - 6 * DAY, 100, false, null);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     /* Add unpersisted *new* News */
     INews news1 = fFactory.createNews(null, feed, new Date());
@@ -2427,12 +2427,12 @@ public class RetentionStrategyTests {
   public void testProcessFeedWithStickyNewsByCountKeepUnreadKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 100, today - 7 * DAY, today - 6 * DAY, 100, true, null);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     /* Add unpersisted *new* News */
     INews news1 = fFactory.createNews(null, feed, new Date());
@@ -2466,14 +2466,14 @@ public class RetentionStrategyTests {
   public void testProcessFeedWithLabeledNewsByCountKeepUnread() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    ILabel label = DynamicDAO.save(fFactory.createLabel(null, "Label"));
+    ILabel label = OwlDAO.save(fFactory.createLabel(null, "Label"));
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 100, today - 7 * DAY, today - 6 * DAY, 0, true, label);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     /* Add unpersisted *new* News */
     INews news1 = fFactory.createNews(null, feed, new Date());
@@ -2507,14 +2507,14 @@ public class RetentionStrategyTests {
   public void testProcessFeedWithLabeledNewsByCountDoNotKeepLabeled() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    ILabel label = DynamicDAO.save(fFactory.createLabel(null, "Label"));
+    ILabel label = OwlDAO.save(fFactory.createLabel(null, "Label"));
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 100, today - 7 * DAY, today - 6 * DAY, 0, false, label);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     /* Add unpersisted *new* News */
     INews news1 = fFactory.createNews(null, feed, new Date());
@@ -2548,14 +2548,14 @@ public class RetentionStrategyTests {
   public void testProcessFeedWithLabeledNewsByCountKeepLabeled() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    ILabel label = DynamicDAO.save(fFactory.createLabel(null, "Label"));
+    ILabel label = OwlDAO.save(fFactory.createLabel(null, "Label"));
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 100, today - 7 * DAY, today - 6 * DAY, 0, false, label);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     /* Add unpersisted *new* News */
     INews news1 = fFactory.createNews(null, feed, new Date());
@@ -2589,14 +2589,14 @@ public class RetentionStrategyTests {
   public void testProcessFeedWithLabeledNewsByCountKeepUnreadKeepNew() throws Exception {
     long today = DateUtils.getToday().getTimeInMillis();
 
-    ILabel label = DynamicDAO.save(fFactory.createLabel(null, "Label"));
+    ILabel label = OwlDAO.save(fFactory.createLabel(null, "Label"));
 
-    IFolder folder = DynamicDAO.save(fFactory.createFolder(null, null, "Root"));
+    IFolder folder = OwlDAO.save(fFactory.createFolder(null, null, "Root"));
 
     IFeed feed = createFeedWithNews(new URI("http://www.url.com"), 100, 100, today - 7 * DAY, today - 6 * DAY, 0, true, label);
     fFactory.createBookMark(null, folder, new FeedLinkReference(feed.getLink()), "BookMark1");
 
-    DynamicDAO.save(folder);
+    OwlDAO.save(folder);
 
     /* Add unpersisted *new* News */
     INews news1 = fFactory.createNews(null, feed, new Date());
@@ -2653,7 +2653,7 @@ public class RetentionStrategyTests {
       news.setPublishDate(new Date(from + (dateDif * i / total)));
     }
 
-    return DynamicDAO.save(feed);
+    return OwlDAO.save(feed);
   }
 
   private int countNews(IEntity entity) throws PersistenceException {

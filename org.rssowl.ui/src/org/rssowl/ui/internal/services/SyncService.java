@@ -38,7 +38,7 @@ import org.rssowl.core.connection.ICredentialsProvider;
 import org.rssowl.core.connection.IProtocolHandler;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.ISearchFilter;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.event.NewsAdapter;
 import org.rssowl.core.persist.event.NewsEvent;
 import org.rssowl.core.persist.event.NewsListener;
@@ -188,7 +188,7 @@ public class SyncService implements Receiver<SyncItem> {
         synchronize(items);
       }
     };
-    DynamicDAO.addEntityListener(INews.class, fNewsListener);
+    OwlDAO.addEntityListener(INews.class, fNewsListener);
 
     /* News Filter Listener */
     fSearchFilterListener = new SearchFilterAdapter() {
@@ -198,7 +198,7 @@ public class SyncService implements Receiver<SyncItem> {
         synchronize(items);
       }
     };
-    DynamicDAO.addEntityListener(ISearchFilter.class, fSearchFilterListener);
+    OwlDAO.addEntityListener(ISearchFilter.class, fSearchFilterListener);
   }
 
   private void addAllAsync(final Collection<SyncItem> items) {
@@ -239,8 +239,8 @@ public class SyncService implements Receiver<SyncItem> {
   }
 
   private void unregisterListeners() {
-    DynamicDAO.removeEntityListener(INews.class, fNewsListener);
-    DynamicDAO.removeEntityListener(ISearchFilter.class, fSearchFilterListener);
+    OwlDAO.removeEntityListener(INews.class, fNewsListener);
+    OwlDAO.removeEntityListener(ISearchFilter.class, fSearchFilterListener);
   }
 
   /**

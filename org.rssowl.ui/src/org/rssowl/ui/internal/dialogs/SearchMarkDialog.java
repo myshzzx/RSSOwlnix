@@ -58,7 +58,7 @@ import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.ISearchMark;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.util.CoreUtils;
 import org.rssowl.core.util.Pair;
 import org.rssowl.core.util.StringUtils;
@@ -191,7 +191,7 @@ public class SearchMarkDialog extends TitleAreaDialog {
     for (Map.Entry<String, Serializable> property : properties.entrySet())
       fCreatedSearchMark.setProperty(property.getKey(), property.getValue());
 
-    DynamicDAO.save(fParent);
+    OwlDAO.save(fParent);
 
     /* Update the Search */
     Controller.getDefault().getSavedSearchService().updateSavedSearches(Collections.singleton(fCreatedSearchMark), true);

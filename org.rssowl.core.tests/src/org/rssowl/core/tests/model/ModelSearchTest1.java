@@ -41,7 +41,7 @@ import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.ISource;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
 import org.rssowl.core.persist.reference.NewsReference;
 import org.rssowl.core.persist.service.PersistenceException;
@@ -133,7 +133,7 @@ public class ModelSearchTest1 extends AbstractModelSearchTest {
       ICategory news5cat2 = fFactory.createCategory(null, news5);
       news5cat2.setName("Java");
 
-      DynamicDAO.save(feed);
+      OwlDAO.save(feed);
 
       /* Wait for Indexer */
       waitForIndexer();
@@ -501,7 +501,7 @@ public class ModelSearchTest1 extends AbstractModelSearchTest {
       ICategory news5cat2 = fFactory.createCategory(null, news5);
       news5cat2.setName("Java");
 
-      DynamicDAO.save(feed);
+      OwlDAO.save(feed);
 
       /* Wait for Indexer */
       waitForIndexer();
@@ -834,7 +834,7 @@ public class ModelSearchTest1 extends AbstractModelSearchTest {
       ISource source5 = fFactory.createSource(news5);
       source5.setName("Source for News 5");
 
-      DynamicDAO.save(feed);
+      OwlDAO.save(feed);
 
       /* Wait for Indexer */
       waitForIndexer();
@@ -1083,7 +1083,7 @@ public class ModelSearchTest1 extends AbstractModelSearchTest {
       ISource source5 = fFactory.createSource(news5);
       source5.setName("Source for News 5");
 
-      DynamicDAO.save(feed);
+      OwlDAO.save(feed);
 
       /* Wait for Indexer */
       waitForIndexer();
@@ -1330,7 +1330,7 @@ public class ModelSearchTest1 extends AbstractModelSearchTest {
       ISource source5 = fFactory.createSource(news5);
       source5.setName("Source for News 5");
 
-      DynamicDAO.save(feed);
+      OwlDAO.save(feed);
 
       /* Wait for Indexer */
       waitForIndexer();
@@ -1596,7 +1596,7 @@ public class ModelSearchTest1 extends AbstractModelSearchTest {
       ISource source5 = fFactory.createSource(news5);
       source5.setName("Source for News 5");
 
-      DynamicDAO.save(feed);
+      OwlDAO.save(feed);
 
       /* Wait for Indexer */
       waitForIndexer();
@@ -1841,7 +1841,7 @@ public class ModelSearchTest1 extends AbstractModelSearchTest {
       ISource source5 = fFactory.createSource(news5);
       source5.setName("Source for News 5");
 
-      DynamicDAO.save(feed);
+      OwlDAO.save(feed);
 
       /* Wait for Indexer */
       waitForIndexer();
@@ -1858,7 +1858,7 @@ public class ModelSearchTest1 extends AbstractModelSearchTest {
       result = fModelSearch.searchNews(list(condition), false);
       assertSame(result, news1);
 
-      DynamicDAO.getDAO(INewsDAO.class).setState(Collections.singleton(news1), INews.State.HIDDEN, false, false);
+      OwlDAO.getDAO(INewsDAO.class).setState(Collections.singleton(news1), INews.State.HIDDEN, false, false);
 
       /* Wait for Indexer */
       waitForIndexer();

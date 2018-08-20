@@ -38,7 +38,7 @@ import org.rssowl.core.persist.IMark;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INewsBin;
 import org.rssowl.core.persist.ISearchMark;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IBookMarkDAO;
 import org.rssowl.core.persist.dao.INewsBinDAO;
 import org.rssowl.core.persist.event.BookMarkEvent;
@@ -93,7 +93,7 @@ public class BookMarkContentProvider implements ITreeContentProvider {
   private BookMarkGrouping fBookmarkGrouping;
 
   /* Misc. */
-  private IBookMarkDAO fBookMarkDAO = DynamicDAO.getDAO(IBookMarkDAO.class);
+  private IBookMarkDAO fBookMarkDAO = OwlDAO.getDAO(IBookMarkDAO.class);
 
   /*
    * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
@@ -539,11 +539,11 @@ public class BookMarkContentProvider implements ITreeContentProvider {
     };
 
     /* Register Listeners */
-    DynamicDAO.addEntityListener(IFolder.class, fFolderListener);
-    DynamicDAO.addEntityListener(IBookMark.class, fBookMarkListener);
-    DynamicDAO.addEntityListener(INewsBin.class, fNewsBinListener);
-    DynamicDAO.addEntityListener(ISearchMark.class, fSearchMarkListener);
-    DynamicDAO.addEntityListener(INews.class, fNewsListener);
+    OwlDAO.addEntityListener(IFolder.class, fFolderListener);
+    OwlDAO.addEntityListener(IBookMark.class, fBookMarkListener);
+    OwlDAO.addEntityListener(INewsBin.class, fNewsBinListener);
+    OwlDAO.addEntityListener(ISearchMark.class, fSearchMarkListener);
+    OwlDAO.addEntityListener(INews.class, fNewsListener);
   }
 
   private void onMarksAdded(Set<? extends MarkEvent> events) {
@@ -694,16 +694,16 @@ public class BookMarkContentProvider implements ITreeContentProvider {
   }
 
   private void unregisterListeners() {
-    DynamicDAO.removeEntityListener(IFolder.class, fFolderListener);
-    DynamicDAO.removeEntityListener(IBookMark.class, fBookMarkListener);
-    DynamicDAO.removeEntityListener(INewsBin.class, fNewsBinListener);
-    DynamicDAO.removeEntityListener(ISearchMark.class, fSearchMarkListener);
-    DynamicDAO.removeEntityListener(INews.class, fNewsListener);
+    OwlDAO.removeEntityListener(IFolder.class, fFolderListener);
+    OwlDAO.removeEntityListener(IBookMark.class, fBookMarkListener);
+    OwlDAO.removeEntityListener(INewsBin.class, fNewsBinListener);
+    OwlDAO.removeEntityListener(ISearchMark.class, fSearchMarkListener);
+    OwlDAO.removeEntityListener(INews.class, fNewsListener);
   }
 
   /* Update Entities that are affected by the given NewsEvents */
   private void updateParents(final Set<NewsEvent> events) {
-    INewsBinDAO newsBinDao = DynamicDAO.getDAO(INewsBinDAO.class);
+    INewsBinDAO newsBinDao = OwlDAO.getDAO(INewsBinDAO.class);
 
     /* Group by Feed and Bins */
     Set<FeedLinkReference> affectedFeeds = new HashSet<FeedLinkReference>();

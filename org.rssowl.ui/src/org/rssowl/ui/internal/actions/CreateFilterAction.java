@@ -47,7 +47,7 @@ import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.ISearchFilter;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IBookMarkDAO;
 import org.rssowl.core.persist.reference.FeedLinkReference;
 import org.rssowl.core.util.StringUtils;
@@ -151,7 +151,7 @@ public class CreateFilterAction implements IObjectActionDelegate {
       else
         dialog = new NewsFilterDialog(shell, presetSearch);
 
-      Collection<ISearchFilter> existingFilters = DynamicDAO.loadAll(ISearchFilter.class);
+      Collection<ISearchFilter> existingFilters = OwlDAO.loadAll(ISearchFilter.class);
       if (existingFilters != null && !existingFilters.isEmpty())
         dialog.setFilterPosition(existingFilters.size());
 
@@ -198,7 +198,7 @@ public class CreateFilterAction implements IObjectActionDelegate {
       ISearchField locationField = factory.createSearchField(INews.LOCATION, INews.class.getName());
 
       FeedLinkReference feedReference = news.getFeedReference();
-      Collection<IBookMark> bookmarks = DynamicDAO.getDAO(IBookMarkDAO.class).loadAll(feedReference);
+      Collection<IBookMark> bookmarks = OwlDAO.getDAO(IBookMarkDAO.class).loadAll(feedReference);
 
       Long[][] value = ModelUtils.toPrimitive(new ArrayList<IFolderChild>(bookmarks));
 

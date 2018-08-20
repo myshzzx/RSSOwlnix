@@ -26,7 +26,7 @@ package org.rssowl.core.internal.persist.pref;
 
 import org.eclipse.core.runtime.Assert;
 import org.rssowl.core.persist.IEntity;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
 
 import java.util.Arrays;
@@ -65,7 +65,7 @@ public class EntityScope implements IPreferenceScope {
    */
   @Override
   public void flush() {
-    DynamicDAO.save(fEntity);
+    OwlDAO.save(fEntity);
   }
 
   /*

@@ -31,7 +31,7 @@ import org.rssowl.core.Owl;
 import org.rssowl.core.internal.persist.pref.DefaultPreferences;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INewsBin;
-import org.rssowl.core.persist.dao.DynamicDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
 import org.rssowl.ui.internal.Controller;
 import org.rssowl.ui.internal.OwlUI;
@@ -156,8 +156,8 @@ public class MoveCopyNewsToBinAction extends Action {
 
     /* Save */
     if (requiresSave) {
-      DynamicDAO.saveAll(copiedNews);
-      DynamicDAO.save(fBin);
+      OwlDAO.saveAll(copiedNews);
+      OwlDAO.save(fBin);
     }
 
     /* Support Undo/Redo */
@@ -173,7 +173,7 @@ public class MoveCopyNewsToBinAction extends Action {
       Controller.getDefault().getSavedSearchService().forceQuickUpdate();
 
       /* Delete News in single Transaction */
-      DynamicDAO.getDAO(INewsDAO.class).setState(newsToMoveCopy, INews.State.HIDDEN, false, false);
+      OwlDAO.getDAO(INewsDAO.class).setState(newsToMoveCopy, INews.State.HIDDEN, false, false);
     }
   }
 }
