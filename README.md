@@ -1,6 +1,6 @@
 updates feed: https://xyrio.github.io/RSSOwlnix-site/updates.rss
 
-
+2.5.5-beta
 - fixed type check for preferences
 
 2.5.4-beta
