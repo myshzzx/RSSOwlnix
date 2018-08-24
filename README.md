@@ -18,7 +18,7 @@ updates feed: https://xyrio.github.io/RSSOwlnix-site/updates.rss
 - linux: do not force xulrunner (PR: sciamano)
 
 2.5.0-beta
-- main program is not updateable (addons and translation available through Help/Install new Software...)
+- main program is now updateable (addons and translation available through Help/Install new Software...) * does not work correctly
 - renamed to RSSOwlnix
 - updated httpclient to 4.5.5
 - updated eclipse rcp to 4.7.2
