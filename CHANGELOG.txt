@@ -1,5 +1,7 @@
 updates feed: https://xyrio.github.io/RSSOwlnix-site/updates.rss
 
+- added right to left sorting for search dialog title column too
+
 2.5.5-beta
 - fixed type check for preferences
 

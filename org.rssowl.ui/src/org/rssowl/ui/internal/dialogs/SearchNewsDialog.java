@@ -114,8 +114,8 @@ import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchField;
 import org.rssowl.core.persist.ISearchMark;
 import org.rssowl.core.persist.SearchSpecifier;
-import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.event.LabelAdapter;
 import org.rssowl.core.persist.event.LabelEvent;
 import org.rssowl.core.persist.event.NewsEvent;
@@ -152,6 +152,7 @@ import org.rssowl.ui.internal.editors.feed.NewsBrowserViewer;
 import org.rssowl.ui.internal.editors.feed.NewsColumn;
 import org.rssowl.ui.internal.editors.feed.NewsColumnViewModel;
 import org.rssowl.ui.internal.editors.feed.NewsComparator;
+import org.rssowl.ui.internal.editors.feed.NewsTableControl;
 import org.rssowl.ui.internal.editors.feed.NewsTableLabelProvider;
 import org.rssowl.ui.internal.search.LocationControl;
 import org.rssowl.ui.internal.search.SearchConditionList;
@@ -364,6 +365,10 @@ public class SearchNewsDialog extends TitleAreaDialog {
 
     NewsColumn getSortBy() {
       return fNewsComparator.getSortBy();
+    }
+
+    public boolean isRightToLeftSorting() {
+      return fNewsComparator.isRightToLeftSorting();
     }
 
     boolean isAscending() {
@@ -872,7 +877,7 @@ public class SearchNewsDialog extends TitleAreaDialog {
     Composite scopeContainer = new Composite(topControlsContainer, SWT.None);
     scopeContainer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true));
     scopeContainer.setLayout(LayoutUtils.createGridLayout(2, 0, 0, 0, 5, false));
-    ((GridLayout)scopeContainer.getLayout()).marginLeft = 2;
+    ((GridLayout) scopeContainer.getLayout()).marginLeft = 2;
 
     Label locationLabel = new Label(scopeContainer, SWT.NONE);
     locationLabel.setText(Messages.SearchNewsDialog_SEARCH_IN);
@@ -1475,7 +1480,7 @@ public class SearchNewsDialog extends TitleAreaDialog {
       /* Keep as current */
       fColumnModel = model;
 
-      /* Create New */
+      /* Create Columns */
       List<NewsColumn> cols = model.getColumns();
       for (NewsColumn col : cols) {
         TableViewerColumn viewerColumn = new TableViewerColumn(fResultViewer, SWT.LEFT);
@@ -1485,6 +1490,7 @@ public class SearchNewsDialog extends TitleAreaDialog {
         if (model.getSortColumn() == col && col.showSortIndicator()) {
           fCustomTable.getControl().setSortColumn(viewerColumn.getColumn());
           fCustomTable.getControl().setSortDirection(model.isAscending() ? SWT.UP : SWT.DOWN);
+          viewerColumn.getColumn().setText(NewsTableControl.getTitleTextRightToLeftSorting(viewerColumn.getColumn().getText(), model.isRightToLeftSorting()));
         }
       }
 
@@ -1498,18 +1504,28 @@ public class SearchNewsDialog extends TitleAreaDialog {
             NewsColumn oldSortBy = fNewsSorter.getSortBy();
             NewsColumn newSortBy = (NewsColumn) column.getData(NewsColumnViewModel.COL_ID);
             boolean defaultAscending = newSortBy.prefersAscending();
+            boolean defaultRightToLeftSorting = false;
             boolean ascending = (oldSortBy != newSortBy) ? defaultAscending : !fNewsSorter.isAscending();
+            //asc+l2r, desc+l2r, asc+r2l, desc+r2l, loop
+            boolean rightToLeftSorting = (oldSortBy != newSortBy)
+                ? defaultRightToLeftSorting //
+                : newSortBy == NewsColumn.TITLE && //
+                    (!fNewsSorter.isAscending() && !fNewsSorter.isRightToLeftSorting() || //
+                        fNewsSorter.isAscending() && fNewsSorter.isRightToLeftSorting());
 
             fNewsSorter.setSortBy(newSortBy);
             fNewsSorter.setAscending(ascending);
+            fNewsSorter.setRightToLeftSorting(rightToLeftSorting);
 
             fColumnModel.setSortColumn(newSortBy);
             fColumnModel.setAscending(ascending);
+            fColumnModel.setRightToLeftSorting(rightToLeftSorting);
 
             /* Indicate Sort-Column in UI for Columns that have a certain width */
             if (newSortBy.showSortIndicator()) {
               fResultViewer.getTable().setSortColumn(column);
               fResultViewer.getTable().setSortDirection(ascending ? SWT.UP : SWT.DOWN);
+              column.setText(NewsTableControl.getTitleTextRightToLeftSorting(column.getText(), fColumnModel.isRightToLeftSorting()));
             } else {
               fResultViewer.getTable().setSortColumn(null);
             }
@@ -1529,6 +1545,7 @@ public class SearchNewsDialog extends TitleAreaDialog {
 
       /* Update Sorter */
       fNewsSorter.setAscending(model.isAscending());
+      fNewsSorter.setRightToLeftSorting(model.isRightToLeftSorting());
       fNewsSorter.setSortBy(model.getSortColumn());
 
       /* Set Label Provider */
@@ -1655,7 +1672,7 @@ public class SearchNewsDialog extends TitleAreaDialog {
     fNewsListener = new NewsListener() {
       @Override
       public void entitiesAdded(Set<NewsEvent> events) {
-      /* Ignore */
+        /* Ignore */
       }
 
       @Override
@@ -1665,7 +1682,7 @@ public class SearchNewsDialog extends TitleAreaDialog {
 
       @Override
       public void entitiesDeleted(Set<NewsEvent> events) {
-      /* Ignore */
+        /* Ignore */
       }
     };
     OwlDAO.addEntityListener(INews.class, fNewsListener);

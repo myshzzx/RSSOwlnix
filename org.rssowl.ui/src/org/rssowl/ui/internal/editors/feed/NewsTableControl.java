@@ -87,8 +87,8 @@ import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INewsBin;
 import org.rssowl.core.persist.INewsMark;
 import org.rssowl.core.persist.ISearchMark;
-import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.event.LabelAdapter;
 import org.rssowl.core.persist.event.LabelEvent;
 import org.rssowl.core.persist.pref.IPreferenceScope;
@@ -481,12 +481,12 @@ public class NewsTableControl implements IFeedViewPart {
     return false;
   }
 
-  private void showColumns(NewsColumnViewModel newModel, boolean update, boolean refresh) {
+  private void showColumns(NewsColumnViewModel model, boolean update, boolean refresh) {
     if (fCustomTree.getControl().isDisposed())
       return;
 
     /* Return early if no change is required */
-    if (newModel.equals(fColumnModel))
+    if (model.equals(fColumnModel))
       return;
 
     /* Dispose Old */
@@ -498,24 +498,22 @@ public class NewsTableControl implements IFeedViewPart {
     }
 
     /* Keep as current */
-    fColumnModel = newModel;
+    fColumnModel = model;
 
     /* Create Columns */
-    List<NewsColumn> cols = newModel.getColumns();
+    List<NewsColumn> cols = model.getColumns();
     for (int i = 0; i < cols.size(); i++) {
       NewsColumn col = cols.get(i);
       TreeViewerColumn viewerColumn = new TreeViewerColumn(fViewer, SWT.LEFT);
-      fCustomTree.manageColumn(viewerColumn.getColumn(), newModel.getLayoutData(col), col.showName() ? col.getName() : null, col.showTooltip() ? col.getName() : null, null, col.isMoveable(), col.isResizable());
+      fCustomTree.manageColumn(viewerColumn.getColumn(), model.getLayoutData(col), col.showName() ? col.getName() : null, col.showTooltip() ? col.getName() : null, null, col.isMoveable(), col.isResizable());
       if (i == 0)
         viewerColumn.getColumn().setResizable(true); //Need to override this due to bug on windows
       viewerColumn.getColumn().setData(NewsColumnViewModel.COL_ID, col);
 
-      if (newModel.getSortColumn() == col && col.showSortIndicator()) {
+      if (model.getSortColumn() == col && col.showSortIndicator()) {
         fCustomTree.getControl().setSortColumn(viewerColumn.getColumn());
-        fCustomTree.getControl().setSortDirection(newModel.isAscending() ? SWT.UP : SWT.DOWN);
-        //RightToLeftSorting is shown as alignment of text
-        viewerColumn.getColumn().setAlignment(newModel.isRightToLeftSorting() ? SWT.RIGHT : SWT.LEFT); //not working
-        viewerColumn.getColumn().setText(getTitleTextRightToLeftSorting(viewerColumn.getColumn().getText(), newModel.isRightToLeftSorting()));
+        fCustomTree.getControl().setSortDirection(model.isAscending() ? SWT.UP : SWT.DOWN);
+        viewerColumn.getColumn().setText(getTitleTextRightToLeftSorting(viewerColumn.getColumn().getText(), model.isRightToLeftSorting()));
       }
     }
 
@@ -527,12 +525,12 @@ public class NewsTableControl implements IFeedViewPart {
       fCustomTree.update();
 
     /* Update Sorter */
-    fNewsSorter.setAscending(newModel.isAscending());
-    fNewsSorter.setRightToLeftSorting(newModel.isRightToLeftSorting());
-    fNewsSorter.setSortBy(newModel.getSortColumn());
+    fNewsSorter.setAscending(model.isAscending());
+    fNewsSorter.setRightToLeftSorting(model.isRightToLeftSorting());
+    fNewsSorter.setSortBy(model.getSortColumn());
 
     /* Set Label Provider */
-    fNewsTableLabelProvider.init(newModel);
+    fNewsTableLabelProvider.init(model);
     fViewer.setLabelProvider(fNewsTableLabelProvider);
 
     /* Refresh if necessary */
@@ -551,10 +549,11 @@ public class NewsTableControl implements IFeedViewPart {
           boolean defaultRightToLeftSorting = false;
           boolean ascending = (oldSortBy != newSortBy) ? defaultAscending : !fNewsSorter.isAscending();
           //asc+l2r, desc+l2r, asc+r2l, desc+r2l, loop
-          boolean rightToLeftSorting = (oldSortBy != newSortBy) ? defaultRightToLeftSorting
-              : newSortBy == NewsColumn.TITLE &&
-                  (!fNewsSorter.isAscending() && !fNewsSorter.isRightToLeftSorting()
-                 || fNewsSorter.isAscending() && fNewsSorter.isRightToLeftSorting());
+          boolean rightToLeftSorting = (oldSortBy != newSortBy)
+              ? defaultRightToLeftSorting //
+              : newSortBy == NewsColumn.TITLE && //
+                  (!fNewsSorter.isAscending() && !fNewsSorter.isRightToLeftSorting() || //
+                      fNewsSorter.isAscending() && fNewsSorter.isRightToLeftSorting());
 
           /* Update Model */
           fColumnModel.setSortColumn(newSortBy);
@@ -570,9 +569,7 @@ public class NewsTableControl implements IFeedViewPart {
           if (newSortBy.showSortIndicator()) {
             fCustomTree.getControl().setSortColumn(column);
             fCustomTree.getControl().setSortDirection(ascending ? SWT.UP : SWT.DOWN);
-            //RightToLeftSorting is shown as alignment of text
-            //column.setAlignment(rightToLeftSorting ? SWT.RIGHT : SWT.LEFT); //not working
-            column.setText(getTitleTextRightToLeftSorting(column.getText(), rightToLeftSorting));
+            column.setText(getTitleTextRightToLeftSorting(column.getText(), fColumnModel.isRightToLeftSorting()));
           } else {
             fCustomTree.getControl().setSortColumn(null);
           }
@@ -615,7 +612,8 @@ public class NewsTableControl implements IFeedViewPart {
   }
 
   private static final String RIGHT_TO_LEFT_SORTING_TEXT_SUFFIX = "<-"; //$NON-NLS-1$
-  private String getTitleTextRightToLeftSorting(String titleText, boolean rightToLeftSorting) {
+
+  public static String getTitleTextRightToLeftSorting(String titleText, boolean rightToLeftSorting) {
 
     if (!titleText.endsWith(RIGHT_TO_LEFT_SORTING_TEXT_SUFFIX) && rightToLeftSorting)
       return titleText + RIGHT_TO_LEFT_SORTING_TEXT_SUFFIX;
