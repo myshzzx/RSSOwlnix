@@ -62,8 +62,8 @@ public final class NewsCounterService {
     if (newsEvents.isEmpty())
       return;
 
-    boolean newsCounterUpdated = false;
-    Map<String, NewsCounterItem> updatedCounterItems = new HashMap<String, NewsCounterItem>();
+    boolean isSaveRootOnNewsCounterItemCreated = false;
+    Map<String, NewsCounterItem> changedCounterItems = new HashMap<String, NewsCounterItem>();
     synchronized (fNewsCounter) {
       for (NewsEvent newsEvent : newsEvents) {
         INews news = newsEvent.getEntity();
@@ -80,7 +80,7 @@ public final class NewsCounterService {
         if (newsCounterItem == null) {
           newsCounterItem = new NewsCounterItem();
           fNewsCounter.put(news.getFeedLinkAsText(), newsCounterItem);
-          newsCounterUpdated = true;
+          isSaveRootOnNewsCounterItemCreated = true;
         }
 
         /* Update Counter */
@@ -91,14 +91,16 @@ public final class NewsCounterService {
         if (news.isFlagged())
           newsCounterItem.incrementStickyCounter();
 
-        if (!newsCounterUpdated)
-          updatedCounterItems.put(news.getFeedLinkAsText(), newsCounterItem);
+        //skip when it will save root
+        if (!isSaveRootOnNewsCounterItemCreated)
+          changedCounterItems.put(news.getFeedLinkAsText(), newsCounterItem);
       }
 
-      if (newsCounterUpdated)
+      //if a child was created then save the root (NewsCounter) so it saves the relationship to the newly added child (NewsCounterItem)
+      if (isSaveRootOnNewsCounterItemCreated)
         fDb.ext().set(fNewsCounter, Integer.MAX_VALUE);
       else {
-        for (NewsCounterItem item : updatedCounterItems.values())
+        for (NewsCounterItem item : changedCounterItems.values()) //only existing children changed so save only changed children
           fDb.set(item);
       }
     }
@@ -110,7 +112,7 @@ public final class NewsCounterService {
    * @param newsEvents the updated news
    */
   public void onNewsUpdated(Collection<NewsEvent> newsEvents) {
-    Map<String, NewsCounterItem> updatedCounterItems = new HashMap<String, NewsCounterItem>();
+    Map<String, NewsCounterItem> changedCounterItems = new HashMap<String, NewsCounterItem>();
     synchronized (fNewsCounter) {
       for (NewsEvent event : newsEvents) {
         INews currentNews = event.getEntity();
@@ -160,10 +162,10 @@ public final class NewsCounterService {
         else if (!oldStateSticky && newStateSticky)
           counterItem.incrementStickyCounter();
 
-        updatedCounterItems.put(currentNews.getFeedLinkAsText(), counterItem);
+        changedCounterItems.put(currentNews.getFeedLinkAsText(), counterItem);
       }
 
-      for (NewsCounterItem counterItem : updatedCounterItems.values())
+      for (NewsCounterItem counterItem : changedCounterItems.values())
         fDb.set(counterItem);
     }
   }
@@ -174,7 +176,7 @@ public final class NewsCounterService {
    * @param newsEvents the deleted news
    */
   public void onNewsRemoved(Collection<NewsEvent> newsEvents) {
-    Map<String, NewsCounterItem> updatedCounterItems = new HashMap<String, NewsCounterItem>();
+    Map<String, NewsCounterItem> changedCounterItems = new HashMap<String, NewsCounterItem>();
 
     synchronized (fNewsCounter) {
       for (NewsEvent newsEvent : newsEvents) {
@@ -193,10 +195,10 @@ public final class NewsCounterService {
         if (news.isFlagged() && (!EnumSet.of(INews.State.DELETED, INews.State.HIDDEN).contains(news.getState())))
           counterItem.decrementStickyCounter();
 
-        updatedCounterItems.put(news.getFeedLinkAsText(), counterItem);
+        changedCounterItems.put(news.getFeedLinkAsText(), counterItem);
       }
 
-      for (NewsCounterItem counterItem : updatedCounterItems.values())
+      for (NewsCounterItem counterItem : changedCounterItems.values())
         fDb.set(counterItem);
     }
   }

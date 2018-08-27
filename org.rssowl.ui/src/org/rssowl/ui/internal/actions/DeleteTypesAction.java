@@ -48,8 +48,8 @@ import org.rssowl.core.persist.IMark;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INewsBin;
 import org.rssowl.core.persist.ISearchMark;
-import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.util.CoreUtils;
 import org.rssowl.ui.internal.Activator;
 import org.rssowl.ui.internal.Controller;
@@ -110,14 +110,7 @@ public class DeleteTypesAction extends Action implements IObjectActionDelegate {
    */
   @Override
   public void run(IAction action) {
-    if (!fSelection.isEmpty() && confirmed()) {
-      BusyIndicator.showWhile(PlatformUI.getWorkbench().getDisplay(), new Runnable() {
-        @Override
-        public void run() {
-          internalRun();
-        }
-      });
-    }
+    run();
   }
 
   /*

@@ -52,7 +52,6 @@ import org.rssowl.core.persist.IFolder;
 import org.rssowl.core.persist.IMark;
 import org.rssowl.core.persist.INewsBin;
 import org.rssowl.core.persist.dao.OwlDAO;
-import org.rssowl.core.persist.service.PersistenceException;
 import org.rssowl.ui.internal.OwlUI;
 import org.rssowl.ui.internal.util.FolderChooser;
 import org.rssowl.ui.internal.util.LayoutUtils;
@@ -208,10 +207,6 @@ public class NewNewsBinAction implements IWorkbenchWindowActionDelegate, IObject
    */
   @Override
   public void run(IAction action) {
-    internalRun();
-  }
-
-  private void internalRun() throws PersistenceException {
 
     /* Get the parent Folder */
     IFolder parent = OwlUI.getSelectedParent(fParent);

@@ -91,14 +91,6 @@ public class ReloadTypesAction extends Action implements IObjectActionDelegate {
   }
 
   /*
-   * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
-   */
-  @Override
-  public void run(IAction action) {
-    run();
-  }
-
-  /*
    * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
    * org.eclipse.jface.viewers.ISelection)
    */
@@ -106,6 +98,14 @@ public class ReloadTypesAction extends Action implements IObjectActionDelegate {
   public void selectionChanged(IAction action, ISelection selection) {
     if (selection instanceof IStructuredSelection)
       fSelection = (IStructuredSelection) selection;
+  }
+
+  /*
+   * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+   */
+  @Override
+  public void run(IAction action) {
+    run();
   }
 
   /*

@@ -37,8 +37,8 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.keys.IBindingService;
 import org.rssowl.core.persist.INews;
-import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.ui.internal.Controller;
 import org.rssowl.ui.internal.OwlUI;
 import org.rssowl.ui.internal.editors.feed.FeedView;
@@ -61,6 +61,7 @@ public class ToggleReadStateAction extends Action implements IWorkbenchWindowAct
   private static final EnumSet<INews.State> UNREAD_STATES = EnumSet.of(INews.State.NEW, INews.State.UNREAD, INews.State.UPDATED);
 
   private IStructuredSelection fSelection;
+  private INewsDAO fNewsDAO = OwlDAO.getDAO(INewsDAO.class);
   private boolean fMarkRead;
 
   /** Leave for reflection */
@@ -73,6 +74,7 @@ public class ToggleReadStateAction extends Action implements IWorkbenchWindowAct
    */
   public ToggleReadStateAction(IStructuredSelection selection) {
     fSelection = selection;
+    fNewsDAO = OwlDAO.getDAO(INewsDAO.class);
     fMarkRead = shouldMarkRead(fSelection);
   }
 
@@ -166,7 +168,7 @@ public class ToggleReadStateAction extends Action implements IWorkbenchWindowAct
       UndoStack.getInstance().addOperation(new NewsStateOperation(newsList, INews.State.UNREAD, false));
 
       /* Perform Operation */
-      OwlDAO.getDAO(INewsDAO.class).setState(newsList, INews.State.UNREAD, false, false);
+      fNewsDAO.setState(newsList, INews.State.UNREAD, false, false);
     }
   }
 

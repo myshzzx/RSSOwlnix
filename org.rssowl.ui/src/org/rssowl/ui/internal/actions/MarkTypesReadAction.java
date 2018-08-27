@@ -41,9 +41,9 @@ import org.rssowl.core.persist.IFolderChild;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INews.State;
 import org.rssowl.core.persist.INewsMark;
-import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IFolderDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
 import org.rssowl.core.persist.reference.NewsReference;
 import org.rssowl.core.util.CoreUtils;
@@ -94,12 +94,7 @@ public class MarkTypesReadAction extends Action implements IWorkbenchWindowActio
    */
   @Override
   public void run(IAction action) {
-    JobRunner.runInBackgroundWithBusyIndicator(new Runnable() {
-      @Override
-      public void run() {
-        MarkTypesReadAction.this.internalRun();
-      }
-    });
+    run();
   }
 
   /*
