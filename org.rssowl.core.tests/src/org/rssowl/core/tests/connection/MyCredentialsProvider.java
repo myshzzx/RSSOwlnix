@@ -28,6 +28,7 @@ import org.rssowl.core.connection.CredentialsException;
 import org.rssowl.core.connection.ICredentials;
 import org.rssowl.core.connection.IProxyCredentials;
 import org.rssowl.core.connection.PlatformCredentialsProvider;
+import org.rssowl.core.tests.TestWebServer;
 import org.rssowl.core.util.SyncUtils;
 
 import java.net.URI;
@@ -41,22 +42,26 @@ public class MyCredentialsProvider extends PlatformCredentialsProvider {
   private boolean fAuthDeleted;
   private boolean fProxyDeleted;
 
+  public static boolean isEnabled = false;
+
   /*
-   * @see org.rssowl.core.connection.auth.ICredentialsProvider#getAuthCredentials(java.net.URI)
+   * @see
+   * org.rssowl.core.connection.auth.ICredentialsProvider#getAuthCredentials(java.
+   * net.URI)
    */
   @Override
-  @SuppressWarnings( { "nls", "unused" })
+  @SuppressWarnings({ "nls", "unused" })
   public ICredentials getAuthCredentials(URI link, String realm) throws CredentialsException {
-    if (!fAuthDeleted && link.toString().equals("http://www.rssowl.org/rssowl2dg/tests/connection/authrequired/feed_rdf.xml")) {
+    if (!fAuthDeleted && isEnabled) {
       return new ICredentials() {
         @Override
         public String getUsername() {
-          return "bpasero";
+          return TestWebServer.username;
         }
 
         @Override
         public String getPassword() {
-          return "admin";
+          return TestWebServer.password;
         }
 
         @Override
@@ -89,12 +94,14 @@ public class MyCredentialsProvider extends PlatformCredentialsProvider {
   }
 
   /*
-   * @see org.rssowl.core.connection.auth.ICredentialsProvider#getProxyCredentials(java.net.URI)
+   * @see
+   * org.rssowl.core.connection.auth.ICredentialsProvider#getProxyCredentials(java
+   * .net.URI)
    */
   @Override
-  @SuppressWarnings( { "unused", "nls" })
+  @SuppressWarnings({ "unused", "nls" })
   public IProxyCredentials getProxyCredentials(URI link) {
-    if (!fProxyDeleted && link.toString().equals("http://www.rssowl.org/rssowl2dg/tests/connection/authrequired/feed_rdf.xml")) {
+    if (!fProxyDeleted && isEnabled) {
       return new IProxyCredentials() {
         @Override
         public String getHost() {
@@ -108,12 +115,12 @@ public class MyCredentialsProvider extends PlatformCredentialsProvider {
 
         @Override
         public String getUsername() {
-          return "bpasero";
+          return "proxy-" + TestWebServer.username;
         }
 
         @Override
         public String getPassword() {
-          return "admin";
+          return "proxy-" + TestWebServer.password;
         }
 
         @Override
@@ -127,8 +134,9 @@ public class MyCredentialsProvider extends PlatformCredentialsProvider {
   }
 
   /*
-   * @see org.rssowl.core.connection.PlatformCredentialsProvider#deleteAuthCredentials(java.net.URI,
-   * java.lang.String)
+   * @see
+   * org.rssowl.core.connection.PlatformCredentialsProvider#deleteAuthCredentials(
+   * java.net.URI, java.lang.String)
    */
   @Override
   public void deleteAuthCredentials(URI link, String realm) throws CredentialsException {
@@ -137,7 +145,8 @@ public class MyCredentialsProvider extends PlatformCredentialsProvider {
   }
 
   /*
-   * @see org.rssowl.core.connection.auth.DefaultCredentialsProvider#deleteProxyCredentials(java.net.URI)
+   * @see org.rssowl.core.connection.auth.DefaultCredentialsProvider#
+   * deleteProxyCredentials(java.net.URI)
    */
   @Override
   public void deleteProxyCredentials(URI link) {

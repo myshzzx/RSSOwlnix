@@ -48,6 +48,7 @@ public class EasySSLConnectionSocketFactory implements LayeredConnectionSocketFa
     try {
       sslContext = new org.apache.http.ssl.SSLContextBuilder() //
           // .loadTrustMaterial(null, new TrustSelfSignedStrategy()) //
+//          .setTrustManagerFactoryAlgorithm("PKIX") //$NON-NLS-1$
           .loadTrustMaterial(null, new org.apache.http.ssl.TrustStrategy() {
             @Override
             public boolean isTrusted(java.security.cert.X509Certificate[] chain, String authType) throws java.security.cert.CertificateException {

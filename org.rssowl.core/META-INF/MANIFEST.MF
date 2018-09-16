@@ -143,3 +143,4 @@ Export-Package: org.rssowl.core;version="2.5.0";
    org.rssowl.core.persist.reference,
    org.rssowl.core.persist.event"
 Bundle-Localization: plugin
+Automatic-Module-Name: org.rssowl.core

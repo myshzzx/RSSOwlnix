@@ -220,3 +220,4 @@ Export-Package: org.apache.commons.codec;version="1.10.0",
  org.apache.http.protocol;version="4.4.10";uses:="org.apache.http.params,org.apache.http",
  org.apache.http.ssl;version="4.4.10";uses:="javax.net.ssl",
  org.apache.http.util;version="4.4.10";uses:="org.apache.http"
+Automatic-Module-Name: org.rssowl.lib.httpclient

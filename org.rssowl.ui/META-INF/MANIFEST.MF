@@ -53,3 +53,4 @@ Export-Package: org.rssowl.ui.dialogs.properties;version="2.5.0";uses:="org.ecli
  org.rssowl.ui.internal.util;version="2.5.0";x-internal:=true,
  org.rssowl.ui.internal.views.explorer;version="2.5.0";x-internal:=true
 Bundle-Localization: plugin
+Automatic-Module-Name: org.rssowl.ui

@@ -24,19 +24,21 @@
 
 package org.rssowl.core.tests.connection;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jetty.util.security.Constraint;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.rssowl.core.Owl;
@@ -60,6 +62,7 @@ import org.rssowl.core.persist.IEntity;
 import org.rssowl.core.persist.IFeed;
 import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.reference.FeedLinkReference;
+import org.rssowl.core.tests.TestWebServer;
 import org.rssowl.core.util.RegExUtils;
 import org.rssowl.core.util.StringUtils;
 import org.rssowl.core.util.SyncUtils;
@@ -85,6 +88,11 @@ import java.util.Map;
  */
 public class ConnectionTests {
 
+  @BeforeClass
+  public static void setUpOnce() {
+    TestWebServer.required(false);
+  }
+
   /**
    * @throws Exception
    */
@@ -101,17 +109,23 @@ public class ConnectionTests {
   @Test
   @SuppressWarnings("nls")
   public void testProxyCredentialProvider() throws Exception {
-    IConnectionService conManager = Owl.getConnectionService();
-    URI feedUrl = new URI("http://www.rssowl.org/rssowl2dg/tests/connection/authrequired/feed_rdf.xml");
-    IFeed feed = new Feed(feedUrl);
+    try {
+      MyCredentialsProvider.isEnabled = true;
 
-    IProxyCredentials proxyCredentials = conManager.getProxyCredentials(feed.getLink());
+      IConnectionService conManager = Owl.getConnectionService();
+      URI feedUrl = new URI(TestWebServer.rootHttp + "/feed/some_feed.xml");
+      IFeed feed = new Feed(feedUrl);
 
-    assertEquals("", proxyCredentials.getDomain());
-    assertEquals("bpasero", proxyCredentials.getUsername());
-    assertEquals("admin", proxyCredentials.getPassword());
-    assertEquals("127.0.0.1", proxyCredentials.getHost());
-    assertEquals(0, proxyCredentials.getPort());
+      IProxyCredentials proxyCredentials = conManager.getProxyCredentials(feed.getLink());
+
+      assertEquals("", proxyCredentials.getDomain());
+      assertEquals("proxy-" + TestWebServer.username, proxyCredentials.getUsername());
+      assertEquals("proxy-" + TestWebServer.password, proxyCredentials.getPassword());
+      assertEquals("127.0.0.1", proxyCredentials.getHost());
+      assertEquals(0, proxyCredentials.getPort());
+    } finally {
+      MyCredentialsProvider.isEnabled = false;
+    }
   }
 
   /**
@@ -121,10 +135,9 @@ public class ConnectionTests {
   @SuppressWarnings("nls")
   public void testGetLabel() throws Exception {
     IConnectionService conManager = Owl.getConnectionService();
-    // URI feedUrl = new URI("http://www.rssowl.org/node/feed");
-    URI feedUrl = new URI("http://www.heise.de");
+    URI feedUrl = new URI(TestWebServer.rootHttp + "/feed/some_feed.xml");
     String label = conManager.getLabel(feedUrl, new NullProgressMonitor());
-    assertEquals("RSSOwl News", label);
+    assertEquals("Some Feed Title", label);
   }
 
   /**
@@ -134,11 +147,10 @@ public class ConnectionTests {
   @SuppressWarnings("nls")
   public void testGetFavicon() throws Exception {
     IConnectionService conManager = Owl.getConnectionService();
-    // URI feedUrl = new URI("http://www.rssowl.org/node/feed");
-    URI feedUrl = new URI("http://www.heise.de");
+    URI feedUrl = new URI(TestWebServer.rootHttp + "/feed/some_feed.xml");
     byte[] feedIcon = conManager.getFeedIcon(feedUrl, new NullProgressMonitor());
-    assertNotNull(feedIcon);
-    assertTrue(feedIcon.length != 0);
+    assertNotNull("no favicon.ico found", feedIcon);
+    assertTrue("favicon.ico length is 0", feedIcon.length != 0);
   }
 
   /**
@@ -147,7 +159,7 @@ public class ConnectionTests {
   @Test
   public void testHttpConnectionInputStream() throws Exception {
     IConnectionService conManager = Owl.getConnectionService();
-    URI url = new URI("http://www.rssowl.org/favicon.ico");
+    URI url = new URI(TestWebServer.rootHttp + "/feed/some_feed.xml");
     IProtocolHandler handler = conManager.getHandler(url);
     InputStream stream = handler.openStream(url, null, null);
     if (stream instanceof HttpConnectionInputStream) {
@@ -167,8 +179,8 @@ public class ConnectionTests {
   @SuppressWarnings("nls")
   public void testProtectedFeed() throws Exception {
     IConnectionService conManager = Owl.getConnectionService();
-    URI feedUrl1 = new URI("http://www.rssowl.org/rssowl2dg/tests/connection/authrequired/feed_rss.xml");
-    URI feedUrl2 = new URI("http://www.rssowl.org/rssowl2dg/tests/connection/authrequired/feed_rss_copy.xml");
+    URI feedUrl1 = new URI(TestWebServer.rootHttps + "/auth-feed/some_feed.xml");
+    URI feedUrl2 = new URI(TestWebServer.rootHttp + "/auth-feed/some_feed2.xml");
     ICredentialsProvider credProvider = conManager.getCredentialsProvider(feedUrl1);
 
     IFeed feed1 = new Feed(feedUrl1);
@@ -195,12 +207,12 @@ public class ConnectionTests {
 
       @Override
       public String getPassword() {
-        return "admin";
+        return TestWebServer.password;
       }
 
       @Override
       public String getUsername() {
-        return "bpasero";
+        return TestWebServer.username;
       }
     };
 
@@ -213,7 +225,8 @@ public class ConnectionTests {
     assertEquals("RSS 2.0", feed1.getFormat());
 
     /* Test authentication by other realm is not working */
-    credProvider.setAuthCredentials(credentials, URIUtils.normalizeUri(feedUrl2, true), "Other Directory");
+    URI restrictedDirectoryUri = URIUtils.normalizeUri(feedUrl2, true);
+    credProvider.setAuthCredentials(credentials, restrictedDirectoryUri, "Other Directory");
 
     try {
       Owl.getConnectionService().getHandler(feed2.getLink()).openStream(feed2.getLink(), null, null);
@@ -224,7 +237,7 @@ public class ConnectionTests {
     assertNotNull(e);
 
     /* Test authentication by realm is working */
-    credProvider.setAuthCredentials(credentials, URIUtils.normalizeUri(feedUrl2, true), "Restricted Directory");
+    credProvider.setAuthCredentials(credentials, restrictedDirectoryUri, Constraint.__BASIC_AUTH + " Restricted Directory");
 
     inS = Owl.getConnectionService().getHandler(feed2.getLink()).openStream(feed2.getLink(), null, null);
     assertNotNull(inS);
@@ -250,8 +263,8 @@ public class ConnectionTests {
   @SuppressWarnings("nls")
   public void testProtectedFeedInMemory() throws Exception {
     IConnectionService conManager = Owl.getConnectionService();
-    URI feedUrl1 = new URI("http://www.rssowl.org/rssowl2dg/tests/connection/authrequired/feed_rss.xml");
-    URI feedUrl2 = new URI("http://www.rssowl.org/rssowl2dg/tests/connection/authrequired/feed_rss_copy.xml");
+    URI feedUrl1 = new URI(TestWebServer.rootHttps + "/auth-feed/some_feed.xml");
+    URI feedUrl2 = new URI(TestWebServer.rootHttps + "/auth-feed/some_feed2.xml");
     ICredentialsProvider credProvider = conManager.getCredentialsProvider(feedUrl1);
 
     IFeed feed1 = new Feed(feedUrl1);
@@ -278,12 +291,12 @@ public class ConnectionTests {
 
       @Override
       public String getPassword() {
-        return "admin";
+        return TestWebServer.password;
       }
 
       @Override
       public String getUsername() {
-        return "bpasero";
+        return TestWebServer.username;
       }
     };
 
@@ -296,7 +309,9 @@ public class ConnectionTests {
     assertEquals("RSS 2.0", feed1.getFormat());
 
     /* Test authentication by other realm is not working */
-    credProvider.setInMemoryAuthCredentials(credentials, URIUtils.normalizeUri(feedUrl2, true), "Other Directory");
+    URI restrictedDirectoryUri = URIUtils.normalizeUri(feedUrl2, true);
+//    URI restrictedDirectoryUri = new URI(TestWebServer.rootHttp + "/feed-no-listing/");
+    credProvider.setInMemoryAuthCredentials(credentials, restrictedDirectoryUri, "Other Directory");
 
     try {
       Owl.getConnectionService().getHandler(feed2.getLink()).openStream(feed2.getLink(), null, null);
@@ -307,7 +322,7 @@ public class ConnectionTests {
     assertNotNull(e);
 
     /* Test authentication by realm is working */
-    credProvider.setInMemoryAuthCredentials(credentials, URIUtils.normalizeUri(feedUrl2, true), "Restricted Directory");
+    credProvider.setInMemoryAuthCredentials(credentials, restrictedDirectoryUri, Constraint.__BASIC_AUTH + " Restricted Directory");
 
     inS = Owl.getConnectionService().getHandler(feed2.getLink()).openStream(feed2.getLink(), null, null);
     assertNotNull(inS);
@@ -335,8 +350,7 @@ public class ConnectionTests {
   @Test
   @SuppressWarnings("nls")
   public void testHTTPFeed() throws Exception {
-//    URI feedUrl = new URI("http://www.rssowl.org/rssowl2dg/tests/connection/rss_2_0.xml");
-    URI feedUrl = new URI("http://127.0.0.1:8080/feed/some_feed.xml");
+    URI feedUrl = new URI(TestWebServer.rootHttp + "/feed/some_feed.xml");
     IFeed feed = new Feed(feedUrl);
 
     InputStream inS = Owl.getConnectionService().getHandler(feed.getLink()).openStream(feed.getLink(), null, null);
@@ -354,8 +368,7 @@ public class ConnectionTests {
   @Test
   @SuppressWarnings("nls")
   public void testFEEDFeed() throws Exception {
-//    URI feedUrl = new URI("feed://www.rssowl.org/rssowl2dg/tests/connection/rss_2_0.xml");
-    URI feedUrl = new URI("feed://127.0.0.1:8080/feed/some_feed.xml");
+    URI feedUrl = new URI((TestWebServer.rootHttp + "/feed/some_feed.xml").replace("http", "feed"));
     IFeed feed = new Feed(feedUrl);
 
     InputStream inS = Owl.getConnectionService().getHandler(feed.getLink()).openStream(feed.getLink(), null, null);
@@ -373,15 +386,16 @@ public class ConnectionTests {
   @Test
   @SuppressWarnings("nls")
   public void testHTTPSFeed() throws Exception {
-    // URI feedUrl = new URI("https://sourceforge.net/export/rss2_projnews.php?group_id=141424&rss_fulltext=1");
-    URI feedUrl = new URI("https://127.0.0.1:8443/feed/some_feed.xml");
-    IFeed feed = new Feed(feedUrl);
+    {
+      URI feedUrl = new URI(TestWebServer.rootHttps + "/feed/some_feed.xml");
+      IFeed feed = new Feed(feedUrl);
 
-    InputStream inS = Owl.getConnectionService().getHandler(feed.getLink()).openStream(feed.getLink(), null, null);
-    assertNotNull(inS);
+      InputStream inS = Owl.getConnectionService().getHandler(feed.getLink()).openStream(feed.getLink(), null, null);
+      assertNotNull(inS);
 
-    Owl.getInterpreter().interpret(inS, feed, null);
-    assertEquals("RSS 2.0", feed.getFormat());
+      Owl.getInterpreter().interpret(inS, feed, null);
+      assertEquals("RSS 2.0", feed.getFormat());
+    }
   }
 
   /**
@@ -448,40 +462,45 @@ public class ConnectionTests {
    */
   @Test
   public void testStoredCredentialsDeleted() throws Exception {
-    IConnectionService conManager = Owl.getConnectionService();
-//    URI feedUrl = new URI("http://www.rssowl.org/rssowl2dg/tests/connection/authrequired/feed_rdf.xml");
-    URI feedUrl = new URI("https://127.0.0.1:8443/auth/some_feed.xml");
-    IFeed feed = new Feed(feedUrl);
+    try {
+      MyCredentialsProvider.isEnabled = true;
 
-    OwlDAO.save(feed);
+      IConnectionService conManager = Owl.getConnectionService();
+      URI feedUrl = new URI(TestWebServer.rootHttp + "/feed/some_feed.xml");
+      IFeed feed = new Feed(feedUrl);
 
-    ICredentials authCreds = new ICredentials() {
-      @Override
-      public String getDomain() {
-        return null;
-      }
+      OwlDAO.save(feed);
 
-      @Override
-      public String getPassword() {
-        return "admin";
-      }
+      ICredentials authCreds = new ICredentials() {
+        @Override
+        public String getDomain() {
+          return null;
+        }
 
-      @Override
-      public String getUsername() {
-        return "1234";
-      }
-    };
+        @Override
+        public String getPassword() {
+          return TestWebServer.password;
+        }
 
-    conManager.getCredentialsProvider(feedUrl).setAuthCredentials(authCreds, feedUrl, null);
+        @Override
+        public String getUsername() {
+          return TestWebServer.username;
+        }
+      };
 
-    assertNotNull(conManager.getAuthCredentials(feedUrl, null));
+      conManager.getCredentialsProvider(feedUrl).setAuthCredentials(authCreds, feedUrl, null);
 
-    OwlDAO.delete(new FeedLinkReference(feedUrl).resolve());
+      assertNotNull(conManager.getAuthCredentials(feedUrl, null));
 
-    assertNull(conManager.getAuthCredentials(feedUrl, null));
-    assertNull(conManager.getCredentialsProvider(feedUrl).getPersistedAuthCredentials(feedUrl, null));
+      OwlDAO.delete(new FeedLinkReference(feedUrl).resolve());
 
-    ((PlatformCredentialsProvider) conManager.getCredentialsProvider(feedUrl)).clear();
+      assertNull(conManager.getAuthCredentials(feedUrl, null));
+      assertNull(conManager.getCredentialsProvider(feedUrl).getPersistedAuthCredentials(feedUrl, null));
+
+      ((PlatformCredentialsProvider) conManager.getCredentialsProvider(feedUrl)).clear();
+    } finally {
+      MyCredentialsProvider.isEnabled = false;
+    }
   }
 
   /**
@@ -489,40 +508,46 @@ public class ConnectionTests {
    */
   @Test
   public void testInMemoryCredentialsDeleted() throws Exception {
-    IConnectionService conManager = Owl.getConnectionService();
-    URI feedUrl = new URI("http://www.rssowl.org/rssowl2dg/tests/connection/authrequired/feed_rdf.xml");
-    IFeed feed = new Feed(feedUrl);
+    try {
+      MyCredentialsProvider.isEnabled = true;
 
-    OwlDAO.save(feed);
+      IConnectionService conManager = Owl.getConnectionService();
+      URI feedUrl = new URI(TestWebServer.rootHttp + "/feed/some_feed.xml");
+      IFeed feed = new Feed(feedUrl);
 
-    ICredentials authCreds = new ICredentials() {
-      @Override
-      public String getDomain() {
-        return null;
-      }
+      OwlDAO.save(feed);
 
-      @Override
-      public String getPassword() {
-        return "admin";
-      }
+      ICredentials authCreds = new ICredentials() {
+        @Override
+        public String getDomain() {
+          return null;
+        }
 
-      @Override
-      public String getUsername() {
-        return "bpasero";
-      }
-    };
+        @Override
+        public String getPassword() {
+          return TestWebServer.password;
+        }
 
-    conManager.getCredentialsProvider(feedUrl).setInMemoryAuthCredentials(authCreds, feedUrl, null);
+        @Override
+        public String getUsername() {
+          return TestWebServer.username;
+        }
+      };
 
-    assertNotNull(conManager.getAuthCredentials(feedUrl, null));
-    assertNull(conManager.getCredentialsProvider(feedUrl).getPersistedAuthCredentials(feedUrl, null));
+      conManager.getCredentialsProvider(feedUrl).setInMemoryAuthCredentials(authCreds, feedUrl, null);
 
-    OwlDAO.delete(new FeedLinkReference(feedUrl).resolve());
+      assertNotNull(conManager.getAuthCredentials(feedUrl, null));
+      assertNull(conManager.getCredentialsProvider(feedUrl).getPersistedAuthCredentials(feedUrl, null));
 
-    assertNull(conManager.getAuthCredentials(feedUrl, null));
-    assertNull(conManager.getCredentialsProvider(feedUrl).getPersistedAuthCredentials(feedUrl, null));
+      OwlDAO.delete(new FeedLinkReference(feedUrl).resolve());
 
-    ((PlatformCredentialsProvider) conManager.getCredentialsProvider(feedUrl)).clear();
+      assertNull(conManager.getAuthCredentials(feedUrl, null));
+      assertNull(conManager.getCredentialsProvider(feedUrl).getPersistedAuthCredentials(feedUrl, null));
+
+      ((PlatformCredentialsProvider) conManager.getCredentialsProvider(feedUrl)).clear();
+    } finally {
+      MyCredentialsProvider.isEnabled = false;
+    }
   }
 
   /**
@@ -532,9 +557,11 @@ public class ConnectionTests {
   @SuppressWarnings("nls")
   public void testLoadFeedFromWebsiteWithRedirect() throws Exception {
     IConnectionService conManager = Owl.getConnectionService();
-    URI feedUrl = new URI("http://www.planeteclipse.org");
+    URI feedUrl = new URI(TestWebServer.rootHttp + "/redirect-feed/some_feed_linked.html");
 
-    assertEquals("http://www.planeteclipse.org/planet/rss20.xml", conManager.getFeed(feedUrl, new NullProgressMonitor()).toString());
+    URI feedUrlOut = conManager.getFeed(feedUrl, new NullProgressMonitor());
+    assertNotNull(feedUrlOut);
+    assertEquals(TestWebServer.rootHttp + "/feed/some_feed.xml", feedUrlOut.toString());
   }
 
   /**
@@ -544,9 +571,11 @@ public class ConnectionTests {
   @SuppressWarnings("nls")
   public void testLoadFeedFromWebsiteWithoutRedirect() throws Exception {
     IConnectionService conManager = Owl.getConnectionService();
-    URI feedUrl = new URI("http://www.heise.de");
+    URI feedUrl = new URI(TestWebServer.rootHttp + "/feed/some_feed_linked.html");
 
-    assertEquals("https://www.heise.de/newsticker/heise-atom.xml", conManager.getFeed(feedUrl, new NullProgressMonitor()).toString());
+    URI feedUrlOut = conManager.getFeed(feedUrl, new NullProgressMonitor());
+    assertNotNull(feedUrlOut);
+    assertEquals(TestWebServer.rootHttp + "/feed/some_feed.xml", feedUrlOut.toString());
   }
 
   /**
@@ -556,15 +585,18 @@ public class ConnectionTests {
   @SuppressWarnings("nls")
   public void testLoadEntityEncodedFeedFromWebsite() throws Exception {
     IConnectionService conManager = Owl.getConnectionService();
-    URI feedUrl = new URI("http://www.rssowl.org/rssowl2dg/tests/connection/homepage.html");
+    URI feedUrl = new URI(TestWebServer.rootHttp + "/feed/some_feed_linked2.html");
 
-    assertEquals("http://www.rssowl.org/node/feed&help=true", conManager.getFeed(feedUrl, new NullProgressMonitor()).toString());
+    assertEquals(TestWebServer.rootHttp + "/feed/some_feed&#63;a=1&b=2", conManager.getFeed(feedUrl, new NullProgressMonitor()).toString());
   }
 
   /**
    * @throws Exception
+   * @deprecated TODO digg keyword feed replacement
    */
+  @Deprecated
   @Test
+  @Ignore
   public void testKeywordFeeds() throws Exception {
     String keywords = "blog feed";
     String URL_INPUT_TOKEN = "[:]";
@@ -606,8 +638,11 @@ public class ConnectionTests {
 
   /**
    * @throws Exception
+   * @deprecated TODO broken on rssowl.org and no replacement
    */
+  @Deprecated
   @Test
+  @Ignore
   public void testFeedSearch_SingleLanguage() throws Exception {
     String link = Controller.getDefault().toFeedSearchLink("blog");
 
@@ -626,8 +661,11 @@ public class ConnectionTests {
 
   /**
    * @throws Exception
+   * @deprecated TODO broken on rssowl.org and no replacement
    */
+  @Deprecated
   @Test
+  @Ignore
   public void testFeedSearch_DoubleLanguage() throws Exception {
     String link = Controller.getDefault().toFeedSearchLink("blog");
 
@@ -646,8 +684,11 @@ public class ConnectionTests {
 
   /**
    * @throws Exception
+   * @deprecated TODO broken on rssowl.org and no replacement
    */
+  @Deprecated
   @Test
+  @Ignore
   public void testFeedSearch_WrongLanguage() throws Exception {
     String link = Controller.getDefault().toFeedSearchLink("blog");
 
@@ -669,7 +710,7 @@ public class ConnectionTests {
    */
   @Test
   public void testWebsite() throws Exception {
-    String link = "http://www.rssowl.org";
+    String link = TestWebServer.rootHttp + "/feed/some_feed_linked.html";
 
     Map<Object, Object> properties = new HashMap<Object, Object>();
     properties.put(IConnectionPropertyConstants.CON_TIMEOUT, 60000);
@@ -680,12 +721,15 @@ public class ConnectionTests {
 
     List<String> links = RegExUtils.extractLinksFromText(content, false);
     assertTrue(!links.isEmpty());
-    assertTrue(links.size() > 10);
+    assertTrue(links.size() >= 3); //must find the 3 absolute links (with http: or https:)
   }
 
   /**
    * @throws Exception
+   * @deprecated TODO google reader was discontinued, find google reader
+   * replacement
    */
+  @Deprecated
   @Test
   @Ignore
   public void testGoogleReaderSync() throws Exception {
@@ -716,8 +760,12 @@ public class ConnectionTests {
 
   /**
    * @throws Exception
+   * @deprecated TODO google reader was discontinued, find google reader
+   * replacement
    */
+  @Deprecated
   @Test
+  @Ignore
   public void testGetGoogleReaderAPIToken() throws Exception {
     String apiToken = SyncUtils.getGoogleApiToken("rssowl@mailinator.com", "rssowl.org", new NullProgressMonitor());
     assertNotNull(apiToken);
@@ -728,7 +776,8 @@ public class ConnectionTests {
    */
   @Test
   public void testNewsTransformer() throws Exception {
-    String link = "http://www.rssowl.org/node/258";
+//    String link = "http://www.rssowl.org/node/258";
+    String link = TestWebServer.rootHttp;
 
     List<LinkTransformer> transformers = Controller.getDefault().getLinkTransformers();
     for (LinkTransformer transformer : transformers) {
@@ -748,7 +797,8 @@ public class ConnectionTests {
    */
   @Test
   public void testNewsTransformerEmbedded() throws Exception {
-    String link = "http://www.rssowl.org/help";
+//    String link = "http://www.rssowl.org/help";
+    String link = TestWebServer.rootHttp;
     String transformedUrl = Controller.getDefault().getEmbeddedTransformedUrl(link);
 
     InputStream inS = Owl.getConnectionService().getHandler(new URI(transformedUrl)).openStream(new URI(transformedUrl), null, new HashMap<Object, Object>());
@@ -757,5 +807,24 @@ public class ConnectionTests {
 
     List<String> links = RegExUtils.extractLinksFromText(content, false);
     assertTrue(!links.isEmpty());
+  }
+
+  @Test
+  @SuppressWarnings("nls")
+  @Ignore
+  public void testJiraUrl() throws Exception {
+//TODO:UNFINISHED https://github.com/Xyrio/RSSOwlnix/issues/24
+    URI feedUrl = new URI(TestWebServer.rootHttp + "/feed-jira/sr/jira.issueviews:searchrequest-rss/temp/SearchRequest.xml?jqlQuery=project+in+%28XYZ%29+and+updated+%3E%3D+-14d+ORDER+BY+updated+DESC&tempMax=1000");
+
+    IFeed feed1 = Owl.getModelFactory().createFeed(null, feedUrl);
+    OwlDAO.save(feed1);
+
+    IFeed feed = new Feed(feedUrl);
+    OwlDAO.save(feed);
+
+    InputStream inS = Owl.getConnectionService().getHandler(feed.getLink()).openStream(feed.getLink(), null, null);
+    assertNotNull(inS);
+    String content = StringUtils.readString(new BufferedReader(new InputStreamReader(inS)));
+    assertNotNull(content);
   }
 }

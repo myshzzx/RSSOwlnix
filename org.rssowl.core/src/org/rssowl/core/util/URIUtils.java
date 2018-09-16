@@ -25,6 +25,7 @@
 package org.rssowl.core.util;
 
 import org.apache.http.HttpHost;
+import org.apache.http.conn.util.InetAddressUtils;
 import org.rssowl.core.internal.Activator;
 
 import java.io.UnsupportedEncodingException;
@@ -334,19 +335,21 @@ public class URIUtils {
    * @throws URISyntaxException In case of a malformed URI.
    */
   public static URI toFaviconUrl(URI link, boolean rewriteHost) throws URISyntaxException {
-    String host = safeGetHost(link);
+    String hostPort = safeGetHost(link, true);
 
-    if (!StringUtils.isSet(host))
+    if (!StringUtils.isSet(hostPort))
       return null;
 
     /* Strip all but the last two segments from the Host */
     if (rewriteHost) {
-      String[] hostSegments = host.split("\\."); //$NON-NLS-1$
+      String[] hostSegments = hostPort.split("\\."); //$NON-NLS-1$
       int len = hostSegments.length;
 
-      /* Rewrite if conditions match */
-      if (len > 2 && !"www".equals(hostSegments[0])) //$NON-NLS-1$
-        host = hostSegments[len - 2] + "." + hostSegments[len - 1]; //$NON-NLS-1$
+      String hostOnly = hostPort.split(":")[0]; //$NON-NLS-1$
+      boolean isIP4 = InetAddressUtils.isIPv4Address(hostOnly);
+      boolean isIP6 = InetAddressUtils.isIPv6Address(hostOnly);
+      if (len > 2 && !isIP4 && !isIP6 && !"www".equals(hostSegments[0])) //$NON-NLS-1$
+        hostPort = hostSegments[len - 2] + "." + hostSegments[len - 1]; //$NON-NLS-1$
 
       /* Rewrite failed, avoid reloading by throwing an exception */
       else
@@ -355,7 +358,7 @@ public class URIUtils {
 
     StringBuilder buf = new StringBuilder();
     buf.append(HTTP);
-    buf.append(host);
+    buf.append(hostPort);
     buf.append("/favicon.ico"); //$NON-NLS-1$
 
     return new URI(fastEncode(buf.toString()));
@@ -373,11 +376,11 @@ public class URIUtils {
     if (link == null)
       return null;
 
-    String host = safeGetHost(link);
-    if (!StringUtils.isSet(host))
+    String hostPort = safeGetHost(link, true);
+    if (!StringUtils.isSet(hostPort))
       return null;
 
-    return new URI(HTTP + host);
+    return new URI(HTTP + hostPort);
   }
 
   /**
@@ -568,27 +571,48 @@ public class URIUtils {
     return StringUtils.isSet(link) && link.endsWith(MANAGED_LINK_ANCHOR);
   }
 
+  public static String safeGetHost(URI uri) {
+    return safeGetHost(uri, false);
+  }
+
   /**
    * The JDK implementation of {@link URI} will return <code>null</code> for
    * urls that contain an underscore. This method will fall back to Apache
-   * Commons version of {@link org.apache.http.client.utils.URIUtils#extractHost(URI)} to get the
+   * Commons version of
+   * {@link org.apache.http.client.utils.URIUtils#extractHost(URI)} to get the
    * host information in this case.
    *
    * @param uri the {@link URI} to retrieve the host from.
+   * @param withPort
    * @return the host of the given {@link URI} or <code>null</code> if none.
    */
-  public static String safeGetHost(URI uri) {
+  public static String safeGetHost(URI uri, boolean withPort) {
 
     /* Try JDK URI */
-    String host = uri.getHost();
-    if (host != null)
-      return host;
+    {
+      String host = getHostPort(uri.getHost(), uri.getPort(), withPort);
+      if (host != null)
+        return host;
+    }
 
     /* Fallback to Apache */
     HttpHost httpHost = org.apache.http.client.utils.URIUtils.extractHost(uri);
-    if (httpHost != null)
-      return httpHost.getHostName();
+    if (httpHost != null) {
+      String host = getHostPort(httpHost.getHostName(), httpHost.getPort(), withPort);
+      if (host != null)
+        return host;
+    }
 
+    return null;
+  }
+
+  private static String getHostPort(String host, int port, boolean withPort) {
+    if (host != null) {
+      if (port > 0 && withPort) {
+        return host + ":" + port; //$NON-NLS-1$
+      }
+      return host;
+    }
     return null;
   }
 

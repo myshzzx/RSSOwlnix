@@ -24,10 +24,11 @@
 
 package org.rssowl.core.tests.util;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import org.apache.http.HttpHost;
 import org.junit.Test;
 import org.rssowl.core.util.URIUtils;
 
@@ -88,6 +89,13 @@ public class URIUtilsTest {
     assertEquals("http://domain.de/favicon.ico", URIUtils.toFaviconUrl(new URI("http://test.domain.de/path/index.html"), true).toString());
     assertEquals("http://domain.de/favicon.ico", URIUtils.toFaviconUrl(new URI("http://test.domain.de/path/"), true).toString());
     assertEquals("http://domain.de/favicon.ico", URIUtils.toFaviconUrl(new URI("http://test.domain.de"), true).toString());
+
+    assertEquals("http://www.domain.de:80/favicon.ico", URIUtils.toFaviconUrl(new URI("http://www.domain.de:80/path/index.html"), false).toString());
+    assertEquals("http://www.domain.de:80/favicon.ico", URIUtils.toFaviconUrl(new URI("http://www.domain.de:80/path/"), false).toString());
+    assertEquals("http://www.domain.de:80/favicon.ico", URIUtils.toFaviconUrl(new URI("http://www.domain.de:80"), false).toString());
+    assertEquals("http://domain.de:80/favicon.ico", URIUtils.toFaviconUrl(new URI("http://test.domain.de:80/path/index.html"), true).toString());
+    assertEquals("http://domain.de:80/favicon.ico", URIUtils.toFaviconUrl(new URI("http://test.domain.de:80/path/"), true).toString());
+    assertEquals("http://domain.de:80/favicon.ico", URIUtils.toFaviconUrl(new URI("http://test.domain.de:80"), true).toString());
   }
 
   /**
@@ -171,6 +179,13 @@ public class URIUtilsTest {
     assertEquals("http://www.rssowl.org", URIUtils.toTopLevel(new URI("feed://www.rssowl.org/")).toString());
     assertEquals("http://www.rssowl.org", URIUtils.toTopLevel(new URI("http://www.rssowl.org/path/index.html")).toString());
     assertEquals(null, URIUtils.toTopLevel(new URI("/path/index.html")));
+
+    assertEquals("http://www.rssowl.org:80", URIUtils.toTopLevel(new URI("http://www.rssowl.org:80")).toString());
+    assertEquals("http://www.rssowl.org:80", URIUtils.toTopLevel(new URI("http://www.rssowl.org:80/")).toString());
+    assertEquals("http://rssowl.org:80", URIUtils.toTopLevel(new URI("http://rssowl.org:80/")).toString());
+    assertEquals("http://www.rssowl.org:80", URIUtils.toTopLevel(new URI("feed://www.rssowl.org:80/")).toString());
+    assertEquals("http://www.rssowl.org:80", URIUtils.toTopLevel(new URI("http://www.rssowl.org:80/path/index.html")).toString());
+
   }
 
   /**
@@ -200,8 +215,21 @@ public class URIUtilsTest {
    */
   @Test
   public void testSafeGetHost() throws Exception {
+
+    {
+      HttpHost httpHost = org.apache.http.client.utils.URIUtils.extractHost(URI.create("http://un:pw@foo_bar-chair.de:80"));
+      System.out.println(httpHost);
+      if (httpHost != null) {
+        assertEquals("foo_bar-chair.de:80", httpHost.getHostName() + ":" + httpHost.getPort());
+      }
+    }
+
     assertEquals("foo.de", URIUtils.safeGetHost(URI.create("http://foo.de")));
     assertEquals("foo_bar.de", URIUtils.safeGetHost(URI.create("http://foo_bar.de")));
+    assertEquals(null, URIUtils.safeGetHost(URI.create("file:///etc/hello")));
+    assertEquals(null, URIUtils.safeGetHost(URI.create("file:///c:/windows")));
+    assertEquals("foo_bar-chair.de:80", URIUtils.safeGetHost(URI.create("http://foo_bar-chair.de:80"), true));
+    assertEquals("foo_bar-chair.de:80", URIUtils.safeGetHost(URI.create("http://un:pw@foo_bar-chair.de:80"), true));
   }
 
   /**
@@ -223,4 +251,5 @@ public class URIUtilsTest {
     assertEquals("https://foo.de/test/123.html/?help=true&foo=bar", URIUtils.toHTTP(URI.create("readers://foo.de/test/123.html/?help=true&foo=bar")).toString());
     assertEquals("https://foo.de/test/123.html/?help=true&foo=bar", URIUtils.toHTTP("readers://foo.de/test/123.html/?help=true&foo=bar").toString());
   }
+
 }
