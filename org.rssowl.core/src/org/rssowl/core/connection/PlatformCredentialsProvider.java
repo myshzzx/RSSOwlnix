@@ -70,13 +70,14 @@ public class PlatformCredentialsProvider implements ICredentialsProvider {
   private static final String SECURE_STORAGE_FILE = ".credentials"; //$NON-NLS-1$
 
   /* ID of the Win32 dependent password provider (win32) */
-  private static final String WIN_PW_PROVIDER_ID = "org.eclipse.equinox.security.WindowsPasswordProvider"; //$NON-NLS-1$
+  private static final String WIN32_PW_PROVIDER_ID = "org.eclipse.equinox.security.WindowsPasswordProvider"; //$NON-NLS-1$
+  private static final String WIN64_PW_PROVIDER_ID = "org.eclipse.equinox.security.WindowsPasswordProvider64bit"; //$NON-NLS-1$
 
   /* ID of the RSSOwl password provider (Dialog asking for Master Password) */
   private static final String RSSOWL_PW_PROVIDER_ID = "org.rssowl.ui.RSSOwlPasswordProvider"; //$NON-NLS-1$
 
   /* ID of the MacOS dependent password provider */
-  private static final String MACOS_PW_PROVIDER_ID = "org.eclipse.equinox.security.OSXKeystoreIntegration"; //$NON-NLS-1$
+  private static final String MACOS64_PW_PROVIDER_ID = "org.eclipse.equinox.security.OSXKeystoreIntegration"; //$NON-NLS-1$
 
   /* Unique Key to store Usernames */
   private static final String USERNAME = "org.rssowl.core.connection.auth.Username"; //$NON-NLS-1$
@@ -205,18 +206,24 @@ public class PlatformCredentialsProvider implements ICredentialsProvider {
 
         /* Use OS dependent password provider if available */
         if (useOSPasswordProvider) {
-          if (Platform.OS_WIN32.equals(Platform.getOS())) {
-            options = new HashMap<String, String>();
-            options.put(IProviderHints.REQUIRED_MODULE_ID, WIN_PW_PROVIDER_ID);
-          } else if (Platform.OS_MACOSX.equals(Platform.getOS())) {
-            options = new HashMap<String, String>();
-            options.put(IProviderHints.REQUIRED_MODULE_ID, MACOS_PW_PROVIDER_ID);
+          String os = Platform.getOS();
+          String arch = Platform.getOSArch();
+          if (Platform.OS_WIN32.equals(os)) {
+            options = new HashMap<>();
+            if (Platform.ARCH_X86_64.equals(arch)) {
+              options.put(IProviderHints.REQUIRED_MODULE_ID, WIN64_PW_PROVIDER_ID);
+            } else { //Platform.ARCH_X86
+              options.put(IProviderHints.REQUIRED_MODULE_ID, WIN32_PW_PROVIDER_ID);
+            }
+          } else if (Platform.OS_MACOSX.equals(os)) {
+            options = new HashMap<>();
+            options.put(IProviderHints.REQUIRED_MODULE_ID, MACOS64_PW_PROVIDER_ID);
           }
         }
 
         /* Use RSSOwl password provider */
         else {
-          options = new HashMap<String, String>();
+          options = new HashMap<>();
           options.put(IProviderHints.REQUIRED_MODULE_ID, RSSOWL_PW_PROVIDER_ID);
         }
 
