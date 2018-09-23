@@ -94,6 +94,7 @@ public class TestWebServer {
   }
 
   private static long durationIdlingMS = 0;
+
   private static void startShutdownTimer(boolean autoShutdown) {
     if (autoShutdown) {
       final long msCheckInterval = 1000;
@@ -252,7 +253,10 @@ public class TestWebServer {
 
             //copy from DefaultHandler but changed to return 200 instead of 404
 
-            response.setStatus(HttpServletResponse.SC_OK);
+            if (target.contains("favicon.ico"))
+              response.setStatus(HttpServletResponse.SC_OK);
+            else
+              response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             response.setContentType(MimeTypes.Type.TEXT_HTML.toString());
 
             try (ByteArrayISO8859Writer writer = new ByteArrayISO8859Writer(1500);) {

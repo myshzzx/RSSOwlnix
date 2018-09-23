@@ -276,10 +276,7 @@ public class ConnectionTests {
       OwlDAO.save(feed2);
 
       try {
-        InputStream inS = Owl.getConnectionService().getHandler(feed1.getLink()).openStream(feed1.getLink(), null, null);
-        System.out.println(">>> inS is null" + inS == null);
-        String content = StringUtils.readString(new BufferedReader(new InputStreamReader(inS)));
-        content = content;
+        Owl.getConnectionService().getHandler(feed1.getLink()).openStream(feed1.getLink(), null, null);
       } catch (AuthenticationRequiredException e1) {
         e = e1;
       }

@@ -218,7 +218,6 @@ public class URIUtilsTest {
 
     {
       HttpHost httpHost = org.apache.http.client.utils.URIUtils.extractHost(URI.create("http://un:pw@foo_bar-chair.de:80"));
-      System.out.println(httpHost);
       if (httpHost != null) {
         assertEquals("foo_bar-chair.de:80", httpHost.getHostName() + ":" + httpHost.getPort());
       }
