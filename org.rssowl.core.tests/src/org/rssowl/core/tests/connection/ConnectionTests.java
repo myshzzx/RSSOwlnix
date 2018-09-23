@@ -361,7 +361,7 @@ public class ConnectionTests {
   }
 
   /**
-   * Test a normal Feed via FEED Protocol.
+   * Test a normal Feed via FEED Protocol and HTTP.
    *
    * @throws Exception
    */
@@ -369,6 +369,26 @@ public class ConnectionTests {
   @SuppressWarnings("nls")
   public void testFEEDFeed() throws Exception {
     URI feedUrl = new URI((TestWebServer.rootHttp + "/feed/some_feed.xml").replace("http", "feed"));
+    IFeed feed = new Feed(feedUrl);
+
+    InputStream inS = Owl.getConnectionService().getHandler(feed.getLink()).openStream(feed.getLink(), null, null);
+    assertNotNull(inS);
+
+    Owl.getInterpreter().interpret(inS, feed, null);
+    assertEquals("RSS 2.0", feed.getFormat());
+  }
+
+  /**
+   * Test a normal Feed via FEED Protocol and HTTPS.
+   * https://en.wikipedia.org/wiki/Feed_URI_scheme
+   *
+   * @throws Exception
+   */
+  @Test
+  @SuppressWarnings("nls")
+  public void testFEEDHTTPSFeed() throws Exception {
+    URI feedUrl = new URI("feed:" + TestWebServer.rootHttps + "/feed/some_feed.xml");
+    // assertEquals("feed:https", feedUrl.getScheme()); //result: "feed"
     IFeed feed = new Feed(feedUrl);
 
     InputStream inS = Owl.getConnectionService().getHandler(feed.getLink()).openStream(feed.getLink(), null, null);
