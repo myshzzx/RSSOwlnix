@@ -37,21 +37,21 @@ import org.rssowl.core.util.URIUtils;
  * @author bpasero
  */
 public class LinkTransformer {
-  private static final String URL_INPUT_TOKEN = "[L]"; //$NON-NLS-1$
+  public static final String URL_INPUT_TOKEN = "[L]"; //$NON-NLS-1$
 
   private final String fId;
   private final String fName;
-  private final String fUrl;
+  private final String fUrlMask;
 
   /**
    * @param id the unique id of the contributed transformer.
    * @param name the name of the transformer.
-   * @param url the templated URL for transformation.
+   * @param urlMask the templated URL for transformation.
    */
-  public LinkTransformer(String id, String name, String url) {
+  public LinkTransformer(String id, String name, String urlMask) {
     fId = id;
     fName = name;
-    fUrl = url;
+    fUrlMask = urlMask;
   }
 
   /**
@@ -66,6 +66,13 @@ public class LinkTransformer {
    */
   public String getName() {
     return fName;
+  }
+
+  /**
+   * @return url mask
+   */
+  public String getUrlMask() {
+    return fUrlMask;
   }
 
   /**
@@ -88,9 +95,9 @@ public class LinkTransformer {
 
     link = URIUtils.urlEncode(link);
 
-    String transformedUrl = fUrl;
+    String transformedUrl = fUrlMask;
 
-    int linkIndex = fUrl.indexOf(URL_INPUT_TOKEN);
+    int linkIndex = fUrlMask.indexOf(URL_INPUT_TOKEN);
     if (linkIndex >= 0)
       transformedUrl = StringUtils.replaceAll(transformedUrl, URL_INPUT_TOKEN, link);
 

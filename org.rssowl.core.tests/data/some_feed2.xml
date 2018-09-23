@@ -1,7 +1,7 @@
 <rss version="2.0">
 	<channel>
 		<title>Some Feed 2 Title</title>
-		<link>http://127.0.0.1:8080/feed/some_feed.xml</link>
+		<link>http://127.0.0.1:88/feed/some_feed.xml</link>
 		<description>Some Feed 2 Description</description>
 		<item>
 			<author>NoCopyrightSounds</author>

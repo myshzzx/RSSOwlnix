@@ -26,11 +26,13 @@ package org.rssowl.core.tests.ui;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.rssowl.core.Owl;
 import org.rssowl.core.internal.persist.BookMark;
@@ -50,6 +52,7 @@ import org.rssowl.core.persist.IPerson;
 import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.pref.IPreferenceScope;
 import org.rssowl.core.persist.reference.FeedLinkReference;
+import org.rssowl.core.tests.TestWebServer;
 import org.rssowl.core.util.URIUtils;
 import org.rssowl.ui.internal.ApplicationServer;
 import org.rssowl.ui.internal.Controller;
@@ -76,6 +79,11 @@ import java.util.List;
 public class MiscUITests {
   private IModelFactory fFactory = Owl.getModelFactory();
 
+  @BeforeClass
+  public static void setUpOnce() {
+    TestWebServer.required(true);
+  }
+
   /**
    * @throws Exception
    */
@@ -94,8 +102,7 @@ public class MiscUITests {
     for (int i = 0; i < 5; i++)
       OwlUI.deleteImage(i);
 
-    // URI feedUrl = new URI("http://www.rssowl.org/node/feed");
-    URI feedUrl = new URI("https://www.heise.de");
+    URI feedUrl = new URI(TestWebServer.rootHttp + "/feed/some_feed.xml");
 
     IFeed feed = new Feed(feedUrl);
 
@@ -106,7 +113,7 @@ public class MiscUITests {
     feed = OwlDAO.save(feed);
     OwlDAO.save(root);
 
-    assertEquals(null, OwlUI.getFavicon(bookmark));
+    assertNull(OwlUI.getFavicon(bookmark));
 
     Controller.getDefault().reload(bookmark, null, new NullProgressMonitor());
 
@@ -114,7 +121,7 @@ public class MiscUITests {
 
     OwlDAO.delete(bookmark);
 
-    assertEquals(null, OwlUI.getFavicon(bookmark));
+    assertNull(OwlUI.getFavicon(bookmark));
   }
 
   /**

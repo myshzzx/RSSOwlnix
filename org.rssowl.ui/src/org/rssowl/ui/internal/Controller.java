@@ -75,12 +75,12 @@ import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INewsMark;
 import org.rssowl.core.persist.ISearchCondition;
 import org.rssowl.core.persist.ISearchMark;
-import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IBookMarkDAO;
 import org.rssowl.core.persist.dao.IConditionalGetDAO;
 import org.rssowl.core.persist.dao.ILabelDAO;
 import org.rssowl.core.persist.dao.INewsDAO;
 import org.rssowl.core.persist.dao.ISearchMarkDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.event.BookMarkAdapter;
 import org.rssowl.core.persist.event.BookMarkEvent;
 import org.rssowl.core.persist.event.LabelEvent;
@@ -266,7 +266,7 @@ public class Controller {
   private static final String LEGACY_PREF_BROWSER_MAXIMIZED = "org.rssowl.ui.internal.editors.feed.BrowserMaximized"; //$NON-NLS-1$
 
   /* News Transformation Constants */
-  private static final String DEFAULT_TRANSFORMER_ID = "org.rssowl.ui.ReadabilityTransformer"; //$NON-NLS-1$
+  public static final String DEFAULT_TRANSFORMER_ID = "org.rssowl.ui.ReadabilityTransformer"; //$NON-NLS-1$
   private static final String DEFAULT_TRANSFORMER_EMBEDDED_PARAMETER = "&embedded"; //$NON-NLS-1$
 
   /* Misc. */
@@ -772,7 +772,7 @@ public class Controller {
 
       /* Define Properties for Connection */
       if (properties == null)
-        properties = new HashMap<Object, Object>();
+        properties = new HashMap<>();
       properties.put(IConnectionPropertyConstants.CON_TIMEOUT, fConnectionTimeout);
 
       /* Sync Specific Item Limit derived from retention settings */

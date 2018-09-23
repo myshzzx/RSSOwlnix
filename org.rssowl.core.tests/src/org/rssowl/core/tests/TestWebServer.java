@@ -93,6 +93,7 @@ public class TestWebServer {
     required(false);
   }
 
+  private static long durationIdlingMS = 0;
   private static void startShutdownTimer(boolean autoShutdown) {
     if (autoShutdown) {
       final long msCheckInterval = 1000;
@@ -101,13 +102,12 @@ public class TestWebServer {
       Timer timer = new Timer("webServerShutdownTimer", true);
       timer.scheduleAtFixedRate(new TimerTask() {
         long lastBytesCount = 0;
-        long durationIdlingMS = 0;
 
         @Override
         public void run() {
           synchronized (TestWebServer.class) {
             long currentBytesCount = statisticsHandler.getResponsesBytesTotal();
-            System.out.println("*** TestWebServer: currentBytesCount=" + currentBytesCount);
+//            System.out.println("*** TestWebServer: currentBytesCount=" + currentBytesCount);
             if (currentBytesCount != lastBytesCount) {
               lastBytesCount = currentBytesCount; //changed
               durationIdlingMS = 0;
@@ -119,6 +119,7 @@ public class TestWebServer {
                 System.out.println("*** TestWebServer: shutting down due to inactivity for over ms=" + msShutdownDuration);
                 webServer.stop();
                 timer.cancel();
+                webServer = null;
               } catch (Exception e) {
                 throw new RuntimeException(e);
               }
@@ -144,6 +145,7 @@ public class TestWebServer {
    */
   public static void required(boolean autoShutdown) {
     synchronized (TestWebServer.class) {
+      durationIdlingMS = 0;
 
       if (webServer != null)
         return;
@@ -162,8 +164,7 @@ public class TestWebServer {
       requestLogHandler.setRequestLog(requestLog);
 
       try {
-        String jettyDistKeystore = "unimportant_rsa_2048.keystore";
-        File keystoreFile = new File(jettyDistKeystore);
+        File keystoreFile = new File("unimportant_rsa_2048.keystore");
         if (!keystoreFile.exists())
           throw new FileNotFoundException(keystoreFile.getAbsolutePath());
 

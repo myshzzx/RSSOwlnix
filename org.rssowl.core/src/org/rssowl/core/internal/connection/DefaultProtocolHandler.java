@@ -30,12 +30,14 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.NameValuePair;
+import org.apache.http.auth.AUTH;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.MalformedChallengeException;
 import org.apache.http.auth.NTCredentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.config.AuthSchemes;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -186,7 +188,7 @@ public class DefaultProtocolHandler implements IProtocolHandler {
 
     /* Add Monitor to support early cancelation */
     if (properties == null)
-      properties = new HashMap<Object, Object>();
+      properties = new HashMap<>();
     properties.put(IConnectionPropertyConstants.PROGRESS_MONITOR, monitor);
 
     /* Retrieve the InputStream out of the Feed's Link */
@@ -507,7 +509,6 @@ public class DefaultProtocolHandler implements IProtocolHandler {
 //old://  client.getParams().setAuthenticationPreemptive(true);
 //old:client.getHostConfiguration().setProxy(credsProxy.getHost(), credsProxy.getPort());
 
-      //TODO what about socks proxies?
       //TOOD how to distinguish http from https host
       //expected to get a redirect to https when necessary and that it works
       proxyHost = new HttpHost(proxyCredentials.getHost(), proxyCredentials.getPort(), URIUtils.HTTP_SCHEME);
@@ -609,11 +610,11 @@ public class DefaultProtocolHandler implements IProtocolHandler {
 
         if (authCredentials.getDomain() != null) {
           credentialsProvider.setCredentials( //
-              new AuthScope(authLink.getHost(), authLink.getPort(), authRealm, "NTLM"), //$NON-NLS-1$
+              new AuthScope(authLink.getHost(), authLink.getPort(), authRealm, AuthSchemes.NTLM),
               new NTCredentials(authCredentials.getUsername(), authCredentials.getPassword(), authLink.getHost(), authCredentials.getDomain()));
         } else {
           credentialsProvider.setCredentials( //
-              new AuthScope(authLink.getHost(), authLink.getPort(), authRealm, "BASIC"), //$NON-NLS-1$
+              new AuthScope(authLink.getHost(), authLink.getPort(), authRealm, AuthSchemes.BASIC),
               new UsernamePasswordCredentials(authCredentials.getUsername(), authCredentials.getPassword()));
         }
 
@@ -648,10 +649,9 @@ public class DefaultProtocolHandler implements IProtocolHandler {
         abortAndRelease(method);
 
         String realm = null;
-        Header headerWWWAuth = response.getFirstHeader("WWW-Authenticate"); //$NON-NLS-1$
+        Header headerWWWAuth = response.getFirstHeader(AUTH.WWW_AUTH);
         if (headerWWWAuth != null) {
           try {
-            realm = headerWWWAuth.getValue();
             BasicScheme basicScheme = new BasicScheme();
             basicScheme.processChallenge(headerWWWAuth);
             realm = basicScheme.getRealm();
