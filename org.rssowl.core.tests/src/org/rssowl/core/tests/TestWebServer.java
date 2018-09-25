@@ -75,7 +75,7 @@ import javax.servlet.http.HttpServletResponse;
  * https://www.eclipse.org/jetty/documentation/9.4.x/embedded-examples.html
  */
 public class TestWebServer {
-  private static final String updateSiteLocalFolder = "file:///S:\\CODE\\ProjectsMy\\java\\rssowl\\export\\update_site_2_3_1\\rssowl";
+  private static final String updateSiteLocalFolder = "file:///C:\\rssowlnixprj\\RSSOwlnix\\releng\\product\\target\\repository";
   private static final String updateSiteRemoteFolder = "https://xyrio.github.io/RSSOwlnix-site/p2/program";
   private static final String webServerRootFolder = "data";
   private static Server webServer;
@@ -316,9 +316,9 @@ public class TestWebServer {
 
         securityBasicHandler.setHandler(authBasicHandler);
 
-        HandlerList handlers = new HandlerList();
-        handlers.setHandlers(new Handler[] { requestLogHandler, updateProgramHandler, feedHandler, feedNoListingHandler//
-            , redirectHandler, securityBasicHandler, quitHandler, defaultHandler });
+        Handler handlers = handlers(requestLogHandler, updateProgramHandler//
+            , feedHandler, feedNoListingHandler, redirectHandler, securityBasicHandler//
+            , quitHandler, defaultHandler);
 
 //        // ### servlets start
 //        ServletContextHandler servletHandlers = new ServletContextHandler();
@@ -389,6 +389,10 @@ public class TestWebServer {
     }
   }
 
+  private static Handler handlers(Handler... handlers) {
+    return new HandlerList(handlers);
+  }
+
   private static MovedContextHandler handlerRedirect(String fromUrl, String toUrl) {
 
     MovedContextHandler ret = new MovedContextHandler();
@@ -427,9 +431,14 @@ public class TestWebServer {
     ResourceHandler ret = new ResourceHandler();
     ret.setDirAllowed(isDirAllowed);
     ret.setResourceBase(sdirResolved);
-    ret.setCacheControl("public, max-age=600"); //cache 10 min
-    ret.setEtags(true);
-    ret.setAcceptRanges(true);
+    //bug: refresh of a feed switches between 200 and 404
+    // activating caching in any way causes the resource handler to not mark the request as
+    // handled, when "resource did not change" (304), which then allows the request to reach
+    // the defaultHandler which returns 404 for the feed
+    //*might be wrong how it is used here as it returns 304 correctly when commented out
+//    ret.setCacheControl("public, max-age=-1");
+//    ret.setEtags(true);
+//    ret.setAcceptRanges(true);
     return ret;
   }
 
