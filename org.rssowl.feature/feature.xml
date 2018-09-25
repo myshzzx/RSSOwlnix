@@ -2,7 +2,7 @@
 <feature
       id="org.rssowl"
       label="RSSOwlnix"
-      version="2.5.5.qualifier"
+      version="2.6.0.qualifier"
       provider-name="https://github.com/Xyrio/RSSOwlnix"
       plugin="org.rssowl.ui">
 
@@ -257,8 +257,15 @@ litigation.
    </requires>
 
    <plugin
-         id="org.rssowl.ui"
-         download-size="771"
+         id="org.apache.commons.logging"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.rssowl.core"
+         download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
@@ -268,6 +275,13 @@ litigation.
          download-size="0"
          install-size="0"
          version="0.0.0"/>
+
+   <plugin
+         id="org.rssowl.lib.httpclient"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.rssowl.lib.jdom"
@@ -282,20 +296,7 @@ litigation.
          version="0.0.0"/>
 
    <plugin
-         id="org.rssowl.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.rssowl.lib.httpclient"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.apache.commons.logging"
+         id="org.rssowl.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
