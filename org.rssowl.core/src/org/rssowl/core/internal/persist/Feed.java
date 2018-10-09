@@ -46,6 +46,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -155,7 +156,7 @@ public class Feed extends AbstractEntity implements IFeed {
   public synchronized int getStickyCount() {
     int count = 0;
     for (INews news : fNews) {
-      if (news.isFlagged())
+      if (news.isFlagged() && !EnumSet.of(INews.State.DELETED, INews.State.HIDDEN).contains(news.getState()))
         ++count;
     }
     return count;

@@ -192,7 +192,7 @@ public final class NewsCounterService {
           counterItem.decrementNewCounter();
         if (isUnread(news.getState()))
           counterItem.decrementUnreadCounter();
-        if (news.isFlagged() && (!EnumSet.of(INews.State.DELETED, INews.State.HIDDEN).contains(news.getState())))
+        if (news.isFlagged() && !EnumSet.of(INews.State.DELETED, INews.State.HIDDEN).contains(news.getState()))
           counterItem.decrementStickyCounter();
 
         changedCounterItems.put(news.getFeedLinkAsText(), counterItem);

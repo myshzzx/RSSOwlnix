@@ -1,5 +1,7 @@
 updates feed: https://xyrio.github.io/RSSOwlnix-site/updates.rss
 
+- fixed wrong sticky news counting when doing a cleanup #22 
+
 2.6.0-beta
 - fixed some website authentication and authentication secure storage related bugs since updating httpclient to 4.x
 - added support for feed links using https like feed:https://host/rss.xml ( https://en.wikipedia.org/wiki/Feed_URI_scheme )
