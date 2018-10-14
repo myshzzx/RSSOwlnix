@@ -1,5 +1,6 @@
 updates feed: https://xyrio.github.io/RSSOwlnix-site/updates.rss
 
+# 2.6.1-beta
 - fixed wrong sticky news counting when doing a cleanup [#22](https://github.com/Xyrio/RSSOwlnix/issues/22)
 
 # 2.6.0-beta
