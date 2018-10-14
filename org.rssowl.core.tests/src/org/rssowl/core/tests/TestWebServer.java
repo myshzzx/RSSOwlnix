@@ -435,9 +435,8 @@ public class TestWebServer {
     // activating caching in any way causes the resource handler to not mark the request as
     // handled, when "resource did not change" (304), which then allows the request to reach
     // the defaultHandler which returns 404 for the feed
-    //*might be wrong how it is used here as it returns 304 correctly when commented out
 //    ret.setCacheControl("public, max-age=-1");
-//    ret.setEtags(true);
+    ret.setEtags(true);
 //    ret.setAcceptRanges(true);
     return ret;
   }
