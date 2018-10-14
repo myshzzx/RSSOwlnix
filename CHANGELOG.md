@@ -1,6 +1,6 @@
 updates feed: https://xyrio.github.io/RSSOwlnix-site/updates.rss
 
-- fixed wrong sticky news counting when doing a cleanup #22 
+- fixed wrong sticky news counting when doing a cleanup [#22](https://github.com/Xyrio/RSSOwlnix/issues/22)
 
 # 2.6.0-beta
 - fixed some website authentication and authentication secure storage related bugs since updating httpclient to 4.x
@@ -17,11 +17,11 @@ updates feed: https://xyrio.github.io/RSSOwlnix-site/updates.rss
 - updated eclipse rcp to 4.7.3a
 
 # 2.5.2-beta
-- fixed missing 256x256 program logo icon #14
+- fixed missing 256x256 program logo icon [#14](https://github.com/Xyrio/RSSOwlnix/issues/14)
 
 # 2.5.1-beta
 - added right to left sorting for title column of classic view (appends "<-" to Title column)
-- linux: do not force xulrunner (PR: sciamano)
+- linux: do not force xulrunner [@sciamano](https://github.com/sciamano) [#21](https://github.com/Xyrio/RSSOwlnix/pull/21)
 
 # 2.5.0-beta
 - main program is now updateable (addons and translation available through Help/Install new Software...) * does not work correctly
