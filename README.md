@@ -1,6 +1,6 @@
 updates feed: https://xyrio.github.io/RSSOwlnix-site/updates.rss
 
-changelog: https://github.com/Xyrio/RSSOwlnix/blob/master/CHANGELOG.txt
+changelog: https://github.com/Xyrio/RSSOwlnix/blob/master/CHANGELOG.md
 
 bug reports: https://github.com/Xyrio/RSSOwlnix/issues
 
