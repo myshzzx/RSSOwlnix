@@ -11,3 +11,7 @@ how to build: https://github.com/Xyrio/RSSOwlnix/wiki/How-To-Build
 addons repository: https://github.com/Xyrio/RSSOwlnix-plugins-addons
 
 translations repository: https://github.com/Xyrio/RSSOwlnix-plugins-translation
+
+install through chocolatey: https://chocolatey.org/packages/rssowlnix \
+coocolatey package repository: https://github.com/eargollo/choco-rssowlnix \
+chocolatey package issue: https://github.com/Xyrio/RSSOwlnix/issues/28
