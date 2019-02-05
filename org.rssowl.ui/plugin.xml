@@ -1930,6 +1930,13 @@
             name="%shareProvider.name.27"
             url="http://www.readability.com/read?url=[L]">
       </shareProvider>
+      <shareProvider
+            enabled="false"
+            icon="icons/obj16/share_telegram.gif"
+            id="org.rssowl.ui.TelegramShareProvider"
+            name="%shareProvider.name.28"
+            url="https://telegram.me/share/url?url=[L]&amp;text=[T]">
+       </shareProvider>
    </extension>
    <extension
          point="org.rssowl.ui.FeedSearch">
