@@ -1575,6 +1575,13 @@
             name="%shareProvider.name.25"
             url="http://bufferapp.com/add?url=[L]&amp;text=[T]">
       </shareProvider>
+      <shareProvider
+            enabled="true"
+            icon="icons/obj16/share_telegram.gif"
+            id="org.rssowl.ui.TelegramShareProvider"
+            name="%shareProvider.name.26"
+            url="https://telegram.me/share/url?url=[L]&amp;text=[T]">
+       </shareProvider>
    </extension>
    <extension
          point="org.rssowl.ui.FeedSearch">
