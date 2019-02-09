@@ -1,5 +1,9 @@
 updates feed: https://xyrio.github.io/RSSOwlnix-site/updates.rss
 
+# 2.7.0-beta
+- updated eclipse rcp to 4.9.1
+- Added Telegram to options for sharing links [#33](https://github.com/Xyrio/RSSOwlnix/issues/33) [@Tandagore](https://github.com/Tandagore) 
+
 # 2.6.1-beta
 - fixed wrong sticky news counting when doing a cleanup [#22](https://github.com/Xyrio/RSSOwlnix/issues/22)
 
