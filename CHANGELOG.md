@@ -1,7 +1,7 @@
 updates feed: https://xyrio.github.io/RSSOwlnix-site/updates.rss
 
 # 2.7.0-beta
-- updated eclipse rcp to 4.9.1
+- updated eclipse rcp to 4.9.1 (last rcp supporting 32bit) (no babel localization for 4.9+)
 - Added Telegram to options for sharing links [#33](https://github.com/Xyrio/RSSOwlnix/issues/33) [@Tandagore](https://github.com/Tandagore) 
 
 # 2.6.1-beta
