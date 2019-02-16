@@ -69,7 +69,6 @@ import org.eclipse.ui.keys.IBindingService;
 import org.rssowl.core.Owl;
 import org.rssowl.core.internal.persist.pref.DefaultPreferences;
 import org.rssowl.core.persist.IBookMark;
-import org.rssowl.core.persist.IFolder;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INewsBin;
 import org.rssowl.core.persist.dao.OwlDAO;
@@ -1182,15 +1181,17 @@ public class CoolBarAdvisor {
     }
   }
 
+  private void updateSelection(IWorkbenchWindowActionDelegate action) {
+    action.selectionChanged(null, OwlUI.getSelection());
+  }
+
   private void initWithExplorerSelectionAndRunAction(IWorkbenchWindowActionDelegate action) {
 
     /* Workbench Window */
     action.init(fWindow);
 
     /* Explorer Selection */
-    IFolder folder = OwlUI.getBookMarkExplorerSelection();
-    if (folder != null)
-      action.selectionChanged(null, new StructuredSelection(folder));
+    updateSelection(action);
 
     /* Run */
     action.run(null);
@@ -1209,10 +1210,7 @@ public class CoolBarAdvisor {
           @Override
           public Menu createMenu(Control parent) {
             NewTypeDropdownAction action = new NewTypeDropdownAction();
-            action.init(fWindow);
-            IFolder folder = OwlUI.getBookMarkExplorerSelection();
-            if (folder != null)
-              action.selectionChanged(null, new StructuredSelection(folder));
+            updateSelection(action);
 
             return action.getMenu(parent);
           }
@@ -1415,7 +1413,7 @@ public class CoolBarAdvisor {
         MenuManager manager = new MenuManager();
 
         /* Load all news bins and sort by name */
-        List<INewsBin> newsbins = new ArrayList<INewsBin>(OwlDAO.loadAll(INewsBin.class));
+        List<INewsBin> newsbins = new ArrayList<>(OwlDAO.loadAll(INewsBin.class));
 
         Comparator<INewsBin> comparator = new Comparator<INewsBin>() {
           @Override

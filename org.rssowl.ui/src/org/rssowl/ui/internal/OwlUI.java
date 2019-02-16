@@ -335,13 +335,13 @@ public class OwlUI {
   private static final String HIGH_CONTRAST_THEME = "org.eclipse.ui.ide.systemDefault"; //$NON-NLS-1$
 
   /* Used to cache Image-Descriptors for Favicons */
-  private static final Map<Long, ImageDescriptor> FAVICO_CACHE = new HashMap<Long, ImageDescriptor>();
+  private static final Map<Long, ImageDescriptor> FAVICO_CACHE = new HashMap<>();
 
   /* Used to cache Image-Descriptors obtained from a file-path */
-  private static final Map<String, ImageDescriptor> DESCRIPTOR_CACHE = new HashMap<String, ImageDescriptor>();
+  private static final Map<String, ImageDescriptor> DESCRIPTOR_CACHE = new HashMap<>();
 
   /* Used to cache the path of Images used in the embedded Browser */
-  private static final Map<String, String> fgImageUriMap = new ConcurrentHashMap<String, String>();
+  private static final Map<String, String> fgImageUriMap = new ConcurrentHashMap<>();
 
   /* Name of Folder for storing Icons */
   private static final String ICONS_FOLDER = "icons"; //$NON-NLS-1$
@@ -372,10 +372,10 @@ public class OwlUI {
   private static final int MAC_PACKED_WIZARD_WIDTH = 300;
 
   /* Map Common Label Colors to RGB Values */
-  private static final Map<String, RGB> fgMapCommonColorToRGB = new HashMap<String, RGB>();
+  private static final Map<String, RGB> fgMapCommonColorToRGB = new HashMap<>();
 
   /* Map Common Mime Types to Extensions (used for Attachments) */
-  private static final Map<String, String> fgMapMimeToExtension = new HashMap<String, String>();
+  private static final Map<String, String> fgMapMimeToExtension = new HashMap<>();
   static {
 
     /* Audio */
@@ -1478,7 +1478,7 @@ public class OwlUI {
    * empty list if none.
    */
   public static List<FeedView> getFeedViews() {
-    List<FeedView> feedViews = new ArrayList<FeedView>();
+    List<FeedView> feedViews = new ArrayList<>();
 
     List<IEditorReference> references = getEditorReferences();
     for (IEditorReference reference : references) {
@@ -1726,6 +1726,18 @@ public class OwlUI {
           else if (selectedEntity instanceof IMark)
             return ((IMark) selectedEntity).getParent();
         }
+      }
+    }
+
+    return null;
+  }
+
+  public static IStructuredSelection getSelection() {
+    IWorkbenchPage page = getPage();
+    if (page != null) {
+      IViewPart viewPart = page.findView(BookMarkExplorer.VIEW_ID);
+      if (viewPart != null) {
+        return (IStructuredSelection) viewPart.getSite().getSelectionProvider().getSelection();
       }
     }
 
@@ -2010,7 +2022,7 @@ public class OwlUI {
 
     /* Extract Proposals */
     final String[] proposals = new String[values.size()];
-    Set<Character> charSet = new HashSet<Character>();
+    Set<Character> charSet = new HashSet<>();
     int i = 0;
     for (String value : values) {
       proposals[i] = value;
