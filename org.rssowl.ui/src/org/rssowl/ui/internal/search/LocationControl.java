@@ -115,7 +115,7 @@ public class LocationControl extends Composite {
     private CheckboxTreeViewer fViewer;
     private List<IFolderChild> fCheckedElements;
     private IFolderChild fSelectedElement;
-    private Set<IFolderChild> fCheckedElementsCache = new HashSet<IFolderChild>();
+    private Set<IFolderChild> fCheckedElementsCache = new HashSet<>();
     private FilteredTree fFilteredTree;
     private Button fSelectAll;
 
@@ -512,7 +512,7 @@ public class LocationControl extends Composite {
         position = (IMark) selectedFolderChild;
       }
 
-      NewNewsBinAction action = new NewNewsBinAction(getShell(), folder, position);
+      NewNewsBinAction action = new NewNewsBinAction().init(getShell(), folder, position);
       action.run(null);
       INewsBin newsbin = action.getNewsbin();
       if (newsbin != null) {

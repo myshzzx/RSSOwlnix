@@ -25,45 +25,81 @@
 package org.rssowl.ui.internal.actions;
 
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IObjectActionDelegate;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.rssowl.core.persist.IFolder;
 import org.rssowl.core.persist.IMark;
-import org.rssowl.ui.internal.OwlUI;
-import org.rssowl.ui.internal.dialogs.bookmark.CreateBookmarkWizard;
 
 /**
  * @author bpasero
  */
-public class NewBookMarkAction extends AbstractSelectionAwareBookMarkAction<NewBookMarkAction> implements IWorkbenchWindowActionDelegate, IObjectActionDelegate {
-
-  /* Section for Dialogs Settings */
-  private static final String SETTINGS_SECTION = "org.rssowl.ui.internal.dialogs.bookmark.CreateBookmarkWizard"; //$NON-NLS-1$
-
-  private String fPreSetLink;
+public abstract class AbstractSelectionAwareBookMarkAction<T> implements IWorkbenchWindowActionDelegate {
+  protected Shell fShell;
+  protected IFolder fParent;
+  protected IMark fPosition;
 
   /** Keep for Reflection */
-  public NewBookMarkAction() {
+  public AbstractSelectionAwareBookMarkAction() {
   }
 
-  public NewBookMarkAction(Shell shell, IFolder parent, IMark position, String preSetLink) {
-    init(shell, parent, position);
-    fPreSetLink = preSetLink;
+  @SuppressWarnings("unchecked")
+  public T init(Shell shell, IFolder parent, IMark position) {
+    fShell = shell;
+    fParent = parent;
+    fPosition = position;
+    return (T) this;
   }
 
   /*
-   * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+   * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
    */
   @Override
-  public void run(IAction action) {
+  public void dispose() {}
 
-    /* Get the parent Folder */
-    IFolder parent = OwlUI.getSelectedParent(fParent);
-
-    /* Show Dialog */
-    CreateBookmarkWizard wizard = new CreateBookmarkWizard(parent, fPosition, fPreSetLink);
-    OwlUI.openWizard(fShell, wizard, true, true, SETTINGS_SECTION);
+  /*
+   * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
+   */
+  @Override
+  public void init(IWorkbenchWindow window) {
+    fShell = window.getShell();
   }
 
+  /*
+   * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
+   * org.eclipse.jface.viewers.ISelection)
+   */
+  @Override
+  public void selectionChanged(IAction action, ISelection selection) {
+
+    /* Delete the old Selection */
+    fParent = null;
+    fPosition = null;
+
+    /* Check Selection */
+    if (selection instanceof IStructuredSelection) {
+      IStructuredSelection structSel = (IStructuredSelection) selection;
+      if (!structSel.isEmpty()) {
+        Object firstElement = structSel.getFirstElement();
+        if (firstElement instanceof IFolder)
+          fParent = (IFolder) firstElement;
+        else if (firstElement instanceof IMark) {
+          fParent = ((IMark) firstElement).getParent();
+          fPosition = ((IMark) firstElement);
+        }
+      }
+    }
+  }
+
+  /*
+   * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction,
+   * org.eclipse.ui.IWorkbenchPart)
+   */
+  //@Override
+  public void setActivePart(IAction action, IWorkbenchPart targetPart) {
+    fShell = targetPart.getSite().getShell();
+  }
 }

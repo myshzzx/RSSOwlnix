@@ -30,8 +30,6 @@ import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -44,12 +42,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.rssowl.core.Owl;
 import org.rssowl.core.persist.IFolder;
-import org.rssowl.core.persist.IMark;
 import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.ui.internal.OwlUI;
 import org.rssowl.ui.internal.util.FolderChooser;
@@ -61,10 +56,7 @@ import java.util.Map;
 /**
  * @author bpasero
  */
-public class NewFolderAction implements IWorkbenchWindowActionDelegate, IObjectActionDelegate {
-  private Shell fShell;
-  private IFolder fParent;
-  private IMark fPosition;
+public class NewFolderAction extends AbstractSelectionAwareBookMarkAction<NewFolderAction> implements IWorkbenchWindowActionDelegate, IObjectActionDelegate {
   private boolean fRootMode;
 
   private class NewFolderDialog extends TitleAreaDialog {
@@ -175,42 +167,12 @@ public class NewFolderAction implements IWorkbenchWindowActionDelegate, IObjectA
     }
   }
 
-  /** Keep for Reflection */
-  public NewFolderAction() {
-    this(null, null, null);
-  }
-
-  /**
-   * @param shell
-   * @param parent
-   * @param position
-   */
-  public NewFolderAction(Shell shell, IFolder parent, IMark position) {
-    fShell = shell;
-    fParent = parent;
-    fPosition = position;
-  }
-
   /**
    * @param rootMode If <code>TRUE</code>, creates new Folders on the root,
    * thereby making them Bookmark-Sets.
    */
   public void setRootMode(boolean rootMode) {
     fRootMode = rootMode;
-  }
-
-  /*
-   * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
-   */
-  @Override
-  public void dispose() {}
-
-  /*
-   * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
-   */
-  @Override
-  public void init(IWorkbenchWindow window) {
-    fShell = window.getShell();
   }
 
   /*
@@ -244,38 +206,4 @@ public class NewFolderAction implements IWorkbenchWindowActionDelegate, IObjectA
     }
   }
 
-  /*
-   * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
-   * org.eclipse.jface.viewers.ISelection)
-   */
-  @Override
-  public void selectionChanged(IAction action, ISelection selection) {
-
-    /* Delete the old Selection */
-    fParent = null;
-    fPosition = null;
-
-    /* Check Selection */
-    if (selection instanceof IStructuredSelection) {
-      IStructuredSelection structSel = (IStructuredSelection) selection;
-      if (!structSel.isEmpty()) {
-        Object firstElement = structSel.getFirstElement();
-        if (firstElement instanceof IFolder)
-          fParent = (IFolder) firstElement;
-        else if (firstElement instanceof IMark) {
-          fParent = ((IMark) firstElement).getParent();
-          fPosition = ((IMark) firstElement);
-        }
-      }
-    }
-  }
-
-  /*
-   * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction,
-   * org.eclipse.ui.IWorkbenchPart)
-   */
-  @Override
-  public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-    fShell = targetPart.getSite().getShell();
-  }
 }

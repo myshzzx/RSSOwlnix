@@ -25,55 +25,15 @@
 package org.rssowl.ui.internal.actions;
 
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.rssowl.core.persist.IFolder;
-import org.rssowl.core.persist.IMark;
 import org.rssowl.ui.internal.OwlUI;
 import org.rssowl.ui.internal.dialogs.SearchMarkDialog;
 
 /**
  * @author bpasero
  */
-public class NewSearchMarkAction implements IWorkbenchWindowActionDelegate, IObjectActionDelegate {
-  private Shell fShell;
-  private IFolder fParent;
-  private IMark fPosition;
-
-  /** Keep for Reflection */
-  public NewSearchMarkAction() {
-    this(null, null, null);
-  }
-
-  /**
-   * @param shell
-   * @param parent
-   * @param position
-   */
-  public NewSearchMarkAction(Shell shell, IFolder parent, IMark position) {
-    fShell = shell;
-    fParent = parent;
-    fPosition = position;
-  }
-
-  /*
-   * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
-   */
-  @Override
-  public void dispose() {}
-
-  /*
-   * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
-   */
-  @Override
-  public void init(IWorkbenchWindow window) {
-    fShell = window.getShell();
-  }
+public class NewSearchMarkAction extends AbstractSelectionAwareBookMarkAction<NewSearchMarkAction> implements IWorkbenchWindowActionDelegate, IObjectActionDelegate {
 
   /*
    * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
@@ -84,38 +44,4 @@ public class NewSearchMarkAction implements IWorkbenchWindowActionDelegate, IObj
     dialog.open();
   }
 
-  /*
-   * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
-   * org.eclipse.jface.viewers.ISelection)
-   */
-  @Override
-  public void selectionChanged(IAction action, ISelection selection) {
-
-    /* Delete the old Selection */
-    fParent = null;
-    fPosition = null;
-
-    /* Check Selection */
-    if (selection instanceof IStructuredSelection) {
-      IStructuredSelection structSel = (IStructuredSelection) selection;
-      if (!structSel.isEmpty()) {
-        Object firstElement = structSel.getFirstElement();
-        if (firstElement instanceof IFolder)
-          fParent = (IFolder) firstElement;
-        else if (firstElement instanceof IMark) {
-          fParent = ((IMark) firstElement).getParent();
-          fPosition = ((IMark) firstElement);
-        }
-      }
-    }
-  }
-
-  /*
-   * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction,
-   * org.eclipse.ui.IWorkbenchPart)
-   */
-  @Override
-  public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-    fShell = targetPart.getSite().getShell();
-  }
 }

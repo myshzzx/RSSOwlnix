@@ -29,8 +29,6 @@ import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.jface.bindings.TriggerSequence;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.LocalResourceManager;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -38,24 +36,17 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowPulldownDelegate;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.keys.IBindingService;
-import org.rssowl.core.persist.IFolder;
-import org.rssowl.core.persist.IMark;
 import org.rssowl.ui.internal.Activator;
 import org.rssowl.ui.internal.OwlUI;
 
 /**
  * @author bpasero
  */
-public class NewTypeDropdownAction implements IWorkbenchWindowPulldownDelegate, IMenuCreator {
-  private Shell fShell;
+public class NewTypeDropdownAction extends AbstractSelectionAwareBookMarkAction<NewTypeDropdownAction> implements IWorkbenchWindowPulldownDelegate, IMenuCreator {
   private Menu fMenu;
-  private IFolder fParent;
-  private IMark fPosition;
   private LocalResourceManager fResources = new LocalResourceManager(JFaceResources.getResources());
   private IBindingService fBindingService = PlatformUI.getWorkbench().getService(IBindingService.class);
 
@@ -141,14 +132,6 @@ public class NewTypeDropdownAction implements IWorkbenchWindowPulldownDelegate, 
   }
 
   /*
-   * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
-   */
-  @Override
-  public void init(IWorkbenchWindow window) {
-    fShell = window.getShell();
-  }
-
-  /*
    * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
    */
   @Override
@@ -160,46 +143,20 @@ public class NewTypeDropdownAction implements IWorkbenchWindowPulldownDelegate, 
     }
   }
 
-  /*
-   * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
-   * org.eclipse.jface.viewers.ISelection)
-   */
-  @Override
-  public void selectionChanged(IAction action, ISelection selection) {
-
-    /* Delete the old Selection */
-    fParent = null;
-    fPosition = null;
-
-    /* Check Selection */
-    if (selection instanceof IStructuredSelection) {
-      IStructuredSelection structSel = (IStructuredSelection) selection;
-      if (!structSel.isEmpty()) {
-        Object firstElement = structSel.getFirstElement();
-        if (firstElement instanceof IFolder)
-          fParent = (IFolder) firstElement;
-        else if (firstElement instanceof IMark) {
-          fParent = ((IMark) firstElement).getParent();
-          fPosition = ((IMark) firstElement);
-        }
-      }
-    }
-  }
-
   private void addBookmark() {
-    new NewBookMarkAction(fShell, fParent, fPosition).run(null);
+    new NewBookMarkAction().init(fShell, fParent, fPosition).run(null);
   }
 
   private void addNewsBin() {
-    new NewNewsBinAction(fShell, fParent, fPosition).run(null);
+    new NewNewsBinAction().init(fShell, fParent, fPosition).run(null);
   }
 
   private void addFolder() {
-    new NewFolderAction(fShell, fParent, fPosition).run(null);
+    new NewFolderAction().init(fShell, fParent, fPosition).run(null);
   }
 
   private void addSearchMark() {
-    new NewSearchMarkAction(fShell, fParent, fPosition).run(null);
+    new NewSearchMarkAction().init(fShell, fParent, fPosition).run(null);
   }
 
   /*

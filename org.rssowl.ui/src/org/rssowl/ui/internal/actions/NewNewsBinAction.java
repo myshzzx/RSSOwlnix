@@ -30,8 +30,6 @@ import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -44,12 +42,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.rssowl.core.Owl;
 import org.rssowl.core.persist.IFolder;
-import org.rssowl.core.persist.IMark;
 import org.rssowl.core.persist.INewsBin;
 import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.ui.internal.OwlUI;
@@ -62,10 +57,7 @@ import java.util.Map;
 /**
  * @author bpasero
  */
-public class NewNewsBinAction implements IWorkbenchWindowActionDelegate, IObjectActionDelegate {
-  private Shell fShell;
-  private IFolder fParent;
-  private IMark fPosition;
+public class NewNewsBinAction extends AbstractSelectionAwareBookMarkAction<NewNewsBinAction> implements IWorkbenchWindowActionDelegate, IObjectActionDelegate {
   private INewsBin fNewsbin;
 
   private static class NewNewsBinDialog extends TitleAreaDialog {
@@ -172,36 +164,6 @@ public class NewNewsBinAction implements IWorkbenchWindowActionDelegate, IObject
     }
   }
 
-  /** Keep for Reflection */
-  public NewNewsBinAction() {
-    this(null, null, null);
-  }
-
-  /**
-   * @param shell
-   * @param parent
-   * @param position
-   */
-  public NewNewsBinAction(Shell shell, IFolder parent, IMark position) {
-    fShell = shell;
-    fParent = parent;
-    fPosition = position;
-  }
-
-  /*
-   * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
-   */
-  @Override
-  public void dispose() {}
-
-  /*
-   * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
-   */
-  @Override
-  public void init(IWorkbenchWindow window) {
-    fShell = window.getShell();
-  }
-
   /*
    * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
    */
@@ -236,38 +198,4 @@ public class NewNewsBinAction implements IWorkbenchWindowActionDelegate, IObject
     return fNewsbin;
   }
 
-  /*
-   * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
-   * org.eclipse.jface.viewers.ISelection)
-   */
-  @Override
-  public void selectionChanged(IAction action, ISelection selection) {
-
-    /* Delete the old Selection */
-    fParent = null;
-    fPosition = null;
-
-    /* Check Selection */
-    if (selection instanceof IStructuredSelection) {
-      IStructuredSelection structSel = (IStructuredSelection) selection;
-      if (!structSel.isEmpty()) {
-        Object firstElement = structSel.getFirstElement();
-        if (firstElement instanceof IFolder)
-          fParent = (IFolder) firstElement;
-        else if (firstElement instanceof IMark) {
-          fParent = ((IMark) firstElement).getParent();
-          fPosition = ((IMark) firstElement);
-        }
-      }
-    }
-  }
-
-  /*
-   * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction,
-   * org.eclipse.ui.IWorkbenchPart)
-   */
-  @Override
-  public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-    fShell = targetPart.getSite().getShell();
-  }
 }

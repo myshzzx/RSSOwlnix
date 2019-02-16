@@ -100,8 +100,8 @@ import org.rssowl.core.persist.IMark;
 import org.rssowl.core.persist.INews;
 import org.rssowl.core.persist.INewsMark;
 import org.rssowl.core.persist.IPreference;
-import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IPreferenceDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.event.FolderAdapter;
 import org.rssowl.core.persist.event.FolderEvent;
 import org.rssowl.core.persist.event.FolderListener;
@@ -1155,7 +1155,7 @@ public class BookMarkExplorer extends ViewPart {
             IStructuredSelection selection = (IStructuredSelection) fViewer.getSelection();
             IFolder parent = getParent(selection);
             IMark position = (IMark) ((selection.getFirstElement() instanceof IMark) ? selection.getFirstElement() : null);
-            new NewBookMarkAction(fViewSite.getShell(), parent, position).run(null);
+            new NewBookMarkAction().init(fViewSite.getShell(), parent, position).run(null);
           }
 
           @Override
@@ -1174,7 +1174,7 @@ public class BookMarkExplorer extends ViewPart {
             IStructuredSelection selection = (IStructuredSelection) fViewer.getSelection();
             IFolder parent = getParent(selection);
             IMark position = (IMark) ((selection.getFirstElement() instanceof IMark) ? selection.getFirstElement() : null);
-            new NewNewsBinAction(fViewSite.getShell(), parent, position).run(null);
+            new NewNewsBinAction().init(fViewSite.getShell(), parent, position).run(null);
           }
 
           @Override
@@ -1193,7 +1193,7 @@ public class BookMarkExplorer extends ViewPart {
             IStructuredSelection selection = (IStructuredSelection) fViewer.getSelection();
             IFolder parent = getParent(selection);
             IMark position = (IMark) ((selection.getFirstElement() instanceof IMark) ? selection.getFirstElement() : null);
-            new NewSearchMarkAction(fViewSite.getShell(), parent, position).run(null);
+            new NewSearchMarkAction().init(fViewSite.getShell(), parent, position).run(null);
           }
 
           @Override
@@ -1213,7 +1213,7 @@ public class BookMarkExplorer extends ViewPart {
             IStructuredSelection selection = (IStructuredSelection) fViewer.getSelection();
             IFolder parent = getParent(selection);
             IMark position = (IMark) ((selection.getFirstElement() instanceof IMark) ? selection.getFirstElement() : null);
-            new NewFolderAction(fViewSite.getShell(), parent, position).run(null);
+            new NewFolderAction().init(fViewSite.getShell(), parent, position).run(null);
           }
 
           @Override
@@ -1615,7 +1615,7 @@ public class BookMarkExplorer extends ViewPart {
     fViewSite = site;
     fGlobalPreferences = Owl.getPreferenceService().getGlobalScope();
     fPrefDAO = OwlDAO.getDAO(IPreferenceDAO.class);
-    fExpandedNodes = new ArrayList<Long>();
+    fExpandedNodes = new ArrayList<>();
 
     /* Sort Root-Folders by ID */
     fRootFolders = CoreUtils.loadRootFolders();

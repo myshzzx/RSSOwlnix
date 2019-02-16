@@ -65,8 +65,8 @@ import org.rssowl.core.persist.IFolderChild;
 import org.rssowl.core.persist.IMark;
 import org.rssowl.core.persist.INewsBin;
 import org.rssowl.core.persist.ISearchMark;
-import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.dao.IFolderDAO;
+import org.rssowl.core.persist.dao.OwlDAO;
 import org.rssowl.core.persist.event.FolderAdapter;
 import org.rssowl.core.persist.event.FolderEvent;
 import org.rssowl.core.util.CoreUtils;
@@ -423,7 +423,7 @@ public class ManageSetsDialog extends TitleAreaDialog {
 
     IFolder dropFolder = (IFolder) dropTarget;
 
-    List<ReparentInfo<IFolderChild, IFolder>> reparenting = new ArrayList<ReparentInfo<IFolderChild, IFolder>>(draggedObjects.size());
+    List<ReparentInfo<IFolderChild, IFolder>> reparenting = new ArrayList<>(draggedObjects.size());
 
     /* For each dragged Object */
     for (Object object : draggedObjects) {
@@ -440,7 +440,7 @@ public class ManageSetsDialog extends TitleAreaDialog {
 
   private void onAdd() {
     showInfo();
-    NewFolderAction newFolderAction = new NewFolderAction(getShell(), null, null);
+    NewFolderAction newFolderAction = new NewFolderAction().init(getShell(), null, null);
     newFolderAction.setRootMode(true);
     newFolderAction.run(null);
     fViewer.refresh();
