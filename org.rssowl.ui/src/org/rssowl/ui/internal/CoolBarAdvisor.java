@@ -1182,7 +1182,7 @@ public class CoolBarAdvisor {
   }
 
   private void updateSelection(IWorkbenchWindowActionDelegate action) {
-    action.selectionChanged(null, OwlUI.getSelection());
+    action.selectionChanged(null, OwlUI.getSelectionBookMarkExplorer());
   }
 
   private void initWithExplorerSelectionAndRunAction(IWorkbenchWindowActionDelegate action) {

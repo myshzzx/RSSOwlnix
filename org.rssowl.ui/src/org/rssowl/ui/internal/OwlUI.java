@@ -1714,30 +1714,30 @@ public class OwlUI {
    * none.
    */
   public static IFolder getBookMarkExplorerSelection() {
-    IWorkbenchPage page = getPage();
-    if (page != null) {
-      IViewPart viewPart = page.findView(BookMarkExplorer.VIEW_ID);
-      if (viewPart != null) {
-        IStructuredSelection selection = (IStructuredSelection) viewPart.getSite().getSelectionProvider().getSelection();
-        if (!selection.isEmpty()) {
-          Object selectedEntity = selection.iterator().next();
-          if (selectedEntity instanceof IFolder)
-            return (IFolder) selectedEntity;
-          else if (selectedEntity instanceof IMark)
-            return ((IMark) selectedEntity).getParent();
-        }
-      }
+    IStructuredSelection selection = getSelectionBookMarkExplorer();
+    if (selection != null) {
+      Object selectedEntity = selection.iterator().next();
+      if (selectedEntity instanceof IFolder)
+        return (IFolder) selectedEntity;
+      else if (selectedEntity instanceof IMark)
+        return ((IMark) selectedEntity).getParent();
     }
 
     return null;
   }
 
-  public static IStructuredSelection getSelection() {
+  public static IStructuredSelection getSelectionBookMarkExplorer() {
     IWorkbenchPage page = getPage();
     if (page != null) {
       IViewPart viewPart = page.findView(BookMarkExplorer.VIEW_ID);
       if (viewPart != null) {
-        return (IStructuredSelection) viewPart.getSite().getSelectionProvider().getSelection();
+        ISelectionProvider selectionProvider = viewPart.getSite().getSelectionProvider();
+        if (selectionProvider != null) {
+          IStructuredSelection selection = (IStructuredSelection) selectionProvider.getSelection();
+          if (!selection.isEmpty()) {
+            return selection;
+          }
+        }
       }
     }
 
