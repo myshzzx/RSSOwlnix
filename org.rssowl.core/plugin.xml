@@ -120,6 +120,14 @@
             class="org.rssowl.core.internal.connection.ReaderProtocolHandler"
             protocol="readers">
       </protocolHandler>
+      <protocolHandler
+            class="org.rssowl.core.internal.connection.AutoProtocolHandler"
+            protocol="autohttp">
+      </protocolHandler>
+      <protocolHandler
+            class="org.rssowl.core.internal.connection.AutoProtocolHandler"
+            protocol="autohttps">
+      </protocolHandler>
    </extension>
    <extension
          point="org.rssowl.core.DAOService">

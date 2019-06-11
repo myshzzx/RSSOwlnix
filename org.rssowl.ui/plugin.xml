@@ -872,7 +872,7 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="org.rssowl.ui.rssowl"
-            name="RSSOwlnix Product">
+            name="%product.name.0">
          <property
                name="aboutImage"
                value="icons/product/about.gif"/>

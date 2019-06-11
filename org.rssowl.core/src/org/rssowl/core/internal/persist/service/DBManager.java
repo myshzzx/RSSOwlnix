@@ -568,7 +568,7 @@ public class DBManager {
 
           /* Atomic Rename */
           DBHelper.rename(tmpBackupFile, renameToWeekly ? weeklyBackup : backupFile);
-        } catch (IOException e) {
+        } catch (Exception e) {
           throw new PersistenceException(e);
         } finally {
           safeDelete(marker);

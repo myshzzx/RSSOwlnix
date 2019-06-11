@@ -110,7 +110,7 @@ public class CopyLinkAction extends Action implements IActionDelegate {
 
           /* Bookmark */
           if (element instanceof IBookMark) {
-            str.append(i > 0 ? "\n" : "").append(URIUtils.toHTTP(((IBookMark) element).getFeedLinkReference().getLinkAsText())); //$NON-NLS-1$ //$NON-NLS-2$
+            str.append(i > 0 ? "\n" : "").append(((IBookMark) element).getFeedLinkReference().getLinkAsText()); //$NON-NLS-1$ //$NON-NLS-2$
             i++;
           }
 
