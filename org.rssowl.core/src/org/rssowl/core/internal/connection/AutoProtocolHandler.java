@@ -22,6 +22,7 @@ import org.jsoup.select.Elements;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
@@ -32,9 +33,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
- * autohttp[s]://url.xxx~[css-query-selector]
+ * autohttp[s]://url.xxx/@[item-selector]@[item-target-page-content-selector(optional)]
  * <p>
- * e.g. Hacker News: <code>autohttps://news.ycombinator.com/newest~td.title a.storylink</code>
+ * e.g. Hacker News:
+ * <code>autohttps://news.ycombinator.com/newest@td.title a.storylink</code>
  *
  * @author mysh
  * @since 2019-06-11
@@ -58,7 +60,7 @@ public class AutoProtocolHandler extends DefaultProtocolHandler {
 
     InputStream inS = null;
     try {
-      Pair<String, String> autoLink = parseAutoLink(link);
+      Triple<String, String, String> autoLink = parseAutoLink(link);
       URI pageLink = new URI(autoLink.getFirst());
       inS = openStream(pageLink, properties);
 
@@ -72,9 +74,7 @@ public class AutoProtocolHandler extends DefaultProtocolHandler {
       }
 
       /* Pass the Stream to the Interpreter */
-      String selector = autoLink.getSecond();
-      selector = java.net.URLDecoder.decode(selector, "UTF-8"); //$NON-NLS-1$
-      loadFeed(inS, feed, pageLink, selector);
+      loadFeed(inS, feed, pageLink, autoLink.getSecond(), autoLink.getThird());
       return Triple.create(feed, conditionalGet, pageLink);
     } catch (Exception e) {
       log.error("parse auto schema fail:" + link.toString(), e); //$NON-NLS-1$
@@ -87,17 +87,18 @@ public class AutoProtocolHandler extends DefaultProtocolHandler {
     }
   }
 
-  private Pair<String, String> parseAutoLink(URI link) {
+  private Triple<String, String, String> parseAutoLink(URI link) throws UnsupportedEncodingException {
     String autoLink = link.toString();
-    int selectorIdx = autoLink.lastIndexOf('~');
-    String pageLink = autoLink.substring(4, selectorIdx);
-    String selector = autoLink.substring(selectorIdx + 1);
-    return Pair.create(pageLink, selector);
+    String[] ap = java.net.URLDecoder.decode(autoLink, "UTF-8").split("@"); //$NON-NLS-1$ //$NON-NLS-2$
+    String pageLink = ap[0].substring(4);
+    String itemSelector = ap[1];
+    String contentSelector = ap.length > 2 && ap[2].length() > 0 ? ap[2] : "body"; //$NON-NLS-1$
+    return Triple.create(pageLink, itemSelector, contentSelector);
   }
 
-  private void loadFeed(InputStream inS, IFeed feed, URI pageLink, String selector) throws IOException, URISyntaxException, InterruptedException {
+  private void loadFeed(InputStream inS, IFeed feed, URI pageLink, String itemSelector, String contentSelector) throws IOException, URISyntaxException, InterruptedException {
     Document doc = Jsoup.parse(inS, null, pageLink.toString());
-    Elements newsList = doc.select(selector);
+    Elements newsList = doc.select(itemSelector);
     if (newsList == null || newsList.size() == 0)
       return;
 
@@ -124,14 +125,21 @@ public class AutoProtocolHandler extends DefaultProtocolHandler {
           n.setLink(new URI(rootCurrent + url));
         }
       }
-      exec.submit(() -> {
+      exec.execute(() -> {
         InputStream in = null;
         try {
           in = openStream(n.getLink(), null);
-          byte[] buf = readToByteBuffer(in);
-          String html = new String(buf);
-          html = html.replace("</head>", "<base href=\"" + rootCurrent + "\"></head>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-          n.setDescription(html);
+          String itemUrl = n.getLink().toString();
+          Document itemDoc = Jsoup.parse(in, null, itemUrl);
+          Element head = itemDoc.select("head").get(0); //$NON-NLS-1$
+          StringBuilder content = new StringBuilder();
+          content.append("<html><head><base href=\"").append(itemUrl).append("\">") //$NON-NLS-1$ //$NON-NLS-2$
+              .append(head.html()).append("</head><body>"); //$NON-NLS-1$
+          Elements contentEles = itemDoc.select(contentSelector);
+          if (contentEles != null && contentEles.size() > 0)
+            content.append(contentEles.get(0).html());
+          content.append("</body></html>"); //$NON-NLS-1$
+          n.setDescription(content.toString());
         } catch (Exception e) {
           log.error("load content fail:" + feed.getLink() + "," + n.getLinkAsText(), e); //$NON-NLS-1$//$NON-NLS-2$
         } finally {
@@ -144,25 +152,10 @@ public class AutoProtocolHandler extends DefaultProtocolHandler {
     exec.awaitTermination(5, TimeUnit.MINUTES);
   }
 
-  private static byte[] readToByteBuffer(InputStream inStream) throws IOException {
-    byte[] buffer = new byte[131072];
-    ByteArrayOutputStream outStream = new ByteArrayOutputStream(131072);
-
-    while (true) {
-      int read = inStream.read(buffer);
-      if (read < 0) {
-        break;
-      }
-      outStream.write(buffer, 0, read);
-    }
-
-    return outStream.toByteArray();
-  }
-
   @Override
   public String getLabel(URI link, IProgressMonitor monitor) {
     try {
-      Pair<String, String> autoLink = this.parseAutoLink(link);
+      Triple<String, String, String> autoLink = this.parseAutoLink(link);
       return super.getLabel(new URI(autoLink.getFirst()), monitor);
     } catch (Exception e) {
       log.error("read autolink title error:" + link.toString(), e); //$NON-NLS-1$
