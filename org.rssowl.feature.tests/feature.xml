@@ -23,6 +23,7 @@
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.rssowl.ui"/>
       <import plugin="org.rssowl.lib.db4o"/>
+      <import plugin="org.rssowl.lib.jsoup"/>
       <import plugin="org.rssowl.core"/>
       <import plugin="org.junit"/>
    </requires>

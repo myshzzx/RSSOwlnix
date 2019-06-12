@@ -35,9 +35,14 @@ import java.util.concurrent.TimeUnit;
 /**
  * autohttp[s]://url.xxx/@[item-selector]@[item-target-page-content-selector(optional)]
  * <p>
- * e.g. Hacker News:
+ * e.g.
+ * <p>
+ * Hacker News:
  * <code>autohttps://news.ycombinator.com/newest@td.title a.storylink</code>
- *
+ * <p>
+ * medium:
+ * <code>autohttps://medium.com/topic/artificial-intelligence@h1 a,h3 a@div.section-inner</code>
+ * 
  * @author mysh
  * @since 2019-06-11
  */
