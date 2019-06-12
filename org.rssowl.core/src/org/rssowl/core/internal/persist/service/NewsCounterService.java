@@ -138,9 +138,6 @@ public final class NewsCounterService {
 
         NewsCounterItem counterItem = fNewsCounter.get(currentNews.getFeedLinkAsText());
 
-        if (counterItem == null) {
-          continue;
-        }
         /* News became read */
         if (oldStateUnread && !currentStateUnread)
           counterItem.decrementUnreadCounter();
@@ -190,8 +187,6 @@ public final class NewsCounterService {
 
         NewsCounterItem counterItem = fNewsCounter.get(news.getFeedLinkAsText());
 
-        if (counterItem == null)
-          continue;
         /* Update Counter */
         if (news.getState() == INews.State.NEW)
           counterItem.decrementNewCounter();
