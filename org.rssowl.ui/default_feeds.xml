@@ -347,7 +347,7 @@
       <outline text="The Official Google Blog" xmlUrl="http://feeds.feedburner.com/blogspot/MKuf" htmlUrl="http://googleblog.blogspot.com/" description="Insights from Googlers into our products, technology, and the Google culture." />
       <outline text="Wizbang" xmlUrl="http://wizbangblog.com/index.rdf" htmlUrl="http://wizbangblog.com/" description="Explosively Unique..." />
     </outline>
-    <outline text="RSSOwl News" xmlUrl="http://www.rssowl.org/newsfeed" htmlUrl="http://www.rssowl.org" />
+    <outline text="RSSOwlnix News" xmlUrl="https://xyrio.github.io/RSSOwlnix-site/updates.rss" htmlUrl="https://github.com/Xyrio/RSSOwlnix" />
     <outline text="BBC News" xmlUrl="http://news.bbc.co.uk/rss/newsonline_world_edition/front_page/rss091.xml" htmlUrl="http://news.bbc.co.uk/go/rss/-/2/hi/default.stm" description="Get the latest BBC World news: international news, features and analysis from Africa, Americas, South Asia, Asia-Pacific, Europe and the Middle East." />
     <outline text="CNN" xmlUrl="http://xml.newsisfree.com/feeds/15/2315.xml" htmlUrl="http://www.cnn.com/" description="The world's news leader (By http://www.newsisfree.com/syndicate.php - FOR PERSONAL AND NON COMMERCIAL USE ONLY!)" />
     <outline text="Guardian Unlimited" xmlUrl="http://www.guardian.co.uk/rss/1,,,00.xml" htmlUrl="http://www.guardian.co.uk" description="Latest news and features from guardian.co.uk, the world's leading liberal voice" />
