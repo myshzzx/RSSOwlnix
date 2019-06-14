@@ -1,0 +1,1 @@
+mvn clean verify -Dmaven.test.skip=true
