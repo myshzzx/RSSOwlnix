@@ -252,7 +252,7 @@ litigation.
       <import plugin="org.rssowl.lib.db4o" version="2.5.0" match="greaterOrEqual"/>
       <import plugin="org.rssowl.lib.jdom" version="2.5.0" match="greaterOrEqual"/>
       <import plugin="org.rssowl.lib.lucene" version="2.5.0" match="greaterOrEqual"/>
-      <import plugin="org.rssowl.lib.jsoup" version="2.5.0" match="greaterOrEqual"/>
+      <import plugin="org.rssowl.lib.3rd" version="2.5.0" match="greaterOrEqual"/>
       <import feature="org.rssowl.dependencies" version="2.5.0.qualifier"/>
       <import feature="org.rssowl.dependencies.updater" version="2.5.0.qualifier"/>
    </requires>
