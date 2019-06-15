@@ -19,7 +19,7 @@
 		<module>../org.rssowl.lib.httpclient</module>
 		<module>../org.rssowl.lib.jdom</module>
 		<module>../org.rssowl.lib.lucene</module>
-		<module>../org.rssowl.lib.jsoup</module>
+		<module>../org.rssowl.lib.3rd</module>
 		<module>../org.rssowl.core</module>
 		<module>../org.rssowl.ui</module>
 	</modules>
