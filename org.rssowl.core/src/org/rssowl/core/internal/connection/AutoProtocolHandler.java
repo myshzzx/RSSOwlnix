@@ -5,21 +5,18 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.rssowl.core.Owl;
-import org.rssowl.core.connection.ConnectionException;
 import org.rssowl.core.connection.IConnectionPropertyConstants;
 import org.rssowl.core.persist.IConditionalGet;
 import org.rssowl.core.persist.IFeed;
 import org.rssowl.core.persist.IModelFactory;
 import org.rssowl.core.persist.INews;
-import org.rssowl.core.util.Pair;
 import org.rssowl.core.util.Triple;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -136,10 +133,10 @@ public class AutoProtocolHandler extends DefaultProtocolHandler {
           in = openStream(n.getLink(), null);
           String itemUrl = n.getLink().toString();
           Document itemDoc = Jsoup.parse(in, null, itemUrl);
-          Element head = itemDoc.select("head").get(0); //$NON-NLS-1$
+//          Element head = itemDoc.select("head").get(0); //$NON-NLS-1$
           StringBuilder content = new StringBuilder();
           content.append("<html><head><base href=\"").append(itemUrl).append("\">") //$NON-NLS-1$ //$NON-NLS-2$
-              .append(head.html()).append("</head><body>"); //$NON-NLS-1$
+              .append("</head><body>"); //$NON-NLS-1$
           Elements contentEles = itemDoc.select(contentSelector);
           if (contentEles != null && contentEles.size() > 0)
             content.append(contentEles.get(0).html());
