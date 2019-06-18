@@ -1,17 +1,5 @@
-updates feed: https://xyrio.github.io/RSSOwlnix-site/updates.rss
 
-changelog: https://github.com/Xyrio/RSSOwlnix/blob/master/CHANGELOG.md
+It's out of date, for embedded browser IE.
 
-bug reports: https://github.com/Xyrio/RSSOwlnix/issues
+use chrome plugin [The RSS Aggregator](https://chrome.google.com/webstore/detail/the-rss-aggregator/ffhafkagcdhnhamiaecajogjcfgienom) instead.
 
-wiki: https://github.com/Xyrio/RSSOwlnix/wiki
-
-how to build: https://github.com/Xyrio/RSSOwlnix/wiki/How-To-Build
-
-addons repository: https://github.com/Xyrio/RSSOwlnix-plugins-addons
-
-translations repository: https://github.com/Xyrio/RSSOwlnix-plugins-translation
-
-install through chocolatey: https://chocolatey.org/packages/rssowlnix \
-coocolatey package repository: https://github.com/eargollo/choco-rssowlnix \
-chocolatey package issue: https://github.com/Xyrio/RSSOwlnix/issues/28
